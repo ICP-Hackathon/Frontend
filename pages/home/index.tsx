@@ -2,24 +2,15 @@ import React, { useState, useEffect } from "react";
 import AICard from "@/components/AICard";
 import Link from "next/link";
 import { fetchTopAIs } from "@/utils/api/ai";
-
-interface AICardData {
-  id: string;
-  name: string;
-  creator: string;
-  category: string;
-  introductions: string;
-  usage: number;
-  total_usage: number;
-  ratio: number;
-  collect: number;
-}
+import { AIModel } from "@/utils/interface";
 
 export default function HomePage() {
   const [currentCardIndex, setCurrentCardIndex] = useState(0);
-  const [aiCards, setAiCards] = useState<AICardData[]>([]);
+  const [aiCards, setAiCards] = useState<AIModel[]>([]);
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
+
+  console.log(process.env.API_BASE_URL);
 
   useEffect(() => {
     const loadAiCards = async () => {
@@ -28,7 +19,7 @@ export default function HomePage() {
         setAiCards(data.ais);
       } catch (error) {
         setError(
-          error instanceof Error ? error.message : "An unknown error occurred",
+          error instanceof Error ? error.message : "An unknown error occurred"
         );
       } finally {
         setIsLoading(false);
@@ -44,11 +35,9 @@ export default function HomePage() {
 
   const prevCard = () => {
     setCurrentCardIndex(
-      (prevIndex) => (prevIndex - 1 + aiCards.length) % aiCards.length,
+      (prevIndex) => (prevIndex - 1 + aiCards.length) % aiCards.length
     );
   };
-
-
 
   return (
     <div className="flex flex-col justify-between h-full">

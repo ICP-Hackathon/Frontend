@@ -4,15 +4,7 @@ import { useRouter } from "next/router";
 import avatarImage from "@/assets/avatar.png";
 import { useUserStore } from "@/store/userStore";
 import { createChat } from "@/utils/api/chat";
-
-interface AICardProps {
-  id: string;
-  name: string;
-  creator: string;
-  category: string;
-  introductions: string;
-  imageSrc?: string;
-}
+import { AICardProps } from "@/utils/interface";
 
 const getCreatorName = (address: string): string => {
   return address.slice(0, 6);

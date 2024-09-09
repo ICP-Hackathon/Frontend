@@ -1,13 +1,7 @@
 import React from "react";
-import Link from "next/link";
+import { HeaderBarProps } from "@/utils/interface";
 
-interface HeaderBarProps {
-  title: string;
-}
-
-const Header: React.FC<HeaderBarProps> = ({
-  title,
-}) => {
+const Header: React.FC<HeaderBarProps> = ({ title }) => {
   return (
     <header className="bg-white shadow-sm py-4 px-6 flex items-center justify-between border-b">
       <div className="flex items-center">

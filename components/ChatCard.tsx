@@ -2,14 +2,7 @@ import Image from "next/image";
 import { useRouter } from "next/router";
 import avatarImage from "@/assets/avatar.png";
 import { useUserStore } from "@/store/userStore";
-
-interface ChatCardProps {
-  chatid?: string;
-  aiid: string;
-  title: string;
-  category: string;
-  imageSrc?: string;
-}
+import { ChatCardProps } from "@/utils/interface";
 
 const ChatCard: React.FC<ChatCardProps> = ({
   chatid,

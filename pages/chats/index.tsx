@@ -3,23 +3,7 @@ import ChatCard from "@/components/ChatCard";
 import { useUserStore } from "@/store/userStore";
 import { fetchChatList } from "@/utils/api/user";
 import { fetchAIDetails } from "@/utils/api/ai";
-
-interface ChatModel {
-  chatid: string;
-  aiid: string;
-  userid: string;
-}
-
-interface AIDetails {
-  id: string;
-  name: string;
-  category: string;
-  introductions: string;
-}
-
-interface ChatWithDetails extends ChatModel {
-  aiDetails: AIDetails | null;
-}
+import { ChatModel, ChatWithDetails } from "@/utils/interface";
 
 const ChatListPage: React.FC = () => {
   const [chats, setChats] = useState<ChatWithDetails[]>([]);
@@ -44,11 +28,11 @@ const ChatListPage: React.FC = () => {
             } catch (error) {
               console.error(
                 `Failed to fetch details for AI ${chat.aiid}:`,
-                error,
+                error
               );
               return { ...chat, aiDetails: null };
             }
-          }),
+          })
         );
         setChats(chatsWithDetails);
       } catch (err) {

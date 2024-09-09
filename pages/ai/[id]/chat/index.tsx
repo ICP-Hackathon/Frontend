@@ -3,22 +3,7 @@ import { useRouter } from "next/router";
 import { useUserStore } from "@/store/userStore";
 import Image from "next/image";
 import avatarImage from "@/assets/avatar.png";
-
-interface Message {
-  role: "user" | "ai";
-  content: string;
-  timestamp: string;
-}
-
-interface ChatResponse {
-  chatcontentsid: string;
-  chatid: string;
-  createdat: string;
-  senderid: string;
-  message: string;
-}
-
-const API_BASE_URL = "http://13.54.180.217:8000";
+import { Message, ChatResponse } from "@/utils/interface";
 
 const AIChat = () => {
   const router = useRouter();
@@ -63,7 +48,9 @@ const AIChat = () => {
     if (!chatid) return;
 
     try {
-      const response = await fetch(`${API_BASE_URL}/chatcontents/${chatid}`);
+      const response = await fetch(
+        `${process.env.NEXT_PUBLIC_API_BASE_URL}/chatcontents/${chatid}`
+      );
       if (!response.ok) {
         if (response.status === 404) {
           // Chat history not found, send welcome message
@@ -84,7 +71,7 @@ const AIChat = () => {
             role: chat.senderid === user?.userid ? "user" : "ai",
             content: chat.message,
             timestamp: chat.createdat,
-          }),
+          })
         );
         setMessages(formattedMessages);
       }
@@ -95,21 +82,24 @@ const AIChat = () => {
 
   const sendMessage = async (
     content: string,
-    sender: string,
+    sender: string
   ): Promise<ChatResponse> => {
     if (!chatid) {
       throw new Error("Chat ID is not available");
     }
-    const response = await fetch(`${API_BASE_URL}/chatcontent/${chatid}`, {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify({
-        senderid: sender,
-        message: content,
-      }),
-    });
+    const response = await fetch(
+      `${process.env.NEXT_PUBLIC_API_BASE_URL}/chatcontent/${chatid}`,
+      {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          senderid: sender,
+          message: content,
+        }),
+      }
+    );
 
     if (!response.ok) {
       throw new Error("Failed to send message");

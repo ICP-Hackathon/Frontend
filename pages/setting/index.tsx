@@ -3,20 +3,9 @@ import Image from "next/image";
 import { useRouter } from "next/router";
 import { useUserStore } from "@/store/userStore";
 import avatarImage from "@/assets/avatar.png";
-
-// AI Profile interface
-interface AIProfile {
-  id: string;
-  name: string;
-  category: string;
-  introductions: string;
-  image: string;
-  total_usage: number;
-  collect: number;
-}
-
+import { AIModel } from "@/utils/interface";
 // AIProfileCard Component
-const AIProfileCard: React.FC<AIProfile & { onDelete: () => void }> = ({
+const AIProfileCard: React.FC<AIModel & { onDelete: () => void }> = ({
   id,
   name,
   category,
@@ -96,7 +85,7 @@ const AIProfileCard: React.FC<AIProfile & { onDelete: () => void }> = ({
 // Main SettingsPage Component
 const SettingsPage: React.FC = () => {
   const { user } = useUserStore();
-  const [myAIs, setMyAIs] = useState<AIProfile[]>([]);
+  const [myAIs, setMyAIs] = useState<AIModel[]>([]);
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
 
@@ -112,7 +101,7 @@ const SettingsPage: React.FC = () => {
     setError(null);
     try {
       const response = await fetch(
-        `http://13.54.180.217:8000/ai/myais/${user.userid}`,
+        `http://localhost:8000/ai/myais/${user.userid}`
       );
       if (!response.ok) {
         throw new Error("Failed to fetch AI profiles");
@@ -135,7 +124,7 @@ const SettingsPage: React.FC = () => {
   const handleDeleteAI = async (id: string) => {
     if (window.confirm("Are you sure you want to delete this AI?")) {
       try {
-        const response = await fetch(`http://13.54.180.217:8000/ai/${id}`, {
+        const response = await fetch(`http://localhost:8000/ai/${id}`, {
           method: "DELETE",
         });
 

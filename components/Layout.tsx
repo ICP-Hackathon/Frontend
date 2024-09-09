@@ -1,27 +1,17 @@
-import { ReactNode } from "react";
 import Head from "next/head";
 import Header from "./Header";
 import FooterBar from "./FooterBar";
-
-interface LayoutProps {
-  children: ReactNode;
-  title: string;
-}
+import { LayoutProps } from "@/utils/interface";
 
 const Layout: React.FC<LayoutProps> = ({ children, title }) => {
   return (
-    <div className="h-screen bg-orange-50 flex justify-center">
+    <div className="max-w-[600px] mx-auto h-screen bg-orange-50 flex justify-center">
       <Head>
         <title>{title} | Near and Dear</title>
         <meta name="description" content="AI Chat Application" />
-        <meta
-          http-equiv="Cross-Origin-Opener-Policy"
-          content="same-origin-allow-popups"
-        />
         <link rel="icon" href="/favicon.ico" />
       </Head>
-
-      <div className="w-full max-w-[600px] flex flex-col h-screen">
+      <div className="w-full h-full flex flex-col">
         <Header title={title} />
 
         <main className="flex-grow overflow-y-auto px-4">{children}</main>

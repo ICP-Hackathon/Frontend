@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { useRouter } from "next/router";
 import { useUserStore } from "@/store/userStore";
-
+import { AIData } from "@/utils/interface";
 const categories: string[] = [
   "Education",
   "Health & Fitness",
@@ -11,15 +11,6 @@ const categories: string[] = [
   "Developer tools",
   "Graphics & Design",
 ];
-
-interface AIData {
-  id: string;
-  name: string;
-  category: string;
-  introductions: string;
-  contents: string;
-  logs: string;
-}
 
 export default function EditAIPage() {
   const router = useRouter();
@@ -41,7 +32,7 @@ export default function EditAIPage() {
 
   const fetchAIData = async () => {
     try {
-      const response = await fetch(`http://13.54.180.217:8000/ai/${id}`);
+      const response = await fetch(`http://localhost:8000/ai/${id}`);
       if (!response.ok) {
         throw new Error("Failed to fetch AI data");
       }
@@ -67,7 +58,7 @@ export default function EditAIPage() {
     setIsLoading(true);
 
     try {
-      const response = await fetch(`http://13.54.180.217:8000/ai/${id}`, {
+      const response = await fetch(`http://localhost:8000/ai/${id}`, {
         method: "PUT",
         headers: {
           "Content-Type": "application/json",

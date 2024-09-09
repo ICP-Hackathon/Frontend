@@ -1,19 +1,7 @@
 import React, { useState, useEffect, useRef, useCallback } from "react";
 import AICard from "@/components/AICard";
 import { fetchTopAIs } from "@/utils/api/ai";
-
-interface AIModel {
-  id: string;
-  name: string;
-  creator: string;
-  category: string;
-  introductions: string;
-  usage: number;
-  total_usage: number;
-  ratio: number;
-  collect: number;
-}
-
+import { AIModel } from "@/utils/interface";
 const ITEMS_PER_LOAD = 3;
 
 const ListPage = () => {
@@ -46,7 +34,7 @@ const ListPage = () => {
       });
       if (node) observer.current.observe(node);
     },
-    [loading, hasMore],
+    [loading, hasMore]
   );
 
   const loadMoreCards = () => {
@@ -55,7 +43,7 @@ const ListPage = () => {
       setDisplayedCards((prevCards) => {
         const newCards = aiList.slice(
           prevCards.length,
-          prevCards.length + ITEMS_PER_LOAD,
+          prevCards.length + ITEMS_PER_LOAD
         );
         if (prevCards.length + newCards.length >= aiList.length) {
           setHasMore(false);

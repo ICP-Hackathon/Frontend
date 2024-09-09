@@ -2,15 +2,7 @@ import { useState, useEffect } from "react";
 import { useRouter } from "next/router";
 import { GetServerSideProps } from "next";
 import { fetchAILogs } from "@/utils/api/ai";
-
-interface Log {
-  id: number;
-  aiid: string;
-  createdat: string;
-  log: string;
-  txurl: string;
-  faissid: string;
-}
+import { Log } from "@/utils/interface";
 
 const formatTime = (timeString: string) => {
   const [hours, minutes, seconds] = timeString.split(":");
@@ -47,7 +39,7 @@ const AIDocsPage: React.FC = () => {
         setError(
           err instanceof Error
             ? err.message
-            : "An error occurred while fetching logs",
+            : "An error occurred while fetching logs"
         );
         setLogs([]);
       } finally {

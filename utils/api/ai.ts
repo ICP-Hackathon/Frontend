@@ -1,7 +1,7 @@
-const API_BASE_URL = "http://13.54.180.217:8000";
-
 export async function fetchTopAIs() {
-  const response = await fetch(`${API_BASE_URL}/ai/top10/`);
+  const response = await fetch(
+    `${process.env.NEXT_PUBLIC_API_BASE_URL}/ai/top10/`
+  );
   if (!response.ok) {
     throw new Error("Network response was not ok");
   }
@@ -9,7 +9,9 @@ export async function fetchTopAIs() {
 }
 
 export async function fetchAIDetails(id: string) {
-  const response = await fetch(`${API_BASE_URL}/ai/${id}`);
+  const response = await fetch(
+    `${process.env.NEXT_PUBLIC_API_BASE_URL}/ai/${id}`
+  );
   if (!response.ok) {
     throw new Error("Network response was not ok");
   }
@@ -17,7 +19,9 @@ export async function fetchAIDetails(id: string) {
 }
 
 export async function fetchAILogs(id: string) {
-  const response = await fetch(`${API_BASE_URL}/ailogs/ai/${id}`);
+  const response = await fetch(
+    `${process.env.NEXT_PUBLIC_API_BASE_URL}/ailogs/ai/${id}`
+  );
   if (!response.ok) {
     throw new Error("Network response was not ok");
   }
@@ -32,7 +36,7 @@ export async function createAI(aiData: {
   contents: string;
   logs: string;
 }) {
-  const response = await fetch(`${API_BASE_URL}/ai/`, {
+  const response = await fetch(`${process.env.NEXT_PUBLIC_API_BASE_URL}/ai/`, {
     method: "POST",
     headers: {
       "Content-Type": "application/json",
@@ -44,7 +48,7 @@ export async function createAI(aiData: {
     const errorData = await response.text();
     console.error("Error response:", errorData);
     throw new Error(
-      `Failed to create AI: ${response.status} ${response.statusText}\n${errorData}`,
+      `Failed to create AI: ${response.status} ${response.statusText}\n${errorData}`
     );
   }
 
@@ -52,7 +56,9 @@ export async function createAI(aiData: {
 }
 
 export async function fetchMyAIs(userid: string) {
-  const response = await fetch(`${API_BASE_URL}/ai/myais/${userid}`);
+  const response = await fetch(
+    `${process.env.NEXT_PUBLIC_API_BASE_URL}/ai/myais/${userid}`
+  );
   if (!response.ok) {
     throw new Error("Network response was not ok");
   }
