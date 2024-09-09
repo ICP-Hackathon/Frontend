@@ -8,6 +8,16 @@ export async function fetchTopAIs() {
   return await response.json();
 }
 
+export async function fetchSearchAIs(name: string) {
+  const response = await fetch(
+    `${process.env.NEXT_PUBLIC_API_BASE_URL}/ai/search/${name}`
+  );
+  if (!response.ok) {
+    throw new Error("Network response was not ok");
+  }
+  return await response.json();
+}
+
 export async function fetchAIDetails(id: string) {
   const response = await fetch(
     `${process.env.NEXT_PUBLIC_API_BASE_URL}/ai/${id}`

@@ -3,6 +3,7 @@ import AICard from "@/components/AICard";
 import Link from "next/link";
 import { fetchTopAIs } from "@/utils/api/ai";
 import { AIModel } from "@/utils/interface";
+import Search from "@/components/Search";
 
 export default function HomePage() {
   const [currentCardIndex, setCurrentCardIndex] = useState(0);
@@ -43,11 +44,7 @@ export default function HomePage() {
     <div className="flex flex-col justify-between h-full">
       <div>
         <div className="py-6">
-          <input
-            type="text"
-            placeholder="Search your best-fit AI"
-            className="w-full p-3 border border-gray-300 rounded-lg shadow-sm focus:ring-2 focus:ring-blue-500 focus:border-blue-500 outline-none transition"
-          />
+          <Search />
         </div>
         <div className="flex justify-between items-center mb-3">
           <h3 className="text-lg font-bold">Trending AIs</h3>
