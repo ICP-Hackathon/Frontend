@@ -50,8 +50,8 @@ export default function MakeCustomAIPage() {
     };
 
     try {
-      const data = await createAI(payload);
-      console.log("AI created successfully:", data);
+      // const data = await createAI(payload);
+      window.alert("AI created successfully!");
       router.push("/home");
     } catch (err) {
       console.error("Error creating AI:", err);
@@ -66,7 +66,7 @@ export default function MakeCustomAIPage() {
   };
 
   return (
-    <div className="flex-grow p-2 max-w-2xl mx-auto w-full">
+    <div className="flex-grow p-2 mx-auto w-full">
       <form
         onSubmit={handleSubmit}
         className="bg-white rounded-lg shadow-md p-6"
@@ -123,7 +123,7 @@ export default function MakeCustomAIPage() {
             onChange={(e) => setIntroduction(e.target.value)}
             placeholder="Please briefly introduce your AI"
             className="w-full p-2 border border-gray-300 rounded-md"
-            rows={3}
+            rows={2}
             required
           />
         </div>
@@ -156,9 +156,9 @@ export default function MakeCustomAIPage() {
             id="comments"
             value={comments}
             onChange={(e) => setComments(e.target.value)}
-            placeholder="Update Comments"
+            placeholder="Update Comments (ex. Add data)"
             className="w-full p-2 border border-gray-300 rounded-md"
-            rows={3}
+            rows={1}
           />
         </div>
 

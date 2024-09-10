@@ -4,14 +4,14 @@ import Link from "next/link";
 import { fetchTopAIs } from "@/utils/api/ai";
 import { AIModel } from "@/utils/interface";
 import Search from "@/components/Search";
+import ItemsCarousel from "react-items-carousel";
 
 export default function HomePage() {
-  const [currentCardIndex, setCurrentCardIndex] = useState(0);
   const [aiCards, setAiCards] = useState<AIModel[]>([]);
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
-
-  console.log(process.env.API_BASE_URL);
+  const [activeItemIndex, setActiveItemIndex] = useState(0);
+  const carouselInterval = 5000; // 5초마다 자동으로 넘김
 
   useEffect(() => {
     const loadAiCards = async () => {
@@ -30,15 +30,24 @@ export default function HomePage() {
     loadAiCards();
   }, []);
 
-  const nextCard = () => {
-    setCurrentCardIndex((prevIndex) => (prevIndex + 1) % aiCards.length);
-  };
+  // 자동으로 Carousel 넘기기 위한 useEffect
+  useEffect(() => {
+    const interval = setInterval(() => {
+      setActiveItemIndex((prevIndex) => {
+        // 마지막 카드에 도달하면 멈춤
+        if (prevIndex === aiCards.length - 1) {
+          clearInterval(interval); // Interval 클리어하여 자동 진행 멈춤
+          return prevIndex; // 현재 인덱스 유지 (더 이상 증가하지 않음)
+        } else {
+          return prevIndex + 1; // 다음 인덱스로 이동
+        }
+      });
+    }, carouselInterval);
 
-  const prevCard = () => {
-    setCurrentCardIndex(
-      (prevIndex) => (prevIndex - 1 + aiCards.length) % aiCards.length
-    );
-  };
+    return () => {
+      clearInterval(interval); // 컴포넌트 언마운트 시 인터벌 클리어
+    };
+  }, [aiCards.length]);
 
   return (
     <div className="flex flex-col justify-between h-full">
@@ -56,42 +65,41 @@ export default function HomePage() {
           </Link>
         </div>
 
-        <div className="relative h-[250px]">
+        <div>
           {isLoading ? (
-            <p>Loading...</p>
+            <p className="text-center">Loading...</p>
           ) : error ? (
             <p>Error: {error}</p>
           ) : aiCards.length > 0 ? (
-            <>
-              <AICard
-                id={aiCards[currentCardIndex].id}
-                name={aiCards[currentCardIndex].name}
-                creator={aiCards[currentCardIndex].creator}
-                category={aiCards[currentCardIndex].category}
-                introductions={aiCards[currentCardIndex].introductions}
-              />
-              <button
-                onClick={prevCard}
-                className="absolute left-0 top-1/2 transform -translate-y-1/2 bg-white p-2 rounded-full shadow-md z-10"
+            <div>
+              <ItemsCarousel
+                requestToChangeActive={setActiveItemIndex}
+                activeItemIndex={activeItemIndex}
+                numberOfCards={1} // 보여줄 카드 개수
+                gutter={30}
+                infiniteLoop={true}
               >
-                &#10094;
-              </button>
-              <button
-                onClick={nextCard}
-                className="absolute right-0 top-1/2 transform -translate-y-1/2 bg-white p-2 rounded-full shadow-md z-10"
-              >
-                &#10095;
-              </button>
-            </>
+                {aiCards.map((item) => (
+                  <AICard
+                    key={item.id} // 고유 key 설정
+                    id={item.id}
+                    name={item.name}
+                    creator={item.creator}
+                    category={item.category}
+                    introductions={item.introductions}
+                  />
+                ))}
+              </ItemsCarousel>
+            </div>
           ) : (
             <p>No AI cards available</p>
           )}
         </div>
       </div>
 
-      <div className="flex flex-col justify-center items-center space-y-10 mb-10">
+      <div className="flex flex-col justify-center items-center space-y-10 mb-20">
         <h2 className="text-3xl font-bold text-center">
-          Looking for anything else?
+          Looking for <br /> anything else?
         </h2>
         <Link
           href="/make"

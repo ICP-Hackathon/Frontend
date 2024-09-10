@@ -7,3 +7,5 @@
 #### 2024.09.10 13:31 UPDATE
 
 1. 검색 기능 구현
+2. React-Item-Carousel로 무한 carousel 구현
+3. Make시 한 페이지 안에 들어오게끔 수정
