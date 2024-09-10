@@ -13,6 +13,9 @@ export async function fetchSearchAIs(name: string) {
     `${process.env.NEXT_PUBLIC_API_BASE_URL}/ai/search/${name}`
   );
   if (!response.ok) {
+    if (response.status === 404) {
+      throw new Error("No results found");
+    }
     throw new Error("Network response was not ok");
   }
   return await response.json();

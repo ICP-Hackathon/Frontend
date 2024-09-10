@@ -2,6 +2,7 @@ import React, { useState, useEffect, useRef, useCallback } from "react";
 import AICard from "@/components/AICard";
 import { fetchTopAIs } from "@/utils/api/ai";
 import { AIModel } from "@/utils/interface";
+import Search from "@/components/Search";
 const ITEMS_PER_LOAD = 3;
 
 const ListPage = () => {
@@ -62,11 +63,7 @@ const ListPage = () => {
     <div className="flex-grow overflow-y-auto">
       <div className="py-6">
         <div className="mb-6">
-          <input
-            type="text"
-            placeholder="Search your best-fit AI"
-            className="w-full p-3 border border-gray-300 rounded-lg shadow-sm focus:ring-2 focus:ring-blue-500 focus:border-blue-500 outline-none transition"
-          />
+          <Search />
         </div>
 
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
