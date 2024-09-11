@@ -21,7 +21,6 @@ const AIChat = () => {
     }
     return "AI Assistant";
   }, [id]);
-
   const chatid = useMemo(() => {
     if (user && id) {
       return `${user.userid}_${id}`;
@@ -51,30 +50,24 @@ const AIChat = () => {
       const response = await fetch(
         `${process.env.NEXT_PUBLIC_API_BASE_URL}/chatcontents/${chatid}`
       );
-      if (!response.ok) {
-        if (response.status === 404) {
-          // Chat history not found, send welcome message
-          const welcomeMessage: Message = {
-            role: "ai",
-            content: "Hello! How can I assist you?",
-            timestamp: new Date().toISOString(),
-          };
-          setMessages([welcomeMessage]);
-          await sendMessage(welcomeMessage.content, aiName);
-        } else {
-          throw new Error("Failed to fetch chat history");
-        }
-      } else {
-        const data = await response.json();
-        const formattedMessages: Message[] = data.chats.map(
-          (chat: ChatResponse) => ({
-            role: chat.senderid === user?.userid ? "user" : "ai",
-            content: chat.message,
-            timestamp: chat.createdat,
-          })
-        );
-        setMessages(formattedMessages);
+      const data = await response.json();
+      if (data.chats.length == 0) {
+        const welcomeMessage: Message = {
+          role: "ai",
+          content: "Hello! How can I assist you?",
+          timestamp: new Date().toISOString(),
+        };
+        setMessages([welcomeMessage]);
+        await sendMessage(welcomeMessage.content, aiName);
       }
+      const formattedMessages: Message[] = data.chats.map(
+        (chat: ChatResponse) => ({
+          role: chat.senderid === user?.userid ? "user" : "ai",
+          content: chat.message,
+          timestamp: chat.createdat,
+        })
+      );
+      setMessages(formattedMessages);
     } catch (error) {
       console.error("Error fetching chat history:", error);
     }

@@ -49,7 +49,7 @@ export async function createAI(aiData: {
   contents: string;
   logs: string;
 }) {
-  const response = await fetch(`${process.env.NEXT_PUBLIC_API_BASE_URL}/ai/`, {
+  const response = await fetch(`${process.env.NEXT_PUBLIC_API_BASE_URL}/ai`, {
     method: "POST",
     headers: {
       "Content-Type": "application/json",

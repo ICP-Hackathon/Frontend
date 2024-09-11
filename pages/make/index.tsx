@@ -42,15 +42,15 @@ export default function MakeCustomAIPage() {
 
     const payload = {
       name,
-      creator: user.address,
+      creator: user.userid,
       category: selectedCategory,
       introductions: introduction,
       contents: content,
       logs: comments,
     };
-
     try {
-      // const data = await createAI(payload);
+      const data = await createAI(payload);
+      console.log(data);
       window.alert("AI created successfully!");
       router.push("/home");
     } catch (err) {

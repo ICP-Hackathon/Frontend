@@ -21,7 +21,6 @@ export async function fetchChatList(userid: string) {
   const response = await fetch(
     `${process.env.NEXT_PUBLIC_API_BASE_URL}/chats/${userid}`
   );
-  console.log("Response status:", response.status);
 
   if (!response.ok) {
     const errorText = await response.text();
@@ -32,6 +31,5 @@ export async function fetchChatList(userid: string) {
   }
 
   const data = await response.json();
-  console.log("Received data:", data);
   return data;
 }

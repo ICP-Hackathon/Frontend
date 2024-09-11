@@ -1,4 +1,4 @@
-import create from "zustand";
+import { create } from "zustand";
 import { persist } from "zustand/middleware";
 
 export type User = {
@@ -57,6 +57,6 @@ export const useUserStore = create<UserState>()(
     }),
     {
       name: "user-storage",
-    },
-  ),
+    }
+  )
 );

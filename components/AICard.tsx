@@ -32,7 +32,7 @@ const AICard: React.FC<AICardProps> = ({
       {
         // If chat doesn't exist, create a new one
         const newChat = await createChat({ aiid: id, userid: user.userid });
-        router.push(`/ai/${newChat.chatid}/chat`);
+        router.push(`/ai/${id}/chat`);
       }
     } catch (error) {
       console.error("Error handling chat click:", error);
