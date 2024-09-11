@@ -17,3 +17,4 @@
 3. Settings Page에서 AIprofiles -> Component MyAIs로 수정
 4. Chat Routing 시 Chat ID로 가는 것 -> AiID로 가도록 수정
 5. Backend에서 Chat Not Found, Chat Contents Not Found 안나오게 수정. 대신 빈 배열 반환 -> API 수정 필요
+6. declaration 추가, 로그인 오류 해결, settings page api 수정 필요

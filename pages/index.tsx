@@ -65,7 +65,7 @@ export default function Login() {
     try {
       let localProvider;
       if (loginType === "google") {
-        // localProvider = await web3auth.connect();
+        localProvider = await web3auth.connect();
       } else if (loginType === "metamask") {
         if (typeof window.ethereum !== "undefined") {
           await window.ethereum.request({ method: "eth_requestAccounts" });
@@ -84,7 +84,7 @@ export default function Login() {
       const address = (await web3.eth.getAccounts())[0];
 
       // Call login API using the imported function
-      const userData = await loginUser("assd");
+      const userData = await loginUser(address);
 
       // Set user in Zustand store
       setUser({ address, ...userData });

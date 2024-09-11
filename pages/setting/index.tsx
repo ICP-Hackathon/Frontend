@@ -23,7 +23,7 @@ const SettingsPage: React.FC = () => {
     setError(null);
     try {
       const response = await fetch(
-        `http://localhost:8000/ai/myais/${user.userid}`
+        `${process.env.NEXT_PUBLIC_API_BASE_URL}/ai/myais/${user?.userid}`
       );
       if (!response.ok) {
         throw new Error("Failed to fetch AI profiles");
