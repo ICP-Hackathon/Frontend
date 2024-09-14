@@ -5,7 +5,7 @@ import { LayoutProps } from "@/utils/interface";
 
 const Layout: React.FC<LayoutProps> = ({ children, title }) => {
   return (
-    <div className="max-w-[600px] mx-auto h-screen bg-orange-50 flex justify-center">
+    <div className="max-w-[600px] mx-auto h-screen flex justify-center">
       <Head>
         <title>{title} | Near and Dear</title>
         <meta name="description" content="AI Chat Application" />

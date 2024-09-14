@@ -16,12 +16,12 @@ const config: Config = {
       fontFamily: {
         urbanist: ["Urbanist", "sans-serif"],
       },
-    },
-    colors: {
-      primary: {
-        0: "#ffffff",
-        50: "#E8FAF4",
-        900: "#17CE92",
+      colors: {
+        primary: {
+          0: "#ffffff",
+          50: "#E8FAF4",
+          900: "#17CE92",
+        },
       },
     },
   },
