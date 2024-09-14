@@ -1,10 +1,9 @@
-import React, { useState, useEffect } from "react";
-import { useRouter } from "next/router";
+import { useState, useEffect } from "react";
 import { useUserStore } from "@/store/userStore";
 import { AIModel } from "@/utils/interface";
 import { MyAIs } from "@/components/MyAIs";
+import { deleteAI, fetchMyAIs } from "@/utils/api/ai";
 
-// Main SettingsPage Component
 const SettingsPage: React.FC = () => {
   const { user } = useUserStore();
   const [myAIs, setMyAIs] = useState<AIModel[]>([]);
@@ -22,14 +21,7 @@ const SettingsPage: React.FC = () => {
     setIsLoading(true);
     setError(null);
     try {
-      const response = await fetch(
-        `${process.env.NEXT_PUBLIC_API_BASE_URL}/ai/myais/${user?.userid}`
-      );
-      if (!response.ok) {
-        throw new Error("Failed to fetch AI profiles");
-      }
-      const data = await response.json();
-
+      const data = await fetchMyAIs(user.userid);
       if (data && Array.isArray(data.ais)) {
         setMyAIs(data.ais);
       } else {
@@ -46,16 +38,9 @@ const SettingsPage: React.FC = () => {
   const handleDeleteAI = async (id: string) => {
     if (window.confirm("Are you sure you want to delete this AI?")) {
       try {
-        const response = await fetch(`http://localhost:8000/ai/${id}`, {
-          method: "DELETE",
-        });
-
-        if (response.ok) {
-          setMyAIs((prevAIs) => prevAIs.filter((ai) => ai.id !== id));
-          alert("AI deleted successfully");
-        } else {
-          throw new Error("Failed to delete AI");
-        }
+        await deleteAI(id);
+        setMyAIs((prevAIs) => prevAIs.filter((ai) => ai.id !== id));
+        alert("AI deleted successfully");
       } catch (error) {
         console.error("Error deleting AI:", error);
         alert("Failed to delete AI. Please try again.");

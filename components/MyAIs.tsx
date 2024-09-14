@@ -66,7 +66,7 @@ export const MyAIs: React.FC<AIModel & { onDelete: () => void }> = ({
           </div>
           <div>
             <p className="text-sm text-gray-600">Estimated Value</p>
-            <p className="text-xl font-bold">${collect}</p>
+            <p className="text-xl font-bold">${collect.toFixed(4)}</p>
           </div>
           <button
             onClick={handleCollectEarnings}
