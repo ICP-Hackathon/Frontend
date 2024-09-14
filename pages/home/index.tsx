@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import AICard from "@/components/AICard";
+import AICard from "@/components/home/AICard";
 import Link from "next/link";
 import { fetchTopAIs } from "@/utils/api/ai";
 import { AIModel } from "@/utils/interface";
@@ -20,7 +20,7 @@ export default function HomePage() {
         setAiCards(data.ais);
       } catch (error) {
         setError(
-          error instanceof Error ? error.message : "An unknown error occurred"
+          error instanceof Error ? error.message : "An unknown error occurred",
         );
       } finally {
         setIsLoading(false);

@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useRef, useCallback } from "react";
-import AICard from "@/components/AICard";
+import AICard from "@/components/home/AICard";
 import { fetchTopAIs } from "@/utils/api/ai";
 import { AIModel } from "@/utils/interface";
 import Search from "@/components/Search";
@@ -35,7 +35,7 @@ const ListPage = () => {
       });
       if (node) observer.current.observe(node);
     },
-    [loading, hasMore]
+    [loading, hasMore],
   );
 
   const loadMoreCards = () => {
@@ -44,7 +44,7 @@ const ListPage = () => {
       setDisplayedCards((prevCards) => {
         const newCards = aiList.slice(
           prevCards.length,
-          prevCards.length + ITEMS_PER_LOAD
+          prevCards.length + ITEMS_PER_LOAD,
         );
         if (prevCards.length + newCards.length >= aiList.length) {
           setHasMore(false);
