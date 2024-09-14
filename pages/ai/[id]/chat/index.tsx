@@ -4,6 +4,7 @@ import { useUserStore } from "@/store/userStore";
 import Image from "next/image";
 import avatarImage from "@/assets/avatar.png";
 import { Message, ChatResponse } from "@/utils/interface";
+import { createChat, fetchChatHistory, sendMessage } from "@/utils/api/chat";
 
 const AIChat = () => {
   const router = useRouter();
@@ -21,84 +22,48 @@ const AIChat = () => {
     }
     return "AI Assistant";
   }, [id]);
+
   const chatid = useMemo(() => {
     if (user && id) {
       return `${user.userid}_${id}`;
     }
     return null;
-  }, [id]);
+  }, [id, user]);
 
   useEffect(() => {
     scrollToBottom();
   }, [messages]);
 
   useEffect(() => {
-    if (chatid) {
-      fetchChatHistory();
+    if (chatid && user) {
+      initializeChat();
     }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [chatid]);
+  }, [chatid, user]);
 
   const scrollToBottom = () => {
     messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
   };
 
-  const fetchChatHistory = async () => {
-    if (!chatid) return;
+  const initializeChat = async () => {
+    if (!chatid || !user) return;
 
     try {
-      const response = await fetch(
-        `${process.env.NEXT_PUBLIC_API_BASE_URL}/chatcontents/${chatid}`
-      );
-      const data = await response.json();
-      if (data.chats.length == 0) {
+      const chatHistory = await fetchChatHistory(chatid, user.userid);
+      if (chatHistory.length === 0) {
+        await createChat({ aiid: id as string, userid: user.userid });
         const welcomeMessage: Message = {
           role: "ai",
           content: "Hello! How can I assist you?",
           timestamp: new Date().toISOString(),
         };
         setMessages([welcomeMessage]);
-        await sendMessage(welcomeMessage.content, aiName);
+        await sendMessage(chatid, welcomeMessage.content, aiName);
+      } else {
+        setMessages(chatHistory);
       }
-      const formattedMessages: Message[] = data.chats.map(
-        (chat: ChatResponse) => ({
-          role: chat.senderid === user?.userid ? "user" : "ai",
-          content: chat.message,
-          timestamp: chat.createdat,
-        })
-      );
-      setMessages(formattedMessages);
     } catch (error) {
-      console.error("Error fetching chat history:", error);
+      console.error("Error initializing chat:", error);
     }
-  };
-
-  const sendMessage = async (
-    content: string,
-    sender: string
-  ): Promise<ChatResponse> => {
-    if (!chatid) {
-      throw new Error("Chat ID is not available");
-    }
-    const response = await fetch(
-      `${process.env.NEXT_PUBLIC_API_BASE_URL}/chatcontent/${chatid}`,
-      {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({
-          senderid: sender,
-          message: content,
-        }),
-      }
-    );
-
-    if (!response.ok) {
-      throw new Error("Failed to send message");
-    }
-
-    return response.json();
   };
 
   const handleSendMessage = async () => {
@@ -114,7 +79,7 @@ const AIChat = () => {
     setIsLoading(true);
 
     try {
-      const response = await sendMessage(input, user.userid);
+      const response = await sendMessage(chatid, input, user.userid);
       const aiMessage: Message = {
         role: "ai",
         content: response.message,
@@ -123,7 +88,6 @@ const AIChat = () => {
       setMessages((prevMessages) => [...prevMessages, aiMessage]);
     } catch (error) {
       console.error("Error sending message:", error);
-      // You might want to show an error message to the user here
     } finally {
       setIsLoading(false);
     }

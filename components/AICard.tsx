@@ -27,17 +27,7 @@ const AICard: React.FC<AICardProps> = ({
       console.error("User is not logged in");
       return;
     }
-
-    try {
-      {
-        // If chat doesn't exist, create a new one
-        const newChat = await createChat({ aiid: id, userid: user.userid });
-        router.push(`/ai/${id}/chat`);
-      }
-    } catch (error) {
-      console.error("Error handling chat click:", error);
-      router.push(`/ai/${id}/chat`);
-    }
+    router.push(`/ai/${id}/chat`);
   };
 
   return (
