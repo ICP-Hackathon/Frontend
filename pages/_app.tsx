@@ -12,7 +12,7 @@ function MyApp({ Component, pageProps }: AppProps) {
   const PageComponent = Component as React.ComponentType<PageComponentProps>;
 
   // Check if the current route is the landing page
-  const isLandingPage = router.pathname === "/";
+  const isLandingPage = router.pathname === "/landing";
 
   if (isLandingPage) {
     return <PageComponent {...pageProps} />;
