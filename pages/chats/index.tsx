@@ -99,3 +99,11 @@ const ChatListPage: React.FC = () => {
 };
 
 export default ChatListPage;
+
+export async function getStaticProps() {
+  return {
+    props: {
+      title: "Chat List",
+    },
+  };
+}
