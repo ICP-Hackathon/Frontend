@@ -24,17 +24,21 @@ const ChatListPage: React.FC = () => {
           chatData.chats.map(async (chat: ChatModel) => {
             try {
               const aiDetails = await fetchAIDetails(chat.aiid);
+              console.log("AI Details:", aiDetails);
               return { ...chat, aiDetails };
             } catch (error) {
               console.error(
                 `Failed to fetch details for AI ${chat.aiid}:`,
-                error
+                error,
               );
               return { ...chat, aiDetails: null };
             }
-          })
+          }),
         );
-        setChats(chatsWithDetails);
+        const validChats = chatsWithDetails.filter(
+          (chat) => chat.aiDetails !== null,
+        );
+        setChats(validChats);
       } catch (err) {
         console.error("Error fetching chats:", err);
         setError("Failed to load chats. Please try again later.");
@@ -85,8 +89,8 @@ const ChatListPage: React.FC = () => {
             key={`${chat.chatid}-${index}`}
             chatid={chat.chatid}
             aiid={chat.aiid}
-            title={chat.aiDetails?.name || "Unknown AI"}
-            category={chat.aiDetails?.category || "Unknown Category"}
+            title={chat.aiDetails?.name || "Unknown"}
+            category={chat.aiDetails?.category || "Unknown"}
           />
         ))}
       </div>
