@@ -6,7 +6,7 @@ import {
   fetchTodayAIs,
   fetchTrendingAIs,
 } from "@/utils/api/ai";
-import { CardData } from "@/utils/interface";
+import { AIDetailProps, CardData } from "@/utils/interface";
 
 type CategoryKey =
   | "all"
@@ -31,10 +31,12 @@ interface AIDetailsProp {
 // Card component that shows individual AI info and is clickable to open a dialog
 const Card: React.FC<CardProps> = ({ name, creator }) => {
   return (
-    <div className="p-4 bg-gray-50 rounded-lg shadow-md relative">
+    <div className="p-4 bg-gray-50 rounded-lg shadow-md relative h-[160px] flex flex-col">
       <div className="bg-primary-900 rounded-md size-14 mb-4"></div>
-      <h3 className="text-sm font-semibold">{name}</h3>
-      <p className="text-xs text-gray-500">{creator}</p>
+      <div className="flex-grow flex flex-col justify-between">
+        <h3 className="text-sm font-semibold min-h-[20px]">{name}</h3>
+        <p className="text-xs text-gray-500 min-h-[16px]">{creator}</p>
+      </div>
       <button className="absolute top-2 right-2 text-gray-700">
         <Heart size={16} />
       </button>
@@ -43,61 +45,92 @@ const Card: React.FC<CardProps> = ({ name, creator }) => {
 };
 
 // Details Popup for the AI card
-const AIDetailsPopup = ({ id, name }: AIDetailsProp) => {
-  const [aiDetail, setAIDetail] = useState<any>();
+
+interface AIDetailsPropWithName {
+  id: string;
+  name: string;
+}
+
+const AIDetailsPopup = ({ id, name }: AIDetailsPropWithName) => {
+  const [aiDetail, setAIDetail] = useState<AIDetailProps | null>(null);
   const [detailLoading, setDetailLoading] = useState(true);
+
   useEffect(() => {
     const loadAIModels = async () => {
       try {
         const data = await fetchAIDetails(id);
-        console.log(data);
         setAIDetail(data);
         setDetailLoading(false);
       } catch (error) {
         console.error(error);
+        setDetailLoading(false);
       }
     };
     loadAIModels();
-  }, []);
+  }, [id]);
+
+  if (detailLoading) {
+    return (
+      <DialogContent className="sm:max-w-[425px] rounded-3xl p-6 max-h-[80vh] overflow-y-auto">
+        Loading...
+      </DialogContent>
+    );
+  }
+
+  if (!aiDetail) {
+    return (
+      <DialogContent className="sm:max-w-[425px] rounded-3xl p-6 max-h-[80vh] overflow-y-auto">
+        Failed to load AI details.
+      </DialogContent>
+    );
+  }
+
   return (
     <DialogContent className="sm:max-w-[425px] rounded-3xl p-6 max-h-[80vh] overflow-y-auto ">
-      {detailLoading ? (
-        <div></div>
-      ) : (
-        <div className="space-y-4">
-          <div className="flex justify-center">
-            <div className="inline-block px-3 py-1 bg-primary-50 text-primary-900 rounded-full text-sm">
-              {aiDetail.category}
-            </div>
-          </div>
-          <h2 className="text-3xl font-bold text-primary-900 text-center">
-            {aiDetail.name}
-          </h2>
-          <p className="text-gray-500 text-center">Created by {name}</p>
-          <div className="border-t border-gray-200 pt-6">
-            <p className="text-gray-700 text-sm">{aiDetail.introductions}</p>
-          </div>
-          <div className="bg-gray-50 rounded-xl p-4 space-y-2">
-            <h3 className="font-semibold text-gray-700 border-b">RAG</h3>
-            <p className="text-sm text-gray-600">
-              RAG information here...RAG information here...RAG information
-              here...RAG information here...RAG information here...RAG
-              information here...RAG information here...RAG information here...
-            </p>
-          </div>
-          <div className="bg-gray-50 rounded-xl p-4 space-y-2">
-            <h3 className="font-semibold text-gray-700 border-b">Comment</h3>
-            <p className="text-sm text-gray-600">Comments here...</p>
+      <div className="space-y-4">
+        <div className="flex justify-center pt-5">
+          <div className="inline-block px-3 py-1 bg-primary-50 text-primary-900 rounded-full text-sm">
+            {aiDetail.category}
           </div>
         </div>
-      )}
+        <h2 className="text-3xl font-bold text-primary-900 text-center">
+          {aiDetail.name}
+        </h2>
+        <p className="text-gray-500 text-center">Created by {name}</p>
+        <p className="text-gray-500 text-center">
+          Average # of Tokens:{" "}
+          {Math.round(
+            (aiDetail.prompt_tokens + aiDetail.completion_tokens) /
+              (aiDetail.chat_counts || 1),
+          )}
+        </p>
+
+        <div className="border-t border-gray-200 pt-6">
+          <p className="text-gray-700 text-sm text-center">{aiDetail.introductions}</p>
+        </div>
+        <div className="bg-gray-50 rounded-xl p-4 space-y-2">
+          <h3 className="font-semibold text-gray-700 border-b">RAG</h3>
+          <p className="text-sm text-gray-600">
+            {aiDetail.logs.length > 0
+              ? aiDetail.logs[0].comments
+              : "No RAG information available."}
+          </p>
+        </div>
+        <div className="bg-gray-50 rounded-xl p-4 space-y-2">
+          <h3 className="font-semibold text-gray-700 border-b">Comment</h3>
+          <p className="text-sm text-gray-600">
+            {aiDetail.logs.length > 1
+              ? aiDetail.logs[1].comments
+              : "No comments available."}
+          </p>
+        </div>
+      </div>
     </DialogContent>
   );
 };
-
 export default function ExplorePage() {
   const [selectedCategory, setSelectedCategory] = useState<CategoryKey>("all");
-  const [selectedAI, setSelectedAI] = useState<CardData | null>(null); // Track selected AI for dialog
+  const [selectedAI, setSelectedAI] = useState<CardData | null>(null);
   const [todayCards, setTodayCards] = useState<CardData[] | null>(null);
   const [trendCards, setTrendCards] = useState<CardData[] | null>(null);
   const [isLoading, setIsLoading] = useState(true);

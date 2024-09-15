@@ -20,20 +20,28 @@ export interface AICardProps {
   imageSrc?: string;
 }
 
-export interface AIDetails {
-  id: string;
-  name: string;
-  category: string;
-  introductions: string;
+export interface LogProps {
+  rag_id: number;
+  ai_id: string;
+  created_at: string;
+  comments: string;
+  tx_url: string;
+  faiss_id: string;
 }
 
-export interface Log {
-  id: number;
-  aiid: string;
-  createdat: string;
-  log: string;
-  txurl: string;
-  faissid: string;
+export interface AIDetailProps {
+  ai_id: string;
+  creator_address: string;
+  created_at: string;
+  name: string;
+  image_url: string;
+  category: string;
+  introductions: string;
+  chat_counts: number;
+  prompt_tokens: number;
+  completion_tokens: number;
+  weekly_users: number;
+  logs: LogProps[];
 }
 
 export interface AIData {
@@ -75,7 +83,7 @@ export interface ChatModel {
 }
 
 export interface ChatWithDetails extends ChatModel {
-  aiDetails: AIDetails | null;
+  aiDetails: AIDetailProps | null;
 }
 
 export interface Message {
