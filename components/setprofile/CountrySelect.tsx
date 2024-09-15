@@ -23,6 +23,8 @@ const CountrySelect: React.FC<CountrySelectProps> = ({ value, onChange }) => {
     menu: (provided) => ({
       ...provided,
       maxHeight: "200px",
+      width: "calc(100% - 10px)", // Reduce width by 20px
+      marginLeft: "5px", // Center the reduced width menu
     }),
     menuList: (provided) => ({
       ...provided,
@@ -31,13 +33,17 @@ const CountrySelect: React.FC<CountrySelectProps> = ({ value, onChange }) => {
     option: (provided, state) => ({
       ...provided,
       backgroundColor: state.isSelected
-        ? "#4F46E5"
+        ? "#17CE92"
         : state.isFocused
         ? "#E0E7FF"
         : "white",
       color: state.isSelected ? "white" : "#111827",
       "&:active": {
-        backgroundColor: "#4F46E5",
+        backgroundColor: "#17CE92",
+        color: "white",
+      },
+      "&:hover": {
+        backgroundColor: "#17CE92",
         color: "white",
       },
     }),
@@ -48,7 +54,7 @@ const CountrySelect: React.FC<CountrySelectProps> = ({ value, onChange }) => {
       borderColor: "#E5E7EB",
       boxShadow: "none",
       "&:hover": {
-        borderColor: "#4F46E5",
+        borderColor: "#17CE92",
       },
     }),
   };

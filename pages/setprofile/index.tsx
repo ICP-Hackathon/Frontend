@@ -2,8 +2,9 @@
 import { useState } from "react";
 import { useRouter } from "next/router";
 import CountrySelect from "@/components/setprofile/CountrySelect";
-import { ChevronDown, User } from "lucide-react";
+import { ChevronDown, UserRound } from "lucide-react";
 import { addUser } from "@/utils/api/user";
+import GenderSelect from "@/components/setprofile/GenderSelect";
 
 const SetProfilePage = () => {
   const router = useRouter();
@@ -61,7 +62,7 @@ const SetProfilePage = () => {
       <div className="flex-grow overflow-y-auto pb-4">
         <div className="size-32 bg-gray-200 rounded-full mb-4 mx-auto flex items-center justify-center overflow-hidden">
           {selectedProfile === 0 ? (
-            <User className="text-gray-400 w-16 h-16" />
+            <UserRound className="text-gray-400 size-24" />
           ) : (
             <img
               src={profileImages[selectedProfile - 1]}
@@ -110,29 +111,7 @@ const SetProfilePage = () => {
             />
           </div>
 
-          <div>
-            <label
-              htmlFor="gender"
-              className="block text-sm font-medium text-gray-700 mb-1"
-            >
-              Gender
-            </label>
-            <div className="relative">
-              <select
-                id="gender"
-                value={gender}
-                onChange={(e) => setGender(e.target.value)}
-                className="w-full p-2 border-b border-gray-300 focus:border-primary-900 focus:outline-none appearance-none"
-              >
-                <option value="">Select</option>
-                <option value="male">Male</option>
-                <option value="female">Female</option>
-                <option value="other">Other</option>
-              </select>
-              <ChevronDown className="absolute right-2 top-1/2 transform -translate-y-1/2 w-5 h-5 text-gray-400" />
-            </div>
-          </div>
-
+          <GenderSelect value={gender} onChange={setGender} />
           <CountrySelect value={country} onChange={setCountry} />
 
           <div>
