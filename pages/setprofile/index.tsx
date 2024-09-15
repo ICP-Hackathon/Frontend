@@ -2,17 +2,52 @@
 import { useState } from "react";
 import { useRouter } from "next/router";
 import CountrySelect from "@/components/setprofile/CountrySelect";
-import { ChevronDown, User } from "lucide-react"; // Import the User icon from lucide-react
+import { ChevronDown, User } from "lucide-react";
+import { addUser } from "@/utils/api/user";
 
 const SetProfilePage = () => {
   const router = useRouter();
   const [selectedProfile, setSelectedProfile] = useState(0);
+  const [nickname, setNickname] = useState("");
+  const [gender, setGender] = useState("");
+  const [country, setCountry] = useState("");
+  const [phoneCode, setPhoneCode] = useState("+86");
+  const [phoneNumber, setPhoneNumber] = useState("");
+  const [isLoading, setIsLoading] = useState(false);
+  const [error, setError] = useState("");
 
   const profileImages = [
     "https://suietail.s3.ap-southeast-2.amazonaws.com/1.png",
     "https://suietail.s3.ap-southeast-2.amazonaws.com/2.png",
     "https://suietail.s3.ap-southeast-2.amazonaws.com/3.png",
   ];
+
+  const handleSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
+    setIsLoading(true);
+    setError("");
+
+    try {
+      const userData = {
+        user_address: "test",
+        nickname,
+        image_url:
+          selectedProfile > 0 ? profileImages[selectedProfile - 1] : "",
+        gender,
+        country,
+        phone: phoneNumber ? `${phoneCode}${phoneNumber}` : undefined,
+      };
+
+      const result = await addUser(userData);
+      console.log("User profile created:", result);
+      router.push("/explore");
+    } catch (error) {
+      setError("Failed to create profile. Please try again.");
+      console.error("Error creating profile:", error);
+    } finally {
+      setIsLoading(false);
+    }
+  };
 
   return (
     <div className="max-w-[600px] min-h-screen bg-white flex flex-col px-6">
@@ -23,16 +58,15 @@ const SetProfilePage = () => {
         <p className="text-lg text-gray-600 mb-8">Select a profile picture!</p>
       </div>
 
-      <div className="flex-grow overflow-y-auto px-4 pb-4">
+      <div className="flex-grow overflow-y-auto pb-4">
         <div className="size-32 bg-gray-200 rounded-full mb-4 mx-auto flex items-center justify-center overflow-hidden">
           {selectedProfile === 0 ? (
             <User className="text-gray-400 w-16 h-16" />
           ) : (
-            // eslint-disable-next-line @next/next/no-img-element
             <img
               src={profileImages[selectedProfile - 1]}
               alt="Selected profile"
-              className="w-full h-full object-cover transform scale-150 translate-y-[-10%]" // Scale and move image up
+              className="w-full h-full object-cover transform scale-150 translate-y-[-10%]"
             />
           )}
         </div>
@@ -51,13 +85,13 @@ const SetProfilePage = () => {
               <img
                 src={img}
                 alt={`Profile ${index + 1}`}
-                className="w-full h-full object-cover transform scale-150 translate-y-[-10%]" // Scale and move image up
+                className="w-full h-full object-cover transform scale-150 translate-y-[-10%]"
               />
             </button>
           ))}
         </div>
 
-        <form className="space-y-6">
+        <form onSubmit={handleSubmit} className="space-y-6">
           <div>
             <label
               htmlFor="nickname"
@@ -68,8 +102,11 @@ const SetProfilePage = () => {
             <input
               type="text"
               id="nickname"
+              value={nickname}
+              onChange={(e) => setNickname(e.target.value)}
               className="w-full p-2 border-b border-gray-300 focus:border-primary-900 focus:outline-none"
               placeholder="Name"
+              required
             />
           </div>
 
@@ -83,6 +120,8 @@ const SetProfilePage = () => {
             <div className="relative">
               <select
                 id="gender"
+                value={gender}
+                onChange={(e) => setGender(e.target.value)}
                 className="w-full p-2 border-b border-gray-300 focus:border-primary-900 focus:outline-none appearance-none"
               >
                 <option value="">Select</option>
@@ -94,7 +133,7 @@ const SetProfilePage = () => {
             </div>
           </div>
 
-          <CountrySelect />
+          <CountrySelect value={country} onChange={setCountry} />
 
           <div>
             <label
@@ -107,27 +146,33 @@ const SetProfilePage = () => {
               <input
                 type="text"
                 id="country-code"
+                value={phoneCode}
+                onChange={(e) => setPhoneCode(e.target.value)}
                 className="w-20 p-2 border-b border-gray-300 focus:border-primary-900 focus:outline-none"
-                defaultValue="+86"
               />
               <input
                 type="tel"
                 id="phone"
+                value={phoneNumber}
+                onChange={(e) => setPhoneNumber(e.target.value)}
                 className="flex-1 p-2 border-b border-gray-300 focus:border-primary-900 focus:outline-none"
                 placeholder="000-0000-0000"
               />
             </div>
           </div>
-        </form>
-      </div>
 
-      <div className="p-6 flex-shrink-0">
-        <button
-          type="submit"
-          className="w-full bg-primary-900 text-white py-4 rounded-full font-medium"
-        >
-          Create Account
-        </button>
+          {error && <p className="text-red-500">{error}</p>}
+
+          <div className="pb-6 flex-shrink-0">
+            <button
+              type="submit"
+              disabled={isLoading}
+              className="w-full bg-primary-900 text-white py-4 rounded-full font-medium disabled:bg-gray-400"
+            >
+              {isLoading ? "Creating Account..." : "Create Account"}
+            </button>
+          </div>
+        </form>
       </div>
     </div>
   );

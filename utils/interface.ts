@@ -7,6 +7,7 @@ export interface LayoutProps {
 
 export interface HeaderBarProps {
   title: string;
+  userProfileUrl?: string;
 }
 
 // AI related inteface

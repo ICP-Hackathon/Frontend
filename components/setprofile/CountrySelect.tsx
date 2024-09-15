@@ -1,4 +1,4 @@
-import React, { useState, useMemo } from "react";
+import { useMemo } from "react";
 import Select, { StylesConfig } from "react-select";
 import countryList from "react-select-country-list";
 
@@ -7,12 +7,16 @@ interface CountryOption {
   value: string;
 }
 
-const CountrySelect: React.FC = () => {
-  const [value, setValue] = useState<CountryOption | null>(null);
+interface CountrySelectProps {
+  value: string;
+  onChange: (value: string) => void;
+}
+
+const CountrySelect: React.FC<CountrySelectProps> = ({ value, onChange }) => {
   const options = useMemo(() => countryList().getData(), []);
 
   const changeHandler = (selectedOption: CountryOption | null) => {
-    setValue(selectedOption);
+    onChange(selectedOption?.value || "");
   };
 
   const customStyles: StylesConfig<CountryOption, false> = {
@@ -37,6 +41,16 @@ const CountrySelect: React.FC = () => {
         color: "white",
       },
     }),
+    control: (provided) => ({
+      ...provided,
+      borderRadius: "0",
+      borderWidth: "0 0 1px 0",
+      borderColor: "#E5E7EB",
+      boxShadow: "none",
+      "&:hover": {
+        borderColor: "#4F46E5",
+      },
+    }),
   };
 
   return (
@@ -49,7 +63,7 @@ const CountrySelect: React.FC = () => {
       </label>
       <Select
         options={options}
-        value={value}
+        value={options.find((option) => option.value === value) || null}
         onChange={changeHandler}
         styles={customStyles}
         className="w-full"
