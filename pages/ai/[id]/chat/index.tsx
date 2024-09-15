@@ -5,6 +5,7 @@ import Image from "next/image";
 import avatarImage from "@/assets/avatar.png";
 import { Message, ChatResponse } from "@/utils/interface";
 import { createChat, fetchChatHistory, sendMessage } from "@/utils/api/chat";
+import { Send } from "lucide-react";
 
 const AIChat = () => {
   const router = useRouter();
@@ -102,33 +103,19 @@ const AIChat = () => {
 
   return (
     <div className="flex flex-col h-full -mx-4">
-      <div className="flex-grow overflow-y-auto space-y-4 p-4">
+      <div className="flex-grow overflow-y-auto p-4 space-y-4">
         {messages.map((message, index) => (
           <div
             key={index}
-            className={`flex items-end space-x-2 ${
-              message.role === "user"
-                ? "flex-row-reverse space-x-reverse"
-                : "flex-row"
+            className={`flex ${
+              message.role === "user" ? "justify-end" : "justify-start"
             }`}
           >
-            {message.role === "ai" && (
-              <div className="flex flex-col items-center space-y-1 mr-2">
-                <Image
-                  src={avatarImage}
-                  alt="AI Avatar"
-                  width={40}
-                  height={40}
-                  className="rounded-full"
-                />
-                <span className="text-xs text-gray-500">{aiName}</span>
-              </div>
-            )}
             <div
-              className={`max-w-xs md:max-w-md p-3 rounded-lg shadow-md ${
+              className={`max-w-[70%] p-3 rounded-lg ${
                 message.role === "user"
                   ? "bg-blue-500 text-white"
-                  : "bg-white text-gray-800"
+                  : "bg-gray-100 text-gray-800"
               }`}
             >
               {message.content}
@@ -136,44 +123,36 @@ const AIChat = () => {
           </div>
         ))}
         {isLoading && (
-          <div className="flex justify-start items-end space-x-2">
-            <div className="flex flex-col items-center space-y-1">
-              <Image
-                src={avatarImage}
-                alt="AI Avatar"
-                width={40}
-                height={40}
-                className="rounded-full"
-              />
-              <span className="text-xs text-gray-500">{aiName}</span>
-            </div>
-            <div className="bg-white p-4 rounded-lg shadow-md">
+          <div className="flex justify-start">
+            <div className="bg-gray-100 p-3 rounded-lg">
               <div className="flex space-x-2">
-                <div className="size-2 bg-gray-500 rounded-full animate-bounce"></div>
-                <div className="size-2 bg-gray-500 rounded-full animate-bounce delay-75"></div>
-                <div className="size-2 bg-gray-500 rounded-full animate-bounce delay-150"></div>
+                <div className="w-2 h-2 bg-gray-500 rounded-full animate-bounce"></div>
+                <div className="w-2 h-2 bg-gray-500 rounded-full animate-bounce delay-75"></div>
+                <div className="w-2 h-2 bg-gray-500 rounded-full animate-bounce delay-150"></div>
               </div>
             </div>
           </div>
         )}
         <div ref={messagesEndRef} />
       </div>
-      <div className="border-t bg-white p-4">
-        <div className="flex space-x-2 max-w-[800px] mx-auto">
-          <input
-            type="text"
-            value={input}
-            onChange={(e) => setInput(e.target.value)}
-            onKeyDown={handleKeyDown}
-            placeholder="Type your message..."
-            className="flex-grow p-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
-          />
+      <div className="fixed bottom-16 left-0 right-0 px-4 mb-4 max-w-[600px] mx-auto">
+        <div className="flex items-center space-x-2">
+          <div className="flex-grow bg-gray-100 rounded-lg px-5 py-4">
+            <input
+              type="text"
+              value={input}
+              onChange={(e) => setInput(e.target.value)}
+              onKeyDown={(e) => e.key === "Enter" && handleSendMessage()}
+              placeholder="Type your message..."
+              className="w-full bg-transparent outline-none"
+            />
+          </div>
           <button
             onClick={handleSendMessage}
-            className="bg-blue-500 text-white px-4 py-2 rounded-lg hover:bg-blue-600 transition duration-200 ease-in-out focus:outline-none focus:ring-2 focus:ring-blue-500"
+            className="bg-primary-900 text-white rounded-full p-4 shadow shadow-green-200"
             disabled={isLoading}
           >
-            Send
+            <Send size={20} />
           </button>
         </div>
       </div>
