@@ -1,10 +1,6 @@
 import Image from "next/image";
 import { User } from "lucide-react";
-
-interface HeaderBarProps {
-  title: string;
-  userProfileUrl?: string;
-}
+import { HeaderBarProps } from "@/utils/interface";
 
 const Header: React.FC<HeaderBarProps> = ({ title, userProfileUrl }) => {
   return (

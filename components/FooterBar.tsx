@@ -1,6 +1,6 @@
 import { useRouter } from "next/router";
 import Link from "next/link";
-import { LayoutGrid, Search, MessageCircle, User } from "lucide-react";
+import { LayoutGrid, Search, MessageCircle, Wallet } from "lucide-react";
 
 const FooterBar = () => {
   const router = useRouter();
@@ -9,7 +9,7 @@ const FooterBar = () => {
     { name: "Explore", icon: LayoutGrid, path: "/explore" },
     { name: "Search", icon: Search, path: "/search" },
     { name: "Chat", icon: MessageCircle, path: "/chat" },
-    { name: "Account", icon: User, path: "/account" },
+    { name: "My Balance", icon: Wallet, path: "/mybalance" },
   ];
 
   return (
