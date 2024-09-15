@@ -7,7 +7,7 @@ export async function addUser(userData: {
   phone?: string;
 }) {
   if (!userData.nickname) {
-    throw new Error('Nickname is required');
+    throw new Error("Nickname is required");
   }
 
   const response = await fetch(
@@ -20,10 +20,10 @@ export async function addUser(userData: {
       body: JSON.stringify({
         user_address: userData.user_address,
         nickname: userData.nickname,
-        image_url: userData.image_url || '',
-        gender: userData.gender || '',
-        country: userData.country || '',
-        phone: userData.phone || ''
+        image_url: userData.image_url || "",
+        gender: userData.gender || "",
+        country: userData.country || "",
+        phone: userData.phone || "",
       }),
     }
   );
@@ -33,4 +33,21 @@ export async function addUser(userData: {
   }
 
   return await response.json();
+}
+
+export async function fetchChatList(user_address: string) {
+  const response = await fetch(
+    `${process.env.NEXT_PUBLIC_API_BASE_URL}/chats/${user_address}`
+  );
+
+  if (!response.ok) {
+    const errorText = await response.text();
+    console.error("Error response body:", errorText);
+    throw new Error(
+      `Failed to fetch chat list: ${response.status} ${response.statusText}`
+    );
+  }
+
+  const data = await response.json();
+  return data;
 }

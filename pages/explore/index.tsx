@@ -1,12 +1,12 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Heart } from "lucide-react";
 import { Dialog, DialogTrigger, DialogContent } from "@/components/ui/dialog"; // Import dialog components
-
-interface CardData {
-  id: number;
-  name: string;
-  creator: string;
-}
+import {
+  fetchAIDetails,
+  fetchTodayAIs,
+  fetchTrendingAIs,
+} from "@/utils/api/ai";
+import { CardData } from "@/utils/interface";
 
 type CategoryKey =
   | "all"
@@ -18,53 +18,14 @@ type CategoryKey =
   | "developer tools"
   | "graphics & design";
 
-// Mock data for the Explore page
-const mockData: Record<CategoryKey, CardData[]> = {
-  all: [
-    { id: 1, name: "Math Tutor", creator: "Creator Name" },
-    { id: 2, name: "Science Helper", creator: "Creator Name" },
-    { id: 3, name: "Workout Planner", creator: "Creator Name" },
-    { id: 4, name: "Diet Assistant", creator: "Creator Name" },
-    { id: 5, name: "Movie Recommender", creator: "Creator Name" },
-    { id: 6, name: "Music Finder", creator: "Creator Name" },
-    { id: 7, name: "Friend Finder", creator: "Creator Name" },
-    { id: 8, name: "Group Connector", creator: "Creator Name" },
-    { id: 9, name: "Business Plan Creator", creator: "Creator Name" },
-    { id: 10, name: "Marketing AI", creator: "Creator Name" },
-  ],
-  education: [
-    { id: 1, name: "Math Tutor", creator: "Creator Name" },
-    { id: 2, name: "Science Helper", creator: "Creator Name" },
-  ],
-  "health & fitness": [
-    { id: 3, name: "Workout Planner", creator: "Creator Name" },
-    { id: 4, name: "Diet Assistant", creator: "Creator Name" },
-  ],
-  entertainment: [
-    { id: 5, name: "Movie Recommender", creator: "Creator Name" },
-    { id: 6, name: "Music Finder", creator: "Creator Name" },
-  ],
-  "social networking": [
-    { id: 7, name: "Friend Finder", creator: "Creator Name" },
-    { id: 8, name: "Group Connector", creator: "Creator Name" },
-  ],
-  business: [
-    { id: 9, name: "Business Plan Creator", creator: "Creator Name" },
-    { id: 10, name: "Marketing AI", creator: "Creator Name" },
-  ],
-  "developer tools": [
-    { id: 11, name: "Code Assistant", creator: "Creator Name" },
-    { id: 12, name: "Debug Helper", creator: "Creator Name" },
-  ],
-  "graphics & design": [
-    { id: 13, name: "Logo Designer", creator: "Creator Name" },
-    { id: 14, name: "UI Mockup Creator", creator: "Creator Name" },
-  ],
-};
-
 interface CardProps {
   name: string;
   creator: string;
+}
+
+interface AIDetailsProp {
+  id: string;
+  name: string;
 }
 
 // Card component that shows individual AI info and is clickable to open a dialog
@@ -82,20 +43,54 @@ const Card: React.FC<CardProps> = ({ name, creator }) => {
 };
 
 // Details Popup for the AI card
-const AIDetailsPopup = ({ ai }: { ai: CardData }) => {
+const AIDetailsPopup = ({ id, name }: AIDetailsProp) => {
+  const [aiDetail, setAIDetail] = useState<any>();
+  const [detailLoading, setDetailLoading] = useState(true);
+  useEffect(() => {
+    const loadAIModels = async () => {
+      try {
+        const data = await fetchAIDetails(id);
+        console.log(data);
+        setAIDetail(data);
+        setDetailLoading(false);
+      } catch (error) {
+        console.error(error);
+      }
+    };
+    loadAIModels();
+  }, []);
   return (
-    <DialogContent className="sm:max-w-[425px] rounded-3xl p-6 max-h-[80vh] overflow-y-auto">
-      <div className="space-y-4">
-        <h2 className="text-3xl font-bold text-primary-900 text-center">
-          {ai.name}
-        </h2>
-        <p className="text-gray-500 text-center">Created by {ai.creator}</p>
-        <div className="border-t border-gray-200 pt-6">
-          <p className="text-gray-700 text-sm">
-            Details about {ai.name} will go here...
-          </p>
+    <DialogContent className="sm:max-w-[425px] rounded-3xl p-6 max-h-[80vh] overflow-y-auto ">
+      {detailLoading ? (
+        <div></div>
+      ) : (
+        <div className="space-y-4">
+          <div className="flex justify-center">
+            <div className="inline-block px-3 py-1 bg-primary-50 text-primary-900 rounded-full text-sm">
+              {aiDetail.category}
+            </div>
+          </div>
+          <h2 className="text-3xl font-bold text-primary-900 text-center">
+            {aiDetail.name}
+          </h2>
+          <p className="text-gray-500 text-center">Created by {name}</p>
+          <div className="border-t border-gray-200 pt-6">
+            <p className="text-gray-700 text-sm">{aiDetail.introductions}</p>
+          </div>
+          <div className="bg-gray-50 rounded-xl p-4 space-y-2">
+            <h3 className="font-semibold text-gray-700 border-b">RAG</h3>
+            <p className="text-sm text-gray-600">
+              RAG information here...RAG information here...RAG information
+              here...RAG information here...RAG information here...RAG
+              information here...RAG information here...RAG information here...
+            </p>
+          </div>
+          <div className="bg-gray-50 rounded-xl p-4 space-y-2">
+            <h3 className="font-semibold text-gray-700 border-b">Comment</h3>
+            <p className="text-sm text-gray-600">Comments here...</p>
+          </div>
         </div>
-      </div>
+      )}
     </DialogContent>
   );
 };
@@ -103,6 +98,35 @@ const AIDetailsPopup = ({ ai }: { ai: CardData }) => {
 export default function ExplorePage() {
   const [selectedCategory, setSelectedCategory] = useState<CategoryKey>("all");
   const [selectedAI, setSelectedAI] = useState<CardData | null>(null); // Track selected AI for dialog
+  const [todayCards, setTodayCards] = useState<CardData[] | null>(null);
+  const [trendCards, setTrendCards] = useState<CardData[] | null>(null);
+  const [isLoading, setIsLoading] = useState(true);
+  useEffect(() => {
+    const loadAIModels = async () => {
+      try {
+        const Todaydata = await fetchTodayAIs();
+        setTodayCards(Todaydata.ais);
+        const Trenddata = await fetchTrendingAIs(selectedCategory, 0, 10);
+        setTrendCards(Trenddata.ais);
+        setIsLoading(false);
+      } catch (error) {
+        console.error(error);
+      }
+    };
+    loadAIModels();
+  }, []);
+
+  useEffect(() => {
+    const loadAIModels = async () => {
+      try {
+        const Trenddata = await fetchTrendingAIs(selectedCategory, 0, 10);
+        setTrendCards(Trenddata.ais);
+      } catch (error) {
+        console.error(error);
+      }
+    };
+    loadAIModels();
+  }, [selectedCategory]);
 
   const categories: string[] = [
     "All",
@@ -116,38 +140,42 @@ export default function ExplorePage() {
   ];
 
   const renderTodaySection = () => {
-    const todayCards = mockData.all.slice(0, 4); // Show the first 4 cards in "Today"
     return (
-      <section className="mb-6">
+      <section className="mb-6 scrollbar-hide">
         <h2 className="text-lg font-bold mb-4">Today</h2>
         <div className="grid grid-cols-2 gap-4">
-          {todayCards.map((item: CardData) => (
-            <Dialog
-              key={item.id}
-              onOpenChange={(open) =>
-                open ? setSelectedAI(item) : setSelectedAI(null)
-              }
-            >
-              <DialogTrigger asChild>
-                <div>
-                  <Card name={item.name} creator={item.creator} />
-                </div>
-              </DialogTrigger>
-              {selectedAI && <AIDetailsPopup ai={selectedAI} />}
-            </Dialog>
-          ))}
+          {isLoading ? (
+            <div></div>
+          ) : (
+            todayCards?.map((item: CardData) => (
+              <Dialog
+                key={item.id}
+                onOpenChange={(open) =>
+                  open ? setSelectedAI(item) : setSelectedAI(null)
+                }
+              >
+                <DialogTrigger asChild>
+                  <div>
+                    <Card name={item.name} creator={item.creator} />
+                  </div>
+                </DialogTrigger>
+                {selectedAI && (
+                  <AIDetailsPopup id={item.ai_id} name={item.creator} />
+                )}
+              </Dialog>
+            ))
+          )}
         </div>
       </section>
     );
   };
 
   const renderRecentSection = () => {
-    const recentCards = mockData.all.slice(4, 10); // Show up to 6 cards in "Recent"
     return (
       <section className="mb-6">
         <h2 className="text-lg font-bold mb-4">Recent</h2>
         <div className="grid grid-cols-2 gap-4">
-          {recentCards.map((item: CardData) => (
+          {trendCards?.map((item: CardData) => (
             <Dialog
               key={item.id}
               onOpenChange={(open) =>
@@ -159,7 +187,9 @@ export default function ExplorePage() {
                   <Card name={item.name} creator={item.creator} />
                 </div>
               </DialogTrigger>
-              {selectedAI && <AIDetailsPopup ai={selectedAI} />}
+              {selectedAI && (
+                <AIDetailsPopup id={item.ai_id} name={item.creator} />
+              )}
             </Dialog>
           ))}
         </div>
@@ -177,11 +207,9 @@ export default function ExplorePage() {
       );
     }
 
-    const cards = mockData[selectedCategory] || [];
-
     return (
       <div className="grid grid-cols-2 gap-4">
-        {cards.map((item: CardData) => (
+        {trendCards?.map((item: CardData) => (
           <Dialog
             key={item.id}
             onOpenChange={(open) =>
@@ -193,7 +221,9 @@ export default function ExplorePage() {
                 <Card name={item.name} creator={item.creator} />
               </div>
             </DialogTrigger>
-            {selectedAI && <AIDetailsPopup ai={selectedAI} />}
+            {selectedAI && (
+              <AIDetailsPopup id={item.ai_id} name={item.creator} />
+            )}
           </Dialog>
         ))}
       </div>
@@ -201,8 +231,8 @@ export default function ExplorePage() {
   };
 
   return (
-    <div className="p-4 pb-16">
-      <div className="flex space-x-2 overflow-x-auto mb-6 whitespace-nowrap">
+    <div className="p-4 pb-16 ">
+      <div className="flex space-x-2 overflow-x-auto mb-6 whitespace-nowrap scrollbar-hide">
         {categories.map((category) => {
           const categoryKey = category
             .toLowerCase()

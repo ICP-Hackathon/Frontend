@@ -91,3 +91,13 @@ export interface ChatResponse {
   senderid: string;
   message: string;
 }
+
+export interface CardData {
+  id: number | null | undefined;
+  ai_id: string;
+  name: string;
+  creator: string;
+  category: string;
+  image_url: string;
+  introductions: string;
+}

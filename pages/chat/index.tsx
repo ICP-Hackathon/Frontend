@@ -39,13 +39,18 @@ const mockData = {
   ],
 };
 
-const AICard: React.FC<AICardProps> = ({ name, creator, imageSrc, icon: Icon }) => {
+const AICard: React.FC<AICardProps> = ({
+  name,
+  creator,
+  imageSrc,
+  icon: Icon,
+}) => {
   const router = useRouter();
 
   return (
     <div
       className="p-4 bg-white rounded-lg flex items-center border hover:bg-gray-100 cursor-pointer transition-all duration-200"
-      onClick={() => router.push(`/chat/${encodeURIComponent(name)}`)}  // Navigate on click
+      onClick={() => router.push(`/chat/${encodeURIComponent(name)}`)} // Navigate on click
     >
       {imageSrc ? (
         <Image
@@ -110,9 +115,7 @@ const ChatPage: React.FC = () => {
   return (
     <div className="min-h-[calc(100vh-140px)] bg-white flex flex-col justify-center items-center">
       <div className="w-full max-w-md p-6 text-center">
-        <h2 className="text-xl text-gray-500 mb-6">
-          Select one from below:
-        </h2>
+        <h2 className="text-xl text-gray-500 mb-6">Select one from below:</h2>
         <DropdownMenu
           title="Choose from Saved AI"
           icon={Heart}

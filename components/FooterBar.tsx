@@ -13,7 +13,7 @@ const FooterBar = () => {
   ];
 
   return (
-    <div className="fixed bottom-0 left-0 right-0 bg-white border-t border-gray-200">
+    <div className="fixed bottom-0 left-0 right-0 bg-white border-t border-gray-200 max-w-[600px] w-full mx-auto">
       <div className="flex justify-around items-center h-16">
         {menuItems.map((item) => {
           const isActive = router.pathname === item.path;
