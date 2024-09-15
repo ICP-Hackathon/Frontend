@@ -150,10 +150,10 @@ const SetProfilePage = () => {
         </form>
       </div>
 
-      <div className="p-4 flex-shrink-0">
+      <div className="p-6 flex-shrink-0">
         <button
           type="submit"
-          className="w-full bg-primary-900 text-white py-3 rounded-full font-medium"
+          className="w-full bg-primary-900 text-white py-4 rounded-full font-medium"
         >
           Create Account
         </button>
