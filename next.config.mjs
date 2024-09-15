@@ -8,6 +8,14 @@ const nextConfig = {
     return config;
   },
   images: {
+    remotePatterns: [
+      {
+        protocol: "https",
+        hostname: "suietail.s3.ap-southeast-2.amazonaws.com",
+        port: "", // Leave this empty if you're not using a specific port
+        pathname: "/**", // This allows all images from the host
+      },
+    ],
     domains: ["placehold.co"],
   },
 };

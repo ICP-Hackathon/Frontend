@@ -14,7 +14,9 @@ const Layout: React.FC<LayoutProps> = ({ children, title }) => {
       <div className="w-full h-full flex flex-col">
         <Header title={title} />
 
-        <main className="flex-grow overflow-y-auto px-4">{children}</main>
+        <main className="flex-grow overflow-y-auto px-4 scrollbar-hide">
+          {children}
+        </main>
         <FooterBar />
       </div>
     </div>

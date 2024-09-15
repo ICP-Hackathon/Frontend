@@ -28,6 +28,7 @@
     "react-select-country-list": "^2.2.3",
     "react-slick": "^0.30.2",
     "tailwind-merge": "^2.5.2",
+    "tailwind-scrollbar-hide": "^1.1.7",
     "tailwindcss-animate": "^1.0.7",
     "vaul": "^0.9.3",
     "web3": "^4.12.1",

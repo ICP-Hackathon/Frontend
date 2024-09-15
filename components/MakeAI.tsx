@@ -8,12 +8,55 @@ import {
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { Plus, Camera } from "lucide-react";
+import { createAI } from "@/utils/api/ai";
+
+type CategoryKey =
+  | "all"
+  | "education"
+  | "health & fitness"
+  | "entertainment"
+  | "social networking"
+  | "business"
+  | "developer tools"
+  | "graphics & design";
 
 const CreateCustomAISheet = () => {
   const [open, setOpen] = useState(false);
   const [selectedCategory, setSelectedCategory] = useState("");
+  const [name, setName] = useState("");
+  const [introductions, setIntroductions] = useState("");
+  const [data, setData] = useState("");
+  const [loading, setLoading] = useState(false);
 
-  const categories = [
+  // creator는 나중에 store로 관리할 예정
+  const creator =
+    "0xf5532566bc1021868c009fd142a6a9d868248c4eb9cdf17018e838dfa4956c31";
+
+  const handleCreate = async () => {
+    setLoading(true);
+
+    const aiData = {
+      name: name, // Make sure 'name' is defined somewhere in your component
+      creator_address: creator, // Make sure 'creator' is defined
+      category: selectedCategory, // Make sure 'category' is defined
+      introductions: introductions, // Make sure 'introductions' is defined
+      contents: data, // Make sure 'contents' is defined
+      comments: "CreateAI", // Make sure 'logs' is defined
+      image_url: "",
+    };
+
+    try {
+      const res = await createAI(aiData);
+      console.log("AI Created successfully", res);
+    } catch (error) {
+      console.error("Error creating AI:", error);
+    } finally {
+      setLoading(false);
+      setOpen(false);
+    }
+  };
+
+  const categories: string[] = [
     "All",
     "Education",
     "Health & Fitness",
@@ -22,7 +65,6 @@ const CreateCustomAISheet = () => {
     "Business",
     "Developer tools",
     "Graphics & Design",
-    "Others",
   ];
 
   return (
@@ -71,24 +113,31 @@ const CreateCustomAISheet = () => {
                 id="nickname"
                 className="w-full p-2 border-b border-gray-300 focus:border-primary-900 focus:outline-none"
                 placeholder="Name your AI"
+                onChange={(e) => setName(e.target.value)}
               />
             </div>
 
             <div className="space-y-2">
               <div className="flex flex-wrap gap-2">
-                {categories.map((category) => (
-                  <button
-                    key={category}
-                    onClick={() => setSelectedCategory(category)}
-                    className={`px-3 py-1 rounded-full text-sm ${
-                      selectedCategory === category
-                        ? "text-primary-900 bg-primary-50 border-2 border-primary-900"
-                        : "text-primary-900 bg-primary-50 border-2 border-transparent"
-                    }`}
-                  >
-                    {category}
-                  </button>
-                ))}
+                {categories.map((category) => {
+                  const categoryKey = category
+                    .toLowerCase()
+                    .replace(/ & /g, " ")
+                    .replace(/ /g, "-") as CategoryKey;
+                  return (
+                    <button
+                      key={category}
+                      onClick={() => setSelectedCategory(categoryKey)}
+                      className={`px-4 py-2 rounded-full ${
+                        selectedCategory === categoryKey
+                          ? "bg-primary-900 text-white"
+                          : "bg-white text-primary-900 border border-primary-900"
+                      }`}
+                    >
+                      {category}
+                    </button>
+                  );
+                })}
               </div>
             </div>
 
@@ -100,27 +149,24 @@ const CreateCustomAISheet = () => {
                 <textarea
                   placeholder="Add a short description"
                   className="w-full text-gray-600 bg-transparent resize-none focus:outline-none"
-                  rows={3}
+                  rows={2}
+                  onChange={(e) => setIntroductions(e.target.value)}
                 />
               </div>
 
               <div className="bg-white rounded-lg border py-2 px-4">
-                <h3 className="font-semibold mb-2">Source</h3>
+                <h3 className="font-semibold mb-2">Data</h3>
                 <div className="space-y-2">
-                  <input
-                    type="text"
-                    placeholder="Comment: Write a comment"
+                  <textarea
+                    placeholder="Provide things to learn"
                     className="w-full text-gray-600 bg-transparent border-b border-gray-200 focus:outline-none focus:border-primary-900"
-                  />
-                  <input
-                    type="text"
-                    placeholder="URL: Input URL"
-                    className="w-full text-gray-600 bg-transparent focus:outline-none focus:border-primary-900"
+                    rows={3}
+                    onChange={(e) => setData(e.target.value)}
                   />
                 </div>
               </div>
 
-              <div className="bg-white rounded-lg border py-2 px-4">
+              {/* <div className="bg-white rounded-lg border py-2 px-4">
                 <h3 className="font-semibold mb-2">Examples</h3>
                 <div className="space-y-2">
                   <input
@@ -134,12 +180,15 @@ const CreateCustomAISheet = () => {
                     className="w-full text-gray-600 bg-transparent focus:outline-none focus:border-primary-900"
                   />
                 </div>
-              </div>
+              </div> */}
             </div>
           </div>
 
           <div className="p-4 bg-white border-t">
-            <button className="w-full py-4 bg-primary-50 text-primary-900 hover:bg-primary-700 rounded-full flex items-center justify-center">
+            <button
+              className="w-full py-4 bg-primary-50 text-primary-900 hover:bg-primary-700 rounded-full flex items-center justify-center"
+              onClick={handleCreate}
+            >
               Create
             </button>
           </div>

@@ -17,9 +17,9 @@ export async function loginUser(address: string) {
   return await response.json();
 }
 
-export async function fetchChatList(userid: string) {
+export async function fetchChatList(user_address: string) {
   const response = await fetch(
-    `${process.env.NEXT_PUBLIC_API_BASE_URL}/chats/${userid}`
+    `${process.env.NEXT_PUBLIC_API_BASE_URL}/chats/${user_address}`
   );
 
   if (!response.ok) {

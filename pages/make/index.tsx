@@ -29,42 +29,42 @@ export default function MakeCustomAIPage() {
     setSelectedCategory(category === selectedCategory ? "" : category);
   };
 
-  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
-    e.preventDefault();
-    setError(null);
-    setIsLoading(true);
+  // const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
+  //   e.preventDefault();
+  //   setError(null);
+  //   setIsLoading(true);
 
-    if (!user) {
-      setError("User not logged in");
-      setIsLoading(false);
-      return;
-    }
+  //   if (!user) {
+  //     setError("User not logged in");
+  //     setIsLoading(false);
+  //     return;
+  //   }
 
-    const payload = {
-      name,
-      creator: user.userid,
-      category: selectedCategory,
-      introductions: introduction,
-      contents: content,
-      logs: comments,
-    };
+  //   const payload = {
+  //     name,
+  //     creator: user.userid,
+  //     category: selectedCategory,
+  //     introductions: introduction,
+  //     contents: content,
+  //     logs: comments,
+  //   };
 
-    try {
-      const data = await createAI(payload);
-      window.alert("AI created successfully!");
-      router.push("/home");
-    } catch (err) {
-      console.error("Error creating AI:", err);
-      setError("AI 생성 중 오류가 발생했습니다");
-    } finally {
-      setIsLoading(false);
-    }
-  };
+  //   try {
+  //     const data = await createAI(payload);
+  //     window.alert("AI created successfully!");
+  //     router.push("/home");
+  //   } catch (err) {
+  //     console.error("Error creating AI:", err);
+  //     setError("AI 생성 중 오류가 발생했습니다");
+  //   } finally {
+  //     setIsLoading(false);
+  //   }
+  // };
 
   return (
     <div className="flex flex-col items-center p-4 mx-auto max-w-md">
       <form
-        onSubmit={handleSubmit}
+        // onSubmit={handleSubmit}
         className="bg-white rounded-lg shadow-md p-6 w-full"
       >
         {/* AI Name */}
@@ -131,7 +131,7 @@ export default function MakeCustomAIPage() {
         {/* RAG (Content) */}
         <div className="mb-6">
           <label htmlFor="content" className="block text-lg font-bold mb-2">
-            RAG
+            Data
           </label>
           <textarea
             id="content"
