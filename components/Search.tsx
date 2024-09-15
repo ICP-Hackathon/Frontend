@@ -1,7 +1,9 @@
+/* eslint-disable @next/next/no-img-element */
 import { fetchSearchAIs } from "@/utils/api/ai";
-import React, { SetStateAction, useEffect, useState, useRef } from "react";
+import { SearchIcon } from "lucide-react";
+import { SetStateAction, useEffect, useState, useRef } from "react";
 
-const Search: React.FC = () => {
+const Search = () => {
   const [searchQuery, setSearchQuery] = useState("");
   const [debouncedQuery, setDebouncedQuery] = useState(searchQuery);
   const [results, setResults] = useState<any>(null); // results 초기값을 null로 설정
@@ -37,7 +39,9 @@ const Search: React.FC = () => {
           }
         } catch (error) {
           setError(
-            error instanceof Error ? error.message : "An unknown error occurred"
+            error instanceof Error
+              ? error.message
+              : "An unknown error occurred",
           );
           setResults(null); // 오류 발생 시 results를 null로 설정
         } finally {
@@ -74,13 +78,19 @@ const Search: React.FC = () => {
 
   return (
     <div className="w-full relative" ref={searchRef}>
-      <input
-        type="text"
-        placeholder="Search your best-fit AI"
-        className="w-full p-3 border border-gray-300 rounded-lg shadow-sm focus:ring-2 focus:ring-blue-500 focus:border-blue-500 outline-none transition"
-        onChange={(e) => onSearchChange(e.target.value)}
-        onClick={(e) => e.stopPropagation()} // input 클릭 시 이벤트 전파 방지
-      />
+      <div className="relative">
+        <input
+          type="text"
+          placeholder="Search your best-fit AI"
+          className="w-full p-3 pl-10 bg-gray-100 rounded-lg shadow-sm focus:ring-2 focus:ring-blue-500 focus:border-blue-500 outline-none transition"
+          onChange={(e) => onSearchChange(e.target.value)}
+          onClick={(e) => e.stopPropagation()}
+        />
+        <SearchIcon
+          className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400"
+          size={20}
+        />
+      </div>
       {showSearch && (
         <div className="absolute w-full max-h-[350px] p-3 bg-white z-50 shadow-lg overflow-y-auto">
           {isLoading ? (
@@ -103,7 +113,7 @@ const Search: React.FC = () => {
                       style={{ width: "100px", height: "100px" }}
                     />
                   </div>
-                )
+                ),
               )}
             </div>
           ) : (
