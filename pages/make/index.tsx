@@ -1,7 +1,7 @@
-import { UserState, useUserStore } from "@/store/userStore";
-import { createAI } from "@/utils/api/ai";
-import { useRouter } from "next/router";
 import { useState } from "react";
+import { useRouter } from "next/router";
+import { createAI } from "@/utils/api/ai";
+import { UserState, useUserStore } from "@/store/userStore";
 
 const categories: string[] = [
   "Education",
@@ -48,59 +48,58 @@ export default function MakeCustomAIPage() {
       contents: content,
       logs: comments,
     };
+
     try {
       const data = await createAI(payload);
-      console.log(data);
       window.alert("AI created successfully!");
       router.push("/home");
     } catch (err) {
       console.error("Error creating AI:", err);
-      if (err instanceof Error && err.message.includes("400 Bad Request")) {
-        setError("이미 동일한 이름의 AI가 있습니다");
-      } else {
-        setError("AI 생성 중 오류가 발생했습니다");
-      }
+      setError("AI 생성 중 오류가 발생했습니다");
     } finally {
       setIsLoading(false);
     }
   };
 
   return (
-    <div className="flex-grow p-2 mx-auto w-full">
+    <div className="flex flex-col items-center p-4 mx-auto max-w-md">
       <form
         onSubmit={handleSubmit}
-        className="bg-white rounded-lg shadow-md p-6"
+        className="bg-white rounded-lg shadow-md p-6 w-full"
       >
-        <div className="mb-4">
-          <label
-            htmlFor="name"
-            className="block text-sm font-medium text-gray-700 mb-1"
-          >
-            Name
+        {/* AI Name */}
+        <div className="mb-6 text-center">
+          <div className="flex justify-center mb-4">
+            <div className="bg-primary-500 w-16 h-16 rounded-full flex items-center justify-center text-white">
+              <span className="text-2xl">+</span>
+            </div>
+          </div>
+          <label htmlFor="name" className="block text-lg font-bold mb-2">
+            AI Name
           </label>
           <input
             type="text"
             id="name"
             value={name}
             onChange={(e) => setName(e.target.value)}
-            className="w-full p-2 border border-gray-300 rounded-md"
+            className="w-full p-3 border border-gray-300 rounded-md focus:outline-none focus:ring focus:ring-green-400"
+            placeholder="Name your AI"
             required
           />
         </div>
 
-        <div className="mb-4">
-          <label className="block text-sm font-medium text-gray-700 mb-1">
-            Category
-          </label>
-          <div className="flex flex-wrap gap-2">
+        {/* Categories */}
+        <div className="mb-6 text-center">
+          <label className="block text-lg font-bold mb-4">Categories</label>
+          <div className="flex flex-wrap justify-center gap-2">
             {categories.map((category) => (
               <button
                 key={category}
                 type="button"
                 onClick={() => handleCategorySelect(category)}
-                className={`px-3 py-1 rounded-full text-sm ${
+                className={`px-4 py-2 rounded-full text-sm ${
                   selectedCategory === category
-                    ? "bg-yellow-400 text-gray-800"
+                    ? "bg-green-400 text-white"
                     : "bg-gray-200 text-gray-600"
                 }`}
               >
@@ -110,10 +109,11 @@ export default function MakeCustomAIPage() {
           </div>
         </div>
 
-        <div className="mb-4">
+        {/* Introduction */}
+        <div className="mb-6">
           <label
             htmlFor="introduction"
-            className="block text-sm font-medium text-gray-700 mb-1"
+            className="block text-lg font-bold mb-2"
           >
             Introduction
           </label>
@@ -121,52 +121,50 @@ export default function MakeCustomAIPage() {
             id="introduction"
             value={introduction}
             onChange={(e) => setIntroduction(e.target.value)}
-            placeholder="Please briefly introduce your AI"
-            className="w-full p-2 border border-gray-300 rounded-md"
+            className="w-full p-3 border border-gray-300 rounded-md focus:outline-none focus:ring focus:ring-green-400"
             rows={2}
+            placeholder="Add a short description"
             required
           />
         </div>
 
-        <div className="mb-4">
-          <label
-            htmlFor="content"
-            className="block text-sm font-medium text-gray-700 mb-1"
-          >
+        {/* RAG (Content) */}
+        <div className="mb-6">
+          <label htmlFor="content" className="block text-lg font-bold mb-2">
             RAG
           </label>
           <textarea
             id="content"
             value={content}
             onChange={(e) => setContent(e.target.value)}
-            placeholder="Things to learn"
-            className="w-full p-2 border border-gray-300 rounded-md"
+            className="w-full p-3 border border-gray-300 rounded-md focus:outline-none focus:ring focus:ring-green-400"
             rows={3}
+            placeholder="Things to learn"
           />
         </div>
 
+        {/* Comments */}
         <div className="mb-6">
-          <label
-            htmlFor="comments"
-            className="block text-sm font-medium text-gray-700 mb-1"
-          >
+          <label htmlFor="comments" className="block text-lg font-bold mb-2">
             Comments
           </label>
           <textarea
             id="comments"
             value={comments}
             onChange={(e) => setComments(e.target.value)}
-            placeholder="Update Comments (ex. Add data)"
-            className="w-full p-2 border border-gray-300 rounded-md"
+            className="w-full p-3 border border-gray-300 rounded-md focus:outline-none focus:ring focus:ring-green-400"
             rows={1}
+            placeholder="Update Comments"
           />
         </div>
 
-        {error && <div className="mb-4 text-red-500 text-sm">{error}</div>}
+        {/* Error Message */}
+        {error && <div className="text-red-500 text-sm mb-6">{error}</div>}
 
+        {/* Submit Button */}
         <button
           type="submit"
-          className="w-full bg-gray-800 text-white py-2 px-4 rounded-md hover:bg-gray-700 transition duration-300"
+          className="w-full py-4 bg-green-400 text-white rounded-full font-semibold hover:bg-green-500 transition duration-300"
           disabled={isLoading}
         >
           {isLoading ? "Creating..." : "Create"}

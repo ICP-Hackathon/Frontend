@@ -1,7 +1,7 @@
 import Search from "@/components/Search";
 import { AICard } from "@/components/search/AICard";
 import { AICardProps } from "@/utils/interface";
-import { Plus } from "lucide-react";
+import CreateCustomAISheet from "@/components/MakeAI";
 
 // Mock data
 const mockAIs: AICardProps[] = [
@@ -50,10 +50,7 @@ export default function SearchPage() {
         ))}
       </div>
       <div className="fixed bottom-16 left-0 right-0 px-4 mb-4 max-w-[600px] mx-auto">
-        <button className="w-full py-4 bg-primary-50 text-primary-900 hover:bg-primary-700 rounded-full hover:bg-primary flex items-center justify-center">
-          <Plus className="mr-4" size={24} />
-          Create Custom AI
-        </button>
+        <CreateCustomAISheet />
       </div>
     </div>
   );

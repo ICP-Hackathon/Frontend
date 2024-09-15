@@ -224,8 +224,14 @@ export default function ExplorePage() {
         })}
       </div>
 
-      {/* Render Cards */}
       {renderCards()}
     </div>
   );
+}
+export async function getStaticProps() {
+  return {
+    props: {
+      title: "Explore",
+    },
+  };
 }
