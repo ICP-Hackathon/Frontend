@@ -6,7 +6,7 @@ export default function Landing() {
   return (
     <div className="h-screen flex items-center justify-center bg-white pb-16">
       <div className="max-w-[600px] w-full mx-auto px-6">
-      <div className="flex mx-auto w-48 h-48 bg-primary-900 rounded-full mb-10"></div>
+        <div className="flex mx-auto w-48 h-48 bg-primary-900 rounded-full mb-10"></div>
 
         <div className="w-full flex flex-col items-center mb-12">
           <div className="font-semibold text-4xl pb-3">Welcome to</div>
@@ -27,7 +27,7 @@ export default function Landing() {
               height={24}
               className="mr-4"
             />
-            <Link href="/home" className="text-center">
+            <Link href="/setprofile" className="text-center">
               Continue with Google
             </Link>
           </div>

@@ -1,5 +1,5 @@
 import React, { useState, useMemo } from "react";
-import Select from "react-select";
+import Select, { StylesConfig } from "react-select";
 import countryList from "react-select-country-list";
 
 interface CountryOption {
@@ -15,6 +15,30 @@ const CountrySelect: React.FC = () => {
     setValue(selectedOption);
   };
 
+  const customStyles: StylesConfig<CountryOption, false> = {
+    menu: (provided) => ({
+      ...provided,
+      maxHeight: "200px",
+    }),
+    menuList: (provided) => ({
+      ...provided,
+      maxHeight: "200px",
+    }),
+    option: (provided, state) => ({
+      ...provided,
+      backgroundColor: state.isSelected
+        ? "#4F46E5"
+        : state.isFocused
+        ? "#E0E7FF"
+        : "white",
+      color: state.isSelected ? "white" : "#111827",
+      "&:active": {
+        backgroundColor: "#4F46E5",
+        color: "white",
+      },
+    }),
+  };
+
   return (
     <div>
       <label
@@ -27,9 +51,10 @@ const CountrySelect: React.FC = () => {
         options={options}
         value={value}
         onChange={changeHandler}
+        styles={customStyles}
         className="w-full"
         classNamePrefix="react-select"
-        placeholder="Select a country"
+        placeholder="Select"
         id="country"
       />
     </div>
