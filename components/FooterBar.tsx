@@ -9,7 +9,7 @@ const FooterBar = () => {
     { name: "Explore", icon: LayoutGrid, path: "/explore" },
     { name: "Search", icon: Search, path: "/search" },
     { name: "Chat", icon: MessageCircle, path: "/chat" },
-    { name: "My Balance", icon: Wallet, path: "/mypage" },
+    { name: "My Balance", icon: Wallet, path: "/mybalance" },
   ];
 
   return (
