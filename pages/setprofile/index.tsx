@@ -2,9 +2,10 @@
 import { useState } from "react";
 import { useRouter } from "next/router";
 import CountrySelect from "@/components/setprofile/CountrySelect";
-import { ChevronDown, UserRound } from "lucide-react";
+import { UserRound } from "lucide-react";
 import { addUser } from "@/utils/api/user";
 import GenderSelect from "@/components/setprofile/GenderSelect";
+import { useUserStore } from "@/store/userStore";
 
 const SetProfilePage = () => {
   const router = useRouter();
@@ -17,6 +18,8 @@ const SetProfilePage = () => {
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState("");
 
+  const setUser = useUserStore((state) => state.setUser);
+
   const profileImages = [
     "https://suietail.s3.ap-southeast-2.amazonaws.com/1.png",
     "https://suietail.s3.ap-southeast-2.amazonaws.com/2.png",
@@ -28,9 +31,13 @@ const SetProfilePage = () => {
     setIsLoading(true);
     setError("");
 
+    //임시 랜덤 address
+    const randomNumber = Math.floor(Math.random() * 1000000);
+
     try {
       const userData = {
-        user_address: "test",
+        //zklogin에서 user_address 받아오기Ï
+        user_address: randomNumber.toString().padStart(6, "0"),
         nickname,
         image_url:
           selectedProfile > 0 ? profileImages[selectedProfile - 1] : "",
@@ -41,6 +48,8 @@ const SetProfilePage = () => {
 
       const result = await addUser(userData);
       console.log("User profile created:", result);
+      //store에 저장
+      setUser(result);
       router.push("/explore");
     } catch (error) {
       setError("Failed to create profile. Please try again.");

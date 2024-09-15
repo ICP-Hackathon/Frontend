@@ -1,4 +1,5 @@
 import create from "zustand";
+import { persist } from "zustand/middleware";
 
 interface UserState {
   user: {
@@ -10,9 +11,19 @@ interface UserState {
     phone?: string;
   } | null;
   setUser: (user: UserState["user"]) => void;
+  clearUser: () => void;
 }
 
-export const useUserStore = create<UserState>((set) => ({
-  user: null,
-  setUser: (user) => set({ user }),
-}));
+export const useUserStore = create<UserState>()(
+  persist(
+    (set) => ({
+      user: null,
+      setUser: (user) => set({ user }),
+      clearUser: () => set({ user: null }),
+    }),
+    {
+      name: "user-storage", // name of the item in the storage (must be unique)
+      getStorage: () => localStorage, // (optional) by default, 'localStorage' is used
+    },
+  ),
+);
