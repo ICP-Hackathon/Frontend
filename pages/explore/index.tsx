@@ -1,139 +1,28 @@
 import { useEffect, useState } from "react";
-import { Heart } from "lucide-react";
-import { Dialog, DialogTrigger, DialogContent } from "@/components/ui/dialog"; // Import dialog components
-import {
-  fetchAIDetails,
-  fetchTodayAIs,
-  fetchTrendingAIs,
-} from "@/utils/api/ai";
-import { AIDetailProps, CardData } from "@/utils/interface";
+import { fetchTodayAIs, fetchTrendingAIs } from "@/utils/api/ai";
+import { CardData } from "@/utils/interface";
+import CategorySelector, { CategoryKey } from "@/components/explore/CategorySelector";
+import TodaySection from "@/components/explore/TodaySection";
+import RecentSection from "@/components/explore/RecentSection";
 
-type CategoryKey =
-  | "all"
-  | "education"
-  | "health & fitness"
-  | "entertainment"
-  | "social networking"
-  | "business"
-  | "developer tools"
-  | "graphics & design";
+const categories: string[] = [
+  "All",
+  "Education",
+  "Health & Fitness",
+  "Entertainment",
+  "Social networking",
+  "Business",
+  "Developer tools",
+  "Graphics & Design",
+];
 
-interface CardProps {
-  name: string;
-  creator: string;
-}
-
-interface AIDetailsProp {
-  id: string;
-  name: string;
-}
-
-// Card component that shows individual AI info and is clickable to open a dialog
-const Card: React.FC<CardProps> = ({ name, creator }) => {
-  return (
-    <div className="p-4 bg-gray-50 rounded-lg shadow-md relative h-[160px] flex flex-col">
-      <div className="bg-primary-900 rounded-md size-14 mb-4"></div>
-      <div className="flex-grow flex flex-col justify-between">
-        <h3 className="text-sm font-semibold min-h-[20px]">{name}</h3>
-        <p className="text-xs text-gray-500 min-h-[16px]">{creator}</p>
-      </div>
-      <button className="absolute top-2 right-2 text-gray-700">
-        <Heart size={16} />
-      </button>
-    </div>
-  );
-};
-
-// Details Popup for the AI card
-
-interface AIDetailsPropWithName {
-  id: string;
-  name: string;
-}
-
-const AIDetailsPopup = ({ id, name }: AIDetailsPropWithName) => {
-  const [aiDetail, setAIDetail] = useState<AIDetailProps | null>(null);
-  const [detailLoading, setDetailLoading] = useState(true);
-
-  useEffect(() => {
-    const loadAIModels = async () => {
-      try {
-        const data = await fetchAIDetails(id);
-        setAIDetail(data);
-        setDetailLoading(false);
-      } catch (error) {
-        console.error(error);
-        setDetailLoading(false);
-      }
-    };
-    loadAIModels();
-  }, [id]);
-
-  if (detailLoading) {
-    return (
-      <DialogContent className="sm:max-w-[425px] rounded-3xl p-6 max-h-[80vh] overflow-y-auto">
-        Loading...
-      </DialogContent>
-    );
-  }
-
-  if (!aiDetail) {
-    return (
-      <DialogContent className="sm:max-w-[425px] rounded-3xl p-6 max-h-[80vh] overflow-y-auto">
-        Failed to load AI details.
-      </DialogContent>
-    );
-  }
-
-  return (
-    <DialogContent className="sm:max-w-[425px] rounded-3xl p-6 max-h-[80vh] overflow-y-auto ">
-      <div className="space-y-4">
-        <div className="flex justify-center pt-5">
-          <div className="inline-block px-3 py-1 bg-primary-50 text-primary-900 rounded-full text-sm">
-            {aiDetail.category}
-          </div>
-        </div>
-        <h2 className="text-3xl font-bold text-primary-900 text-center">
-          {aiDetail.name}
-        </h2>
-        <p className="text-gray-500 text-center">Created by {name}</p>
-        <p className="text-gray-500 text-center">
-          Average # of Tokens:{" "}
-          {Math.round(
-            (aiDetail.prompt_tokens + aiDetail.completion_tokens) /
-              (aiDetail.chat_counts || 1),
-          )}
-        </p>
-
-        <div className="border-t border-gray-200 pt-6">
-          <p className="text-gray-700 text-sm text-center">{aiDetail.introductions}</p>
-        </div>
-        <div className="bg-gray-50 rounded-xl p-4 space-y-2">
-          <h3 className="font-semibold text-gray-700 border-b">RAG</h3>
-          <p className="text-sm text-gray-600">
-            {aiDetail.logs.length > 0
-              ? aiDetail.logs[0].comments
-              : "No RAG information available."}
-          </p>
-        </div>
-        <div className="bg-gray-50 rounded-xl p-4 space-y-2">
-          <h3 className="font-semibold text-gray-700 border-b">Comment</h3>
-          <p className="text-sm text-gray-600">
-            {aiDetail.logs.length > 1
-              ? aiDetail.logs[1].comments
-              : "No comments available."}
-          </p>
-        </div>
-      </div>
-    </DialogContent>
-  );
-};
 export default function ExplorePage() {
   const [selectedCategory, setSelectedCategory] = useState<CategoryKey>("all");
   const [selectedAI, setSelectedAI] = useState<CardData | null>(null);
   const [todayCards, setTodayCards] = useState<CardData[] | null>(null);
   const [trendCards, setTrendCards] = useState<CardData[] | null>(null);
   const [isLoading, setIsLoading] = useState(true);
+
   useEffect(() => {
     const loadAIModels = async () => {
       try {
@@ -144,6 +33,7 @@ export default function ExplorePage() {
         setIsLoading(false);
       } catch (error) {
         console.error(error);
+        setIsLoading(false);
       }
     };
     loadAIModels();
@@ -161,136 +51,32 @@ export default function ExplorePage() {
     loadAIModels();
   }, [selectedCategory]);
 
-  const categories: string[] = [
-    "All",
-    "Education",
-    "Health & Fitness",
-    "Entertainment",
-    "Social networking",
-    "Business",
-    "Developer tools",
-    "Graphics & Design",
-  ];
-
-  const renderTodaySection = () => {
-    return (
-      <section className="mb-6 scrollbar-hide">
-        <h2 className="text-lg font-bold mb-4">Today</h2>
-        <div className="grid grid-cols-2 gap-4">
-          {isLoading ? (
-            <div></div>
-          ) : (
-            todayCards?.map((item: CardData) => (
-              <Dialog
-                key={item.id}
-                onOpenChange={(open) =>
-                  open ? setSelectedAI(item) : setSelectedAI(null)
-                }
-              >
-                <DialogTrigger asChild>
-                  <div>
-                    <Card name={item.name} creator={item.creator} />
-                  </div>
-                </DialogTrigger>
-                {selectedAI && (
-                  <AIDetailsPopup id={item.ai_id} name={item.creator} />
-                )}
-              </Dialog>
-            ))
-          )}
-        </div>
-      </section>
-    );
-  };
-
-  const renderRecentSection = () => {
-    return (
-      <section className="mb-6">
-        <h2 className="text-lg font-bold mb-4">Recent</h2>
-        <div className="grid grid-cols-2 gap-4">
-          {trendCards?.map((item: CardData) => (
-            <Dialog
-              key={item.id}
-              onOpenChange={(open) =>
-                open ? setSelectedAI(item) : setSelectedAI(null)
-              }
-            >
-              <DialogTrigger asChild>
-                <div>
-                  <Card name={item.name} creator={item.creator} />
-                </div>
-              </DialogTrigger>
-              {selectedAI && (
-                <AIDetailsPopup id={item.ai_id} name={item.creator} />
-              )}
-            </Dialog>
-          ))}
-        </div>
-      </section>
-    );
-  };
-
-  const renderCards = () => {
-    if (selectedCategory === "all") {
-      return (
-        <>
-          {renderTodaySection()}
-          {renderRecentSection()}
-        </>
-      );
-    }
-
-    return (
-      <div className="grid grid-cols-2 gap-4">
-        {trendCards?.map((item: CardData) => (
-          <Dialog
-            key={item.id}
-            onOpenChange={(open) =>
-              open ? setSelectedAI(item) : setSelectedAI(null)
-            }
-          >
-            <DialogTrigger asChild>
-              <div>
-                <Card name={item.name} creator={item.creator} />
-              </div>
-            </DialogTrigger>
-            {selectedAI && (
-              <AIDetailsPopup id={item.ai_id} name={item.creator} />
-            )}
-          </Dialog>
-        ))}
-      </div>
-    );
-  };
-
   return (
-    <div className="p-4 pb-16 ">
-      <div className="flex space-x-2 overflow-x-auto mb-6 whitespace-nowrap scrollbar-hide">
-        {categories.map((category) => {
-          const categoryKey = category
-            .toLowerCase()
-            .replace(/ & /g, " ")
-            .replace(/ /g, "-") as CategoryKey;
-          return (
-            <button
-              key={category}
-              onClick={() => setSelectedCategory(categoryKey)}
-              className={`px-4 py-2 rounded-full ${
-                selectedCategory === categoryKey
-                  ? "bg-primary-900 text-white"
-                  : "bg-white text-primary-900 border border-primary-900"
-              }`}
-            >
-              {category}
-            </button>
-          );
-        })}
-      </div>
-
-      {renderCards()}
+    <div className="p-4 pb-16">
+      <CategorySelector
+        categories={categories}
+        selectedCategory={selectedCategory}
+        setSelectedCategory={setSelectedCategory}
+      />
+      {selectedCategory === "all" ? (
+        <>
+          <TodaySection
+            isLoading={isLoading}
+            todayCards={todayCards}
+            setSelectedAI={setSelectedAI}
+          />
+          <RecentSection
+            trendCards={trendCards}
+            setSelectedAI={setSelectedAI}
+          />
+        </>
+      ) : (
+        <RecentSection trendCards={trendCards} setSelectedAI={setSelectedAI} />
+      )}
     </div>
   );
 }
+
 export async function getStaticProps() {
   return {
     props: {
