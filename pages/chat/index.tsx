@@ -141,3 +141,11 @@ const ChatPage: React.FC = () => {
 };
 
 export default ChatPage;
+
+export async function getStaticProps() {
+  return {
+    props: {
+      title: "SuieTail Chat",
+    },
+  };
+}

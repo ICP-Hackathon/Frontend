@@ -1,46 +1,17 @@
+/* eslint-disable @next/next/no-img-element */
 import { useState } from "react";
 import { useRouter } from "next/router";
 import CountrySelect from "@/components/setprofile/CountrySelect";
-import { ChevronDown } from "lucide-react";
-
-interface UserIconProps {
-  className?: string;
-}
-
-const UserIcon = ({ className }: UserIconProps) => (
-  <svg
-    viewBox="0 0 24 24"
-    fill="none"
-    xmlns="http://www.w3.org/2000/svg"
-    className={className}
-  >
-    <path
-      d="M12.12 12.78C12.05 12.77 11.96 12.77 11.88 12.78C10.12 12.72 8.71997 11.28 8.71997 9.50998C8.71997 7.69998 10.18 6.22998 12 6.22998C13.81 6.22998 15.28 7.69998 15.28 9.50998C15.27 11.28 13.88 12.72 12.12 12.78Z"
-      stroke="currentColor"
-      strokeWidth="1.5"
-      strokeLinecap="round"
-      strokeLinejoin="round"
-      fill="currentColor"
-    />
-    <path
-      d="M18.74 19.3801C16.96 21.0101 14.6 22.0001 12 22.0001C9.40001 22.0001 7.04001 21.0101 5.26001 19.3801C5.36001 18.4401 5.96001 17.5201 7.03001 16.8001C9.77001 14.9801 14.25 14.9801 16.97 16.8001C18.04 17.5201 18.64 18.4401 18.74 19.3801Z"
-      stroke="currentColor"
-      strokeWidth="1.5"
-      strokeLinecap="round"
-      strokeLinejoin="round"
-      fill="currentColor"
-    />
-  </svg>
-);
+import { ChevronDown, User } from "lucide-react"; // Import the User icon from lucide-react
 
 const SetProfilePage = () => {
   const router = useRouter();
   const [selectedProfile, setSelectedProfile] = useState(0);
 
   const profileImages = [
-    "/path-to-profile-image-1.png",
-    "/path-to-profile-image-2.png",
-    "/path-to-profile-image-3.png",
+    "https://suietail.s3.ap-southeast-2.amazonaws.com/1.png",
+    "https://suietail.s3.ap-southeast-2.amazonaws.com/2.png",
+    "https://suietail.s3.ap-southeast-2.amazonaws.com/3.png",
   ];
 
   return (
@@ -53,15 +24,15 @@ const SetProfilePage = () => {
       </div>
 
       <div className="flex-grow overflow-y-auto px-4 pb-4">
-        <div className="size-32 bg-gray-200 rounded-full mb-4 mx-auto flex items-center justify-center">
+        <div className="size-32 bg-gray-200 rounded-full mb-4 mx-auto flex items-center justify-center overflow-hidden">
           {selectedProfile === 0 ? (
-            <UserIcon className="text-gray-400" />
+            <User className="text-gray-400 w-16 h-16" />
           ) : (
             // eslint-disable-next-line @next/next/no-img-element
             <img
               src={profileImages[selectedProfile - 1]}
               alt="Selected profile"
-              className="w-full h-full object-cover rounded-full"
+              className="w-full h-full object-cover transform scale-150 translate-y-[-10%]" // Scale and move image up
             />
           )}
         </div>
@@ -71,7 +42,7 @@ const SetProfilePage = () => {
             <button
               key={index}
               onClick={() => setSelectedProfile(index + 1)}
-              className={`size-16 rounded-full overflow-hidden border-2 ${
+              className={`size-16 rounded-full overflow-hidden border-2 bg-gray-200 ${
                 selectedProfile === index + 1
                   ? "border-primary-900"
                   : "border-transparent"
@@ -80,7 +51,7 @@ const SetProfilePage = () => {
               <img
                 src={img}
                 alt={`Profile ${index + 1}`}
-                className="w-full h-full object-cover"
+                className="w-full h-full object-cover transform scale-150 translate-y-[-10%]" // Scale and move image up
               />
             </button>
           ))}

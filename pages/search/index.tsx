@@ -34,7 +34,7 @@ const mockAIs: AICardProps[] = [
 export default function SearchPage() {
   return (
     <div className="flex flex-col h-full">
-      <div className="mb-4">
+      <div className="mt-2 mb-4">
         <Search />
       </div>
       <div className="flex-grow overflow-y-auto mb-16">

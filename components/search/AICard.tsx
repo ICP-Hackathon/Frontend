@@ -1,20 +1,28 @@
-import { AICardProps } from "@/utils/interface";
+import { useRouter } from "next/router";
 import { ChevronRight } from "lucide-react";
 import { Dialog, DialogContent, DialogTrigger } from "@/components/ui/dialog";
 import Image from "next/image";
+import { AICardProps } from "@/utils/interface";
 
 export const AICard = ({
+  id,
   name,
   creator,
   category,
   introductions,
   imageSrc,
 }: AICardProps) => {
+  const router = useRouter();
+
+  const handleChatClick = () => {
+    router.push(`/chat/${id}`);
+  };
+
   return (
-    <Dialog>
-      <DialogTrigger asChild>
-        <div className="flex items-center justify-between p-4 border-b border-gray-200 cursor-pointer">
-          <div className="flex items-center">
+    <div className="flex items-center justify-between p-4 border-b border-gray-200">
+      <Dialog>
+        <DialogTrigger asChild>
+          <div className="flex items-center flex-grow cursor-pointer">
             {imageSrc ? (
               <Image
                 src={imageSrc}
@@ -35,45 +43,50 @@ export const AICard = ({
               <p className="text-sm text-gray-600">{creator}</p>
             </div>
           </div>
-          <button className="px-4 py-2 bg-primary-50 text-primary-900 rounded-full hover:bg-primary-700 transition-colors flex items-center">
-            Chat
-            <ChevronRight className="ml-1" size={18} />
-          </button>
-        </div>
-      </DialogTrigger>
-      <DialogContent className="sm:max-w-[425px] rounded-3xl p-6 max-h-[80vh] overflow-y-auto">
-        <div className="space-y-4">
-          <h2 className="text-3xl font-bold text-primary-900 text-center">
-            {name}
-          </h2>
-          <div className="flex justify-center">
-            <div className="inline-block px-3 py-1 bg-primary-50 text-primary-900 rounded-full text-sm">
-              {category}
+        </DialogTrigger>
+        <DialogContent className="sm:max-w-[425px] rounded-3xl p-6 max-h-[80vh] overflow-y-auto">
+          <div className="space-y-4">
+            <h2 className="text-3xl font-bold text-primary-900 text-center">
+              {name}
+            </h2>
+            <div className="flex justify-center">
+              <div className="inline-block px-3 py-1 bg-primary-50 text-primary-900 rounded-full text-sm">
+                {category}
+              </div>
+            </div>
+            <p className="text-gray-500 text-center">Created by {creator}</p>
+            <div className="border-t border-gray-200 pt-6">
+              <p className="text-gray-700 text-sm">
+                {introductions}introductions here...introductions
+                here...introductions here...introductions here...introductions
+                here...introductions here...introductions here...introductions
+                here...introductions here...
+              </p>
+            </div>
+            <div className="bg-gray-50 rounded-xl p-4 space-y-2">
+              <h3 className="font-semibold text-gray-700 border-b">RAG</h3>
+              <p className="text-sm text-gray-600">
+                RAG information here...RAG information here...RAG information
+                here...RAG information here...RAG information here...RAG
+                information here...RAG information here...RAG information
+                here...
+              </p>
+            </div>
+            <div className="bg-gray-50 rounded-xl p-4 space-y-2">
+              <h3 className="font-semibold text-gray-700 border-b">Comment</h3>
+              <p className="text-sm text-gray-600">Comments here...</p>
             </div>
           </div>
-          <p className="text-gray-500 text-center">Created by {creator}</p>
-          <div className="border-t border-gray-200 pt-6">
-            <p className="text-gray-700 text-sm">
-              {introductions}introductions here...introductions
-              here...introductions here...introductions here...introductions
-              here...introductions here...introductions here...introductions
-              here...introductions here...
-            </p>
-          </div>
-          <div className="bg-gray-50 rounded-xl p-4 space-y-2">
-            <h3 className="font-semibold text-gray-700 border-b">RAG</h3>
-            <p className="text-sm text-gray-600">
-              RAG information here...RAG information here...RAG information
-              here...RAG information here...RAG information here...RAG
-              information here...RAG information here...RAG information here...
-            </p>
-          </div>
-          <div className="bg-gray-50 rounded-xl p-4 space-y-2">
-            <h3 className="font-semibold text-gray-700 border-b">Comment</h3>
-            <p className="text-sm text-gray-600">Comments here...</p>
-          </div>
-        </div>
-      </DialogContent>
-    </Dialog>
+        </DialogContent>
+      </Dialog>
+
+      <button
+        className="px-4 py-2 bg-primary-50 text-primary-900 rounded-full hover:bg-primary-700 transition-colors flex items-center ml-4"
+        onClick={handleChatClick}
+      >
+        Chat
+        <ChevronRight className="ml-1" size={18} />
+      </button>
+    </div>
   );
 };
