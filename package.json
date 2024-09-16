@@ -18,6 +18,7 @@
     "@web3auth/modal": "^8.12.7",
     "class-variance-authority": "^0.7.0",
     "clsx": "^2.1.1",
+    "jotai": "^2.9.3",
     "lucide-react": "^0.441.0",
     "near-api-js": "^4.0.4",
     "next": "14.2.7",
@@ -32,7 +33,10 @@
     "tailwindcss-animate": "^1.0.7",
     "vaul": "^0.9.3",
     "web3": "^4.12.1",
-    "zustand": "^4.5.5"
+    "zustand": "^4.5.5",
+    "@mysten/dapp-kit": "^0.13.1",
+    "@mysten/sui.js": "^0.51.2",
+    "@suiet/wallet-kit": "^0.2.24"
   },
   "devDependencies": {
     "@svgr/webpack": "^8.1.0",

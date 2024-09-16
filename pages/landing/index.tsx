@@ -2,6 +2,7 @@ import Link from "next/link";
 import google from "@/assets/google.png";
 import Image from "next/image";
 import Logo from "@/assets/logo_suietail.svg";
+import WalletButton from "@/components/wallet/WalletButton";
 
 export default function Landing() {
   return (
@@ -33,6 +34,7 @@ export default function Landing() {
             </Link>
           </div>
         </button>
+        <WalletButton></WalletButton>
         <button className="w-full bg-primary-900 text-white font-semibold py-4 rounded-full shadow-md hover:bg-primary-100 transition duration-300 ease-in-out flex items-center justify-center">
           About Us
         </button>
