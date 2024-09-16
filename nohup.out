@@ -999,3 +999,450 @@ Killed
 
  ✓ Starting...
  ✓ Ready in 539ms
+ ⚠ The "images.domains" configuration is deprecated. Please use "images.remotePatterns" configuration instead.
+ ⚠ For production Image Optimization with Next.js, the optional 'sharp' package is strongly recommended. Run 'npm i sharp', and Next.js will use it automatically for Image Optimization.
+Read more: https://nextjs.org/docs/messages/sharp-missing-in-production
+Invariant: failed to load static page {
+  "page": "/",
+  "url": "/",
+  "initUrl": "http://localhost:5000/",
+  "didRewrite": false
+}
+ ⨯ MissingStaticPage [Error]: Failed to load static file for page: / ENOENT: no such file or directory, open '/ragcoon/Frontend/.next/server/pages/index.html'
+    at /ragcoon/Frontend/node_modules/next/dist/server/require.js:102:19
+    at async loadComponentsImpl (/ragcoon/Frontend/node_modules/next/dist/server/load-components.js:98:26)
+    at async NextNodeServer.findPageComponentsImpl (/ragcoon/Frontend/node_modules/next/dist/server/next-server.js:708:36)
+    at async NextNodeServer.renderPageComponent (/ragcoon/Frontend/node_modules/next/dist/server/base-server.js:1897:24)
+    at async NextNodeServer.renderToResponseImpl (/ragcoon/Frontend/node_modules/next/dist/server/base-server.js:1949:32)
+    at async NextNodeServer.pipeImpl (/ragcoon/Frontend/node_modules/next/dist/server/base-server.js:916:25)
+    at async NextNodeServer.handleCatchallRenderRequest (/ragcoon/Frontend/node_modules/next/dist/server/next-server.js:272:17)
+    at async NextNodeServer.handleRequestImpl (/ragcoon/Frontend/node_modules/next/dist/server/base-server.js:812:17)
+    at async invokeRender (/ragcoon/Frontend/node_modules/next/dist/server/lib/router-server.js:173:21)
+    at async handleRequest (/ragcoon/Frontend/node_modules/next/dist/server/lib/router-server.js:350:24)
+Invariant: failed to load static page {
+  "page": "/",
+  "url": "/",
+  "initUrl": "http://localhost:5000/",
+  "didRewrite": false
+}
+ ⨯ MissingStaticPage [Error]: Failed to load static file for page: / ENOENT: no such file or directory, open '/ragcoon/Frontend/.next/server/pages/index.html'
+    at /ragcoon/Frontend/node_modules/next/dist/server/require.js:102:19
+    at async loadComponentsImpl (/ragcoon/Frontend/node_modules/next/dist/server/load-components.js:98:26)
+    at async NextNodeServer.findPageComponentsImpl (/ragcoon/Frontend/node_modules/next/dist/server/next-server.js:708:36)
+    at async NextNodeServer.renderPageComponent (/ragcoon/Frontend/node_modules/next/dist/server/base-server.js:1897:24)
+    at async NextNodeServer.renderToResponseImpl (/ragcoon/Frontend/node_modules/next/dist/server/base-server.js:1949:32)
+    at async NextNodeServer.pipeImpl (/ragcoon/Frontend/node_modules/next/dist/server/base-server.js:916:25)
+    at async NextNodeServer.handleCatchallRenderRequest (/ragcoon/Frontend/node_modules/next/dist/server/next-server.js:272:17)
+    at async NextNodeServer.handleRequestImpl (/ragcoon/Frontend/node_modules/next/dist/server/base-server.js:812:17)
+    at async invokeRender (/ragcoon/Frontend/node_modules/next/dist/server/lib/router-server.js:173:21)
+    at async handleRequest (/ragcoon/Frontend/node_modules/next/dist/server/lib/router-server.js:350:24)
+Invariant: failed to load static page {
+  "page": "/",
+  "url": "/",
+  "initUrl": "http://localhost:5000/",
+  "didRewrite": false
+}
+ ⨯ MissingStaticPage [Error]: Failed to load static file for page: / ENOENT: no such file or directory, open '/ragcoon/Frontend/.next/server/pages/index.html'
+    at /ragcoon/Frontend/node_modules/next/dist/server/require.js:102:19
+    at async loadComponentsImpl (/ragcoon/Frontend/node_modules/next/dist/server/load-components.js:98:26)
+    at async NextNodeServer.findPageComponentsImpl (/ragcoon/Frontend/node_modules/next/dist/server/next-server.js:708:36)
+    at async NextNodeServer.renderPageComponent (/ragcoon/Frontend/node_modules/next/dist/server/base-server.js:1897:24)
+    at async NextNodeServer.renderToResponseImpl (/ragcoon/Frontend/node_modules/next/dist/server/base-server.js:1949:32)
+    at async NextNodeServer.pipeImpl (/ragcoon/Frontend/node_modules/next/dist/server/base-server.js:916:25)
+    at async NextNodeServer.handleCatchallRenderRequest (/ragcoon/Frontend/node_modules/next/dist/server/next-server.js:272:17)
+    at async NextNodeServer.handleRequestImpl (/ragcoon/Frontend/node_modules/next/dist/server/base-server.js:812:17)
+    at async invokeRender (/ragcoon/Frontend/node_modules/next/dist/server/lib/router-server.js:173:21)
+    at async handleRequest (/ragcoon/Frontend/node_modules/next/dist/server/lib/router-server.js:350:24)
+Invariant: failed to load static page {
+  "page": "/",
+  "url": "/",
+  "initUrl": "http://localhost:5000/",
+  "didRewrite": false
+}
+ ⨯ MissingStaticPage [Error]: Failed to load static file for page: / ENOENT: no such file or directory, open '/ragcoon/Frontend/.next/server/pages/index.html'
+    at /ragcoon/Frontend/node_modules/next/dist/server/require.js:102:19
+    at async loadComponentsImpl (/ragcoon/Frontend/node_modules/next/dist/server/load-components.js:98:26)
+    at async NextNodeServer.findPageComponentsImpl (/ragcoon/Frontend/node_modules/next/dist/server/next-server.js:708:36)
+    at async NextNodeServer.renderPageComponent (/ragcoon/Frontend/node_modules/next/dist/server/base-server.js:1897:24)
+    at async NextNodeServer.renderToResponseImpl (/ragcoon/Frontend/node_modules/next/dist/server/base-server.js:1949:32)
+    at async NextNodeServer.pipeImpl (/ragcoon/Frontend/node_modules/next/dist/server/base-server.js:916:25)
+    at async NextNodeServer.handleCatchallRenderRequest (/ragcoon/Frontend/node_modules/next/dist/server/next-server.js:272:17)
+    at async NextNodeServer.handleRequestImpl (/ragcoon/Frontend/node_modules/next/dist/server/base-server.js:812:17)
+    at async invokeRender (/ragcoon/Frontend/node_modules/next/dist/server/lib/router-server.js:173:21)
+    at async handleRequest (/ragcoon/Frontend/node_modules/next/dist/server/lib/router-server.js:350:24)
+Invariant: failed to load static page {
+  "page": "/",
+  "url": "/",
+  "initUrl": "http://localhost:5000/",
+  "didRewrite": false
+}
+ ⨯ MissingStaticPage [Error]: Failed to load static file for page: / ENOENT: no such file or directory, open '/ragcoon/Frontend/.next/server/pages/index.html'
+    at /ragcoon/Frontend/node_modules/next/dist/server/require.js:102:19
+    at async loadComponentsImpl (/ragcoon/Frontend/node_modules/next/dist/server/load-components.js:98:26)
+    at async NextNodeServer.findPageComponentsImpl (/ragcoon/Frontend/node_modules/next/dist/server/next-server.js:708:36)
+    at async NextNodeServer.renderPageComponent (/ragcoon/Frontend/node_modules/next/dist/server/base-server.js:1897:24)
+    at async NextNodeServer.renderToResponseImpl (/ragcoon/Frontend/node_modules/next/dist/server/base-server.js:1949:32)
+    at async NextNodeServer.pipeImpl (/ragcoon/Frontend/node_modules/next/dist/server/base-server.js:916:25)
+    at async NextNodeServer.handleCatchallRenderRequest (/ragcoon/Frontend/node_modules/next/dist/server/next-server.js:272:17)
+    at async NextNodeServer.handleRequestImpl (/ragcoon/Frontend/node_modules/next/dist/server/base-server.js:812:17)
+    at async invokeRender (/ragcoon/Frontend/node_modules/next/dist/server/lib/router-server.js:173:21)
+    at async handleRequest (/ragcoon/Frontend/node_modules/next/dist/server/lib/router-server.js:350:24)
+Invariant: failed to load static page {
+  "page": "/",
+  "url": "/",
+  "initUrl": "http://localhost:5000/",
+  "didRewrite": false
+}
+ ⨯ MissingStaticPage [Error]: Failed to load static file for page: / ENOENT: no such file or directory, open '/ragcoon/Frontend/.next/server/pages/index.html'
+    at /ragcoon/Frontend/node_modules/next/dist/server/require.js:102:19
+    at async loadComponentsImpl (/ragcoon/Frontend/node_modules/next/dist/server/load-components.js:98:26)
+    at async NextNodeServer.findPageComponentsImpl (/ragcoon/Frontend/node_modules/next/dist/server/next-server.js:708:36)
+    at async NextNodeServer.renderPageComponent (/ragcoon/Frontend/node_modules/next/dist/server/base-server.js:1897:24)
+    at async NextNodeServer.renderToResponseImpl (/ragcoon/Frontend/node_modules/next/dist/server/base-server.js:1949:32)
+    at async NextNodeServer.pipeImpl (/ragcoon/Frontend/node_modules/next/dist/server/base-server.js:916:25)
+    at async NextNodeServer.handleCatchallRenderRequest (/ragcoon/Frontend/node_modules/next/dist/server/next-server.js:272:17)
+    at async NextNodeServer.handleRequestImpl (/ragcoon/Frontend/node_modules/next/dist/server/base-server.js:812:17)
+    at async invokeRender (/ragcoon/Frontend/node_modules/next/dist/server/lib/router-server.js:173:21)
+    at async handleRequest (/ragcoon/Frontend/node_modules/next/dist/server/lib/router-server.js:350:24)
+Invariant: failed to load static page {
+  "page": "/",
+  "url": "/",
+  "initUrl": "http://localhost:5000/",
+  "didRewrite": false
+}
+ ⨯ MissingStaticPage [Error]: Failed to load static file for page: / ENOENT: no such file or directory, open '/ragcoon/Frontend/.next/server/pages/index.html'
+    at /ragcoon/Frontend/node_modules/next/dist/server/require.js:102:19
+    at async loadComponentsImpl (/ragcoon/Frontend/node_modules/next/dist/server/load-components.js:98:26)
+    at async NextNodeServer.findPageComponentsImpl (/ragcoon/Frontend/node_modules/next/dist/server/next-server.js:708:36)
+    at async NextNodeServer.renderPageComponent (/ragcoon/Frontend/node_modules/next/dist/server/base-server.js:1897:24)
+    at async NextNodeServer.renderToResponseImpl (/ragcoon/Frontend/node_modules/next/dist/server/base-server.js:1949:32)
+    at async NextNodeServer.pipeImpl (/ragcoon/Frontend/node_modules/next/dist/server/base-server.js:916:25)
+    at async NextNodeServer.handleCatchallRenderRequest (/ragcoon/Frontend/node_modules/next/dist/server/next-server.js:272:17)
+    at async NextNodeServer.handleRequestImpl (/ragcoon/Frontend/node_modules/next/dist/server/base-server.js:812:17)
+    at async invokeRender (/ragcoon/Frontend/node_modules/next/dist/server/lib/router-server.js:173:21)
+    at async handleRequest (/ragcoon/Frontend/node_modules/next/dist/server/lib/router-server.js:350:24)
+Invariant: failed to load static page {
+  "page": "/",
+  "url": "/",
+  "initUrl": "http://localhost:5000/",
+  "didRewrite": false
+}
+ ⨯ MissingStaticPage [Error]: Failed to load static file for page: / ENOENT: no such file or directory, open '/ragcoon/Frontend/.next/server/pages/index.html'
+    at /ragcoon/Frontend/node_modules/next/dist/server/require.js:102:19
+    at async loadComponentsImpl (/ragcoon/Frontend/node_modules/next/dist/server/load-components.js:98:26)
+    at async NextNodeServer.findPageComponentsImpl (/ragcoon/Frontend/node_modules/next/dist/server/next-server.js:708:36)
+    at async NextNodeServer.renderPageComponent (/ragcoon/Frontend/node_modules/next/dist/server/base-server.js:1897:24)
+    at async NextNodeServer.renderToResponseImpl (/ragcoon/Frontend/node_modules/next/dist/server/base-server.js:1949:32)
+    at async NextNodeServer.pipeImpl (/ragcoon/Frontend/node_modules/next/dist/server/base-server.js:916:25)
+    at async NextNodeServer.handleCatchallRenderRequest (/ragcoon/Frontend/node_modules/next/dist/server/next-server.js:272:17)
+    at async NextNodeServer.handleRequestImpl (/ragcoon/Frontend/node_modules/next/dist/server/base-server.js:812:17)
+    at async invokeRender (/ragcoon/Frontend/node_modules/next/dist/server/lib/router-server.js:173:21)
+    at async handleRequest (/ragcoon/Frontend/node_modules/next/dist/server/lib/router-server.js:350:24)
+Invariant: failed to load static page {
+  "page": "/",
+  "url": "/",
+  "initUrl": "http://localhost:5000/",
+  "didRewrite": false
+}
+ ⨯ MissingStaticPage [Error]: Failed to load static file for page: / ENOENT: no such file or directory, open '/ragcoon/Frontend/.next/server/pages/index.html'
+    at /ragcoon/Frontend/node_modules/next/dist/server/require.js:102:19
+    at async loadComponentsImpl (/ragcoon/Frontend/node_modules/next/dist/server/load-components.js:98:26)
+    at async NextNodeServer.findPageComponentsImpl (/ragcoon/Frontend/node_modules/next/dist/server/next-server.js:708:36)
+    at async NextNodeServer.renderPageComponent (/ragcoon/Frontend/node_modules/next/dist/server/base-server.js:1897:24)
+    at async NextNodeServer.renderToResponseImpl (/ragcoon/Frontend/node_modules/next/dist/server/base-server.js:1949:32)
+    at async NextNodeServer.pipeImpl (/ragcoon/Frontend/node_modules/next/dist/server/base-server.js:916:25)
+    at async NextNodeServer.handleCatchallRenderRequest (/ragcoon/Frontend/node_modules/next/dist/server/next-server.js:272:17)
+    at async NextNodeServer.handleRequestImpl (/ragcoon/Frontend/node_modules/next/dist/server/base-server.js:812:17)
+    at async invokeRender (/ragcoon/Frontend/node_modules/next/dist/server/lib/router-server.js:173:21)
+    at async handleRequest (/ragcoon/Frontend/node_modules/next/dist/server/lib/router-server.js:350:24)
+Invariant: failed to load static page {
+  "page": "/",
+  "url": "/",
+  "initUrl": "http://localhost:5000/",
+  "didRewrite": false
+}
+ ⨯ MissingStaticPage [Error]: Failed to load static file for page: / ENOENT: no such file or directory, open '/ragcoon/Frontend/.next/server/pages/index.html'
+    at /ragcoon/Frontend/node_modules/next/dist/server/require.js:102:19
+    at async loadComponentsImpl (/ragcoon/Frontend/node_modules/next/dist/server/load-components.js:98:26)
+    at async NextNodeServer.findPageComponentsImpl (/ragcoon/Frontend/node_modules/next/dist/server/next-server.js:708:36)
+    at async NextNodeServer.renderPageComponent (/ragcoon/Frontend/node_modules/next/dist/server/base-server.js:1897:24)
+    at async NextNodeServer.renderToResponseImpl (/ragcoon/Frontend/node_modules/next/dist/server/base-server.js:1949:32)
+    at async NextNodeServer.pipeImpl (/ragcoon/Frontend/node_modules/next/dist/server/base-server.js:916:25)
+    at async NextNodeServer.handleCatchallRenderRequest (/ragcoon/Frontend/node_modules/next/dist/server/next-server.js:272:17)
+    at async NextNodeServer.handleRequestImpl (/ragcoon/Frontend/node_modules/next/dist/server/base-server.js:812:17)
+    at async invokeRender (/ragcoon/Frontend/node_modules/next/dist/server/lib/router-server.js:173:21)
+    at async handleRequest (/ragcoon/Frontend/node_modules/next/dist/server/lib/router-server.js:350:24)
+Invariant: failed to load static page {
+  "page": "/",
+  "url": "/",
+  "initUrl": "http://localhost:5000/",
+  "didRewrite": false
+}
+ ⨯ MissingStaticPage [Error]: Failed to load static file for page: / ENOENT: no such file or directory, open '/ragcoon/Frontend/.next/server/pages/index.html'
+    at /ragcoon/Frontend/node_modules/next/dist/server/require.js:102:19
+    at async loadComponentsImpl (/ragcoon/Frontend/node_modules/next/dist/server/load-components.js:98:26)
+    at async NextNodeServer.findPageComponentsImpl (/ragcoon/Frontend/node_modules/next/dist/server/next-server.js:708:36)
+    at async NextNodeServer.renderPageComponent (/ragcoon/Frontend/node_modules/next/dist/server/base-server.js:1897:24)
+    at async NextNodeServer.renderToResponseImpl (/ragcoon/Frontend/node_modules/next/dist/server/base-server.js:1949:32)
+    at async NextNodeServer.pipeImpl (/ragcoon/Frontend/node_modules/next/dist/server/base-server.js:916:25)
+    at async NextNodeServer.handleCatchallRenderRequest (/ragcoon/Frontend/node_modules/next/dist/server/next-server.js:272:17)
+    at async NextNodeServer.handleRequestImpl (/ragcoon/Frontend/node_modules/next/dist/server/base-server.js:812:17)
+    at async invokeRender (/ragcoon/Frontend/node_modules/next/dist/server/lib/router-server.js:173:21)
+    at async handleRequest (/ragcoon/Frontend/node_modules/next/dist/server/lib/router-server.js:350:24)
+Killed
+
+> test@0.1.0 dev
+> next dev --port=5000
+
+  ▲ Next.js 14.2.7
+  - Local:        http://localhost:5000
+  - Environments: .env
+
+ ✓ Starting...
+ ✓ Ready in 3.1s
+ ○ Compiling /explore ...
+ ✓ Compiled /explore in 6.3s (483 modules)
+[DEPRECATED] Default export is deprecated. Instead use `import { create } from 'zustand'`.
+[DEPRECATED] `getStorage`, `serialize` and `deserialize` options are deprecated. Use `storage` option instead.
+ GET /_next/static/webpack/d450de5ae7bfd733.webpack.hot-update.json 404 in 6614ms
+Warning: A title element received an array with more than 1 element as children. In browsers title Elements can only have Text Nodes as children. If the children being rendered output more than a single text node in aggregate the browser will display markup and comments as text in the title and hydration will likely fail and fall back to client rendering
+    at title
+    at head
+    at Head (webpack-internal:///./node_modules/next/dist/pages/_document.js:308:1)
+    at html
+    at Html (webpack-internal:///./node_modules/next/dist/pages/_document.js:782:132)
+    at Document
+ ⚠ Fast Refresh had to perform a full reload. Read more: https://nextjs.org/docs/messages/fast-refresh-reload
+ GET /explore 200 in 6775ms
+ ○ Compiling / ...
+ ✓ Compiled / in 12.7s (1253 modules)
+[DEPRECATED] Default export is deprecated. Instead use `import { create } from 'zustand'`.
+[DEPRECATED] `getStorage`, `serialize` and `deserialize` options are deprecated. Use `storage` option instead.
+ GET /_next/static/webpack/d450de5ae7bfd733.webpack.hot-update.json 404 in 5036ms
+Warning: A title element received an array with more than 1 element as children. In browsers title Elements can only have Text Nodes as children. If the children being rendered output more than a single text node in aggregate the browser will display markup and comments as text in the title and hydration will likely fail and fall back to client rendering
+    at title
+    at head
+    at Head (webpack-internal:///./node_modules/next/dist/pages/_document.js:308:1)
+    at html
+    at Html (webpack-internal:///./node_modules/next/dist/pages/_document.js:782:132)
+    at Document
+ ⚠ Fast Refresh had to perform a full reload. Read more: https://nextjs.org/docs/messages/fast-refresh-reload
+ GET /explore 200 in 13156ms
+Warning: A title element received an array with more than 1 element as children. In browsers title Elements can only have Text Nodes as children. If the children being rendered output more than a single text node in aggregate the browser will display markup and comments as text in the title and hydration will likely fail and fall back to client rendering
+    at title
+    at head
+    at Head (webpack-internal:///./node_modules/next/dist/pages/_document.js:308:1)
+    at html
+    at Html (webpack-internal:///./node_modules/next/dist/pages/_document.js:782:132)
+    at Document
+ GET /explore 200 in 171ms
+Warning: A title element received an array with more than 1 element as children. In browsers title Elements can only have Text Nodes as children. If the children being rendered output more than a single text node in aggregate the browser will display markup and comments as text in the title and hydration will likely fail and fall back to client rendering
+    at title
+    at head
+    at Head (webpack-internal:///./node_modules/next/dist/pages/_document.js:308:1)
+    at html
+    at Html (webpack-internal:///./node_modules/next/dist/pages/_document.js:782:132)
+    at Document
+Warning: A title element received an array with more than 1 element as children. In browsers title Elements can only have Text Nodes as children. If the children being rendered output more than a single text node in aggregate the browser will display markup and comments as text in the title and hydration will likely fail and fall back to client rendering
+    at title
+    at head
+    at Head (webpack-internal:///./node_modules/next/dist/pages/_document.js:308:1)
+    at html
+    at Html (webpack-internal:///./node_modules/next/dist/pages/_document.js:782:132)
+    at Document
+Warning: A title element received an array with more than 1 element as children. In browsers title Elements can only have Text Nodes as children. If the children being rendered output more than a single text node in aggregate the browser will display markup and comments as text in the title and hydration will likely fail and fall back to client rendering
+    at title
+    at head
+    at Head (webpack-internal:///./node_modules/next/dist/pages/_document.js:308:1)
+    at html
+    at Html (webpack-internal:///./node_modules/next/dist/pages/_document.js:782:132)
+    at Document
+ GET / 200 in 27ms
+Warning: A title element received an array with more than 1 element as children. In browsers title Elements can only have Text Nodes as children. If the children being rendered output more than a single text node in aggregate the browser will display markup and comments as text in the title and hydration will likely fail and fall back to client rendering
+    at title
+    at head
+    at Head (webpack-internal:///./node_modules/next/dist/pages/_document.js:308:1)
+    at html
+    at Html (webpack-internal:///./node_modules/next/dist/pages/_document.js:782:132)
+    at Document
+ GET / 200 in 20ms
+Warning: A title element received an array with more than 1 element as children. In browsers title Elements can only have Text Nodes as children. If the children being rendered output more than a single text node in aggregate the browser will display markup and comments as text in the title and hydration will likely fail and fall back to client rendering
+    at title
+    at head
+    at Head (webpack-internal:///./node_modules/next/dist/pages/_document.js:308:1)
+    at html
+    at Html (webpack-internal:///./node_modules/next/dist/pages/_document.js:782:132)
+    at Document
+ GET / 200 in 25ms
+Warning: A title element received an array with more than 1 element as children. In browsers title Elements can only have Text Nodes as children. If the children being rendered output more than a single text node in aggregate the browser will display markup and comments as text in the title and hydration will likely fail and fall back to client rendering
+    at title
+    at head
+    at Head (webpack-internal:///./node_modules/next/dist/pages/_document.js:308:1)
+    at html
+    at Html (webpack-internal:///./node_modules/next/dist/pages/_document.js:782:132)
+    at Document
+ GET / 200 in 34ms
+ ○ Compiling /search ...
+ ✓ Compiled /search in 2.8s (1276 modules)
+[DEPRECATED] Default export is deprecated. Instead use `import { create } from 'zustand'`.
+[DEPRECATED] `getStorage`, `serialize` and `deserialize` options are deprecated. Use `storage` option instead.
+Warning: A title element received an array with more than 1 element as children. In browsers title Elements can only have Text Nodes as children. If the children being rendered output more than a single text node in aggregate the browser will display markup and comments as text in the title and hydration will likely fail and fall back to client rendering
+    at title
+    at head
+    at Head (webpack-internal:///./node_modules/next/dist/pages/_document.js:308:1)
+    at html
+    at Html (webpack-internal:///./node_modules/next/dist/pages/_document.js:782:132)
+    at Document
+ GET / 200 in 88ms
+Warning: A title element received an array with more than 1 element as children. In browsers title Elements can only have Text Nodes as children. If the children being rendered output more than a single text node in aggregate the browser will display markup and comments as text in the title and hydration will likely fail and fall back to client rendering
+    at title
+    at head
+    at Head (webpack-internal:///./node_modules/next/dist/pages/_document.js:308:1)
+    at html
+    at Html (webpack-internal:///./node_modules/next/dist/pages/_document.js:782:132)
+    at Document
+ GET /_next/data/development/search.json 200 in 55ms
+Warning: A title element received an array with more than 1 element as children. In browsers title Elements can only have Text Nodes as children. If the children being rendered output more than a single text node in aggregate the browser will display markup and comments as text in the title and hydration will likely fail and fall back to client rendering
+    at title
+    at head
+    at Head (webpack-internal:///./node_modules/next/dist/pages/_document.js:308:1)
+    at html
+    at Html (webpack-internal:///./node_modules/next/dist/pages/_document.js:782:132)
+    at Document
+ GET / 200 in 18ms
+Warning: A title element received an array with more than 1 element as children. In browsers title Elements can only have Text Nodes as children. If the children being rendered output more than a single text node in aggregate the browser will display markup and comments as text in the title and hydration will likely fail and fall back to client rendering
+    at title
+    at head
+    at Head (webpack-internal:///./node_modules/next/dist/pages/_document.js:308:1)
+    at html
+    at Html (webpack-internal:///./node_modules/next/dist/pages/_document.js:782:132)
+    at Document
+ GET /_next/data/development/explore.json 200 in 19ms
+Warning: A title element received an array with more than 1 element as children. In browsers title Elements can only have Text Nodes as children. If the children being rendered output more than a single text node in aggregate the browser will display markup and comments as text in the title and hydration will likely fail and fall back to client rendering
+    at title
+    at head
+    at Head (webpack-internal:///./node_modules/next/dist/pages/_document.js:308:1)
+    at html
+    at Html (webpack-internal:///./node_modules/next/dist/pages/_document.js:782:132)
+    at Document
+ GET / 200 in 21ms
+Warning: A title element received an array with more than 1 element as children. In browsers title Elements can only have Text Nodes as children. If the children being rendered output more than a single text node in aggregate the browser will display markup and comments as text in the title and hydration will likely fail and fall back to client rendering
+    at title
+    at head
+    at Head (webpack-internal:///./node_modules/next/dist/pages/_document.js:308:1)
+    at html
+    at Html (webpack-internal:///./node_modules/next/dist/pages/_document.js:782:132)
+    at Document
+ GET / 200 in 39ms
+Warning: A title element received an array with more than 1 element as children. In browsers title Elements can only have Text Nodes as children. If the children being rendered output more than a single text node in aggregate the browser will display markup and comments as text in the title and hydration will likely fail and fall back to client rendering
+    at title
+    at head
+    at Head (webpack-internal:///./node_modules/next/dist/pages/_document.js:308:1)
+    at html
+    at Html (webpack-internal:///./node_modules/next/dist/pages/_document.js:782:132)
+    at Document
+ GET /_next/data/development/explore.json 200 in 14ms
+Warning: A title element received an array with more than 1 element as children. In browsers title Elements can only have Text Nodes as children. If the children being rendered output more than a single text node in aggregate the browser will display markup and comments as text in the title and hydration will likely fail and fall back to client rendering
+    at title
+    at head
+    at Head (webpack-internal:///./node_modules/next/dist/pages/_document.js:308:1)
+    at html
+    at Html (webpack-internal:///./node_modules/next/dist/pages/_document.js:782:132)
+    at Document
+ GET /_next/data/development/search.json 200 in 26ms
+Warning: A title element received an array with more than 1 element as children. In browsers title Elements can only have Text Nodes as children. If the children being rendered output more than a single text node in aggregate the browser will display markup and comments as text in the title and hydration will likely fail and fall back to client rendering
+    at title
+    at head
+    at Head (webpack-internal:///./node_modules/next/dist/pages/_document.js:308:1)
+    at html
+    at Html (webpack-internal:///./node_modules/next/dist/pages/_document.js:782:132)
+    at Document
+ GET /_next/data/development/explore.json 200 in 19ms
+Warning: A title element received an array with more than 1 element as children. In browsers title Elements can only have Text Nodes as children. If the children being rendered output more than a single text node in aggregate the browser will display markup and comments as text in the title and hydration will likely fail and fall back to client rendering
+    at title
+    at head
+    at Head (webpack-internal:///./node_modules/next/dist/pages/_document.js:308:1)
+    at html
+    at Html (webpack-internal:///./node_modules/next/dist/pages/_document.js:782:132)
+    at Document
+ GET /_next/data/development/search.json 200 in 20ms
+ ○ Compiling /ai/[id]/chat ...
+ ✓ Compiled /ai/[id]/chat in 561ms (1286 modules)
+[DEPRECATED] Default export is deprecated. Instead use `import { create } from 'zustand'`.
+[DEPRECATED] `getStorage`, `serialize` and `deserialize` options are deprecated. Use `storage` option instead.
+ GET /_next/data/development/ai/0xf5532566bc1021868c009fd142a6a9d868248c4eb9cdf17018e848dfa4956c31_asvdvasd/chat.json?id=0xf5532566bc1021868c009fd142a6a9d868248c4eb9cdf17018e848dfa4956c31_asvdvasd 200 in 43ms
+Warning: A title element received an array with more than 1 element as children. In browsers title Elements can only have Text Nodes as children. If the children being rendered output more than a single text node in aggregate the browser will display markup and comments as text in the title and hydration will likely fail and fall back to client rendering
+    at title
+    at head
+    at Head (webpack-internal:///./node_modules/next/dist/pages/_document.js:308:1)
+    at html
+    at Html (webpack-internal:///./node_modules/next/dist/pages/_document.js:782:132)
+    at Document
+ GET / 200 in 37ms
+Warning: A title element received an array with more than 1 element as children. In browsers title Elements can only have Text Nodes as children. If the children being rendered output more than a single text node in aggregate the browser will display markup and comments as text in the title and hydration will likely fail and fall back to client rendering
+    at title
+    at head
+    at Head (webpack-internal:///./node_modules/next/dist/pages/_document.js:308:1)
+    at html
+    at Html (webpack-internal:///./node_modules/next/dist/pages/_document.js:782:132)
+    at Document
+ GET / 200 in 18ms
+Warning: A title element received an array with more than 1 element as children. In browsers title Elements can only have Text Nodes as children. If the children being rendered output more than a single text node in aggregate the browser will display markup and comments as text in the title and hydration will likely fail and fall back to client rendering
+    at title
+    at head
+    at Head (webpack-internal:///./node_modules/next/dist/pages/_document.js:308:1)
+    at html
+    at Html (webpack-internal:///./node_modules/next/dist/pages/_document.js:782:132)
+    at Document
+ GET /_next/data/development/explore.json 200 in 23ms
+
+> test@0.1.0 dev
+> next dev --port=5000
+
+  ▲ Next.js 14.2.7
+  - Local:        http://localhost:5000
+  - Environments: .env
+
+ ✓ Starting...
+ ✓ Ready in 3s
+ ○ Compiling / ...
+ ✓ Compiled / in 11.6s (1166 modules)
+ ✓ Compiled in 581ms (1166 modules)
+[DEPRECATED] Default export is deprecated. Instead use `import { create } from 'zustand'`.
+[DEPRECATED] `getStorage`, `serialize` and `deserialize` options are deprecated. Use `storage` option instead.
+Warning: A title element received an array with more than 1 element as children. In browsers title Elements can only have Text Nodes as children. If the children being rendered output more than a single text node in aggregate the browser will display markup and comments as text in the title and hydration will likely fail and fall back to client rendering
+    at title
+    at head
+    at Head (webpack-internal:///./node_modules/next/dist/pages/_document.js:308:1)
+    at html
+    at Html (webpack-internal:///./node_modules/next/dist/pages/_document.js:782:132)
+    at Document
+ GET / 200 in 13042ms
+Warning: A title element received an array with more than 1 element as children. In browsers title Elements can only have Text Nodes as children. If the children being rendered output more than a single text node in aggregate the browser will display markup and comments as text in the title and hydration will likely fail and fall back to client rendering
+    at title
+    at head
+    at Head (webpack-internal:///./node_modules/next/dist/pages/_document.js:308:1)
+    at html
+    at Html (webpack-internal:///./node_modules/next/dist/pages/_document.js:782:132)
+    at Document
+ GET / 200 in 91ms
+Warning: A title element received an array with more than 1 element as children. In browsers title Elements can only have Text Nodes as children. If the children being rendered output more than a single text node in aggregate the browser will display markup and comments as text in the title and hydration will likely fail and fall back to client rendering
+    at title
+    at head
+    at Head (webpack-internal:///./node_modules/next/dist/pages/_document.js:308:1)
+    at html
+    at Html (webpack-internal:///./node_modules/next/dist/pages/_document.js:782:132)
+    at Document
+ GET / 200 in 33ms
+ ○ Compiling /explore ...
+ ✓ Compiled /explore in 1443ms (1251 modules)
+[DEPRECATED] Default export is deprecated. Instead use `import { create } from 'zustand'`.
+[DEPRECATED] `getStorage`, `serialize` and `deserialize` options are deprecated. Use `storage` option instead.
+Warning: A title element received an array with more than 1 element as children. In browsers title Elements can only have Text Nodes as children. If the children being rendered output more than a single text node in aggregate the browser will display markup and comments as text in the title and hydration will likely fail and fall back to client rendering
+    at title
+    at head
+    at Head (webpack-internal:///./node_modules/next/dist/pages/_document.js:308:1)
+    at html
+    at Html (webpack-internal:///./node_modules/next/dist/pages/_document.js:782:132)
+    at Document
+ GET /_next/data/development/explore.json 200 in 186ms
