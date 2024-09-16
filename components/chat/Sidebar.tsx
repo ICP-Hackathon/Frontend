@@ -1,10 +1,5 @@
-import React, { useState } from "react";
-import {
-  Sheet,
-  SheetContent,
-  SheetHeader,
-  SheetTitle,
-} from "@/components/ui/sheet";
+import { useState } from "react";
+import { Sheet, SheetContent } from "@/components/ui/sheet";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { Search, ChevronDown, ChevronUp } from "lucide-react";
@@ -71,11 +66,11 @@ const Sidebar: React.FC<SidebarProps> = ({ isOpen, onClose }) => {
 
   return (
     <Sheet open={isOpen} onOpenChange={onClose}>
-      <SheetContent side="left" className="w-[300px] sm:w-[400px]">
-        <SheetHeader>
-          <SheetTitle>Menu</SheetTitle>
-        </SheetHeader>
-        <div className="py-4">
+      <SheetContent
+        side="left"
+        className="w-[300px] sm:w-[400px] p-0 flex flex-col pt-10"
+      >
+        <div className="p-4">
           <div className="relative">
             <Search className="absolute left-2 top-2.5 h-4 w-4 text-muted-foreground" />
             <Input
@@ -86,57 +81,59 @@ const Sidebar: React.FC<SidebarProps> = ({ isOpen, onClose }) => {
             />
           </div>
         </div>
-        <div className="space-y-6">
-          <div>
-            <h3 className="mb-2 font-semibold">Saved AI</h3>
-            {renderAIList(savedAIs, showMoreSaved)}
-            {savedAIs.length > 3 && (
-              <Button
-                variant="ghost"
-                onClick={() => setShowMoreSaved(!showMoreSaved)}
-                className="w-full mt-2"
-              >
-                {showMoreSaved ? (
-                    <ChevronUp className="ml-2 h-4 w-4" />
-                ) : (
-                  <>
-                    More <ChevronDown className="ml-2 h-4 w-4" />
-                  </>
-                )}
-              </Button>
-            )}
-          </div>
-          <div>
-            <h3 className="mb-2 font-semibold">AI History</h3>
-            {renderAIList(aiHistory, showMoreHistory)}
-            {aiHistory.length > 3 && (
-              <Button
-                variant="ghost"
-                onClick={() => setShowMoreHistory(!showMoreHistory)}
-                className="w-full mt-2"
-              >
-                {showMoreHistory ? (
-                  <>
-                    Less <ChevronUp className="ml-2 h-4 w-4" />
-                  </>
-                ) : (
-                  <>
-                    More <ChevronDown className="ml-2 h-4 w-4" />
-                  </>
-                )}
-              </Button>
-            )}
-          </div>
-          <div>
-            <h3 className="mb-2 font-semibold">Chat History</h3>
-            {chatHistory.map((chat) => (
-              <div key={chat.id} className="flex justify-between py-2">
-                <span className="truncate">{chat.title}</span>
-                <span className="text-sm text-muted-foreground">
-                  {chat.date}
-                </span>
-              </div>
-            ))}
+        <div className="flex-1 overflow-y-auto px-6">
+          <div className="space-y-6">
+            <div>
+              <h3 className="mb-2 font-semibold">Saved AI</h3>
+              {renderAIList(savedAIs, showMoreSaved)}
+              {savedAIs.length > 3 && (
+                <Button
+                  variant="ghost"
+                  onClick={() => setShowMoreSaved(!showMoreSaved)}
+                  className="w-full mt-2 justify-start px-2 hover:bg-transparent"
+                >
+                  {showMoreSaved ? (
+                    <ChevronUp className="size-6 text-primary-900" />
+                  ) : (
+                    <>
+                      <ChevronDown className="mr-2 size-6 text-primary-900" />
+                      More
+                    </>
+                  )}
+                </Button>
+              )}
+            </div>
+            <div>
+              <h3 className="mb-2 font-semibold">AI History</h3>
+              {renderAIList(aiHistory, showMoreHistory)}
+              {aiHistory.length > 3 && (
+                <Button
+                  variant="ghost"
+                  onClick={() => setShowMoreHistory(!showMoreHistory)}
+                  className="w-full mt-2 justify-start px-2 hover:bg-transparent"
+                >
+                  {showMoreHistory ? (
+                    <ChevronUp className="size-6 text-primary-900" />
+                  ) : (
+                    <>
+                      <ChevronDown className="mr-2 size-6 text-primary-900" />
+                      More
+                    </>
+                  )}
+                </Button>
+              )}
+            </div>
+            <div>
+              <h3 className="mb-2 font-semibold">Chat History</h3>
+              {chatHistory.map((chat) => (
+                <div key={chat.id} className="flex justify-between py-2">
+                  <span className="truncate">{chat.title}</span>
+                  <span className="text-sm text-muted-foreground">
+                    {chat.date}
+                  </span>
+                </div>
+              ))}
+            </div>
           </div>
         </div>
       </SheetContent>
