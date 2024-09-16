@@ -6,7 +6,8 @@ export type CategoryKey =
   | "social networking"
   | "business"
   | "developer tools"
-  | "graphics & design";
+  | "graphics & design"
+  | "others";
 
 interface CategorySelectorProps {
   categories: string[];
