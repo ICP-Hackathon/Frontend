@@ -11,14 +11,14 @@ import { Plus, Camera } from "lucide-react";
 import { createAI } from "@/utils/api/ai";
 
 type CategoryKey =
-  | "all"
   | "education"
   | "health & fitness"
   | "entertainment"
   | "social networking"
   | "business"
   | "developer tools"
-  | "graphics & design";
+  | "graphics & design"
+  | "others";
 
 const CreateCustomAISheet = () => {
   const [open, setOpen] = useState(false);
@@ -32,16 +32,22 @@ const CreateCustomAISheet = () => {
   const creator =
     "0xf5532566bc1021868c009fd142a6a9d868248c4eb9cdf17018e838dfa4956c31";
 
+  //ai 이름 띄어쓰기 변경
+  const handleNameChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const newName = e.target.value.replace(/\s+/g, "_");
+    setName(newName);
+  };
+
   const handleCreate = async () => {
     setLoading(true);
 
     const aiData = {
-      name: name, // Make sure 'name' is defined somewhere in your component
-      creator_address: creator, // Make sure 'creator' is defined
-      category: selectedCategory, // Make sure 'category' is defined
-      introductions: introductions, // Make sure 'introductions' is defined
-      contents: data, // Make sure 'contents' is defined
-      comments: "CreateAI", // Make sure 'logs' is defined
+      name: name,
+      creator_address: creator,
+      category: selectedCategory,
+      introductions: introductions,
+      contents: data,
+      comments: "CreateAI",
       image_url: "",
     };
 
@@ -113,7 +119,7 @@ const CreateCustomAISheet = () => {
                 id="nickname"
                 className="w-full p-2 border-b border-gray-300 focus:border-primary-900 focus:outline-none"
                 placeholder="Name your AI"
-                onChange={(e) => setName(e.target.value)}
+                onChange={handleNameChange}
               />
             </div>
 
