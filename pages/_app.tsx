@@ -3,6 +3,7 @@ import { useRouter } from "next/router";
 import Layout from "../components/Layout";
 import "../styles/globals.css";
 import { WalletProvider, SuiDevnetChain } from "@suiet/wallet-kit";
+import { Provider as JotaiProvider } from "jotai";
 
 type PageComponentProps = {
   title: string;
@@ -24,28 +25,32 @@ function MyApp({ Component, pageProps }: AppProps) {
 
   if (isLandingPage || isSetProfilePage) {
     return (
+      <JotaiProvider>
+        <WalletProvider
+          chains={[
+            SuiDevnetChain,
+            suiTestnetChain,
+          ]}
+        >
+          <PageComponent {...pageProps} />
+        </WalletProvider>
+      </JotaiProvider>
+    );
+  }
+
+  return (
+    <JotaiProvider>
       <WalletProvider
         chains={[
           SuiDevnetChain,
           suiTestnetChain,
         ]}
       >
-        <PageComponent {...pageProps} />
+        <Layout title={pageProps.title || "Near and Dear"}>
+            <PageComponent {...pageProps} />
+        </Layout>
       </WalletProvider>
-    );
-  }
-
-  return (
-    <WalletProvider
-      chains={[
-        SuiDevnetChain,
-        suiTestnetChain,
-      ]}
-    >
-      <Layout title={pageProps.title || "Near and Dear"}>
-          <PageComponent {...pageProps} />
-      </Layout>
-    </WalletProvider>
+    </JotaiProvider>
   );
 }
 
