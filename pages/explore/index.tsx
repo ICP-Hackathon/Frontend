@@ -66,12 +66,13 @@ export default function ExplorePage() {
             setSelectedAI={setSelectedAI}
           />
           <RecentSection
+            title = {"Recent"}
             trendCards={trendCards}
             setSelectedAI={setSelectedAI}
           />
         </>
       ) : (
-        <RecentSection trendCards={trendCards} setSelectedAI={setSelectedAI} />
+        <RecentSection title={selectedCategory} trendCards={trendCards} setSelectedAI={setSelectedAI} />
       )}
     </div>
   );

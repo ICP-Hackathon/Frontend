@@ -5,6 +5,7 @@ import CreateCustomAISheet from "@/components/MakeAI";
 import { useEffect, useState } from "react";
 import { CardData } from "@/utils/interface";
 import { fetchAIs } from "@/utils/api/ai";
+import { sliceAddress } from "@/utils/lib/address";
 
 export default function SearchPage() {
   const [todayCards, setTodayCards] = useState<CardData[] | null>(null);
@@ -39,7 +40,7 @@ export default function SearchPage() {
               key={item.ai_id}
               id={item.ai_id}
               name={item.name}
-              creator={item.creator}
+              creator={sliceAddress(item.creator_address)}
               category={item.category}
               introductions={item.introductions}
             />

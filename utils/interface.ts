@@ -104,7 +104,7 @@ export interface CardData {
   id: number | null | undefined;
   ai_id: string;
   name: string;
-  creator: string;
+  creator_address: string;
   category: string;
   image_url: string;
   introductions: string;

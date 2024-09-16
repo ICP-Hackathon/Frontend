@@ -2,6 +2,7 @@ import { Dialog, DialogTrigger } from "@/components/ui/dialog";
 import Card from './Card';
 import AIDetailsPopup from './AIDetailsPopup';
 import { CardData } from "@/utils/interface";
+import { sliceAddress } from "@/utils/lib/address";
 
 interface TodaySectionProps {
   isLoading: boolean;
@@ -24,10 +25,10 @@ const TodaySection: React.FC<TodaySectionProps> = ({ isLoading, todayCards, setS
             >
               <DialogTrigger asChild>
                 <div>
-                  <Card name={item.name} creator={item.creator} />
+                  <Card name={item.name} creator={sliceAddress(item.creator_address)} />
                 </div>
               </DialogTrigger>
-              <AIDetailsPopup id={item.ai_id} name={item.creator} />
+              <AIDetailsPopup id={item.ai_id} name={sliceAddress(item.creator_address)} />
             </Dialog>
           ))
         )}
