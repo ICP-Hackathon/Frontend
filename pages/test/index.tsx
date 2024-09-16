@@ -5,7 +5,9 @@ import Image from "next/image";
 import avatarImage from "@/assets/avatar.png";
 import { Message, ChatResponse } from "@/utils/interface";
 import { createChat, fetchChatHistory, sendMessage } from "@/utils/api/chat";
-import { Send } from "lucide-react";
+import { Menu, Send } from "lucide-react";
+import Sidebar from "@/components/chat/Sidebar";
+import { Button } from "@/components/ui/button";
 
 const AIChat = () => {
   const router = useRouter();
@@ -15,18 +17,15 @@ const AIChat = () => {
   const [isLoading, setIsLoading] = useState(false);
   const { user } = useUserStore();
   const messagesEndRef = useRef<HTMLDivElement>(null);
+  const [isSidebarOpen, setIsSidebarOpen] = useState(false);
 
-  const creator =
-    "0xf5532566bc1021868c009fd142a6a9d868248c4eb9cdf17018e848dfa4956c31";
-
-  const aiName = useMemo(() => {
-    if (typeof id === "string") {
-      const parts = id.split("_");
-      return parts.length > 2 ? parts[parts.length - 1] : parts[1];
-    }
-    return "AI Assistant";
-  }, [id]);
-
+  // const aiName = useMemo(() => {
+  //   if (typeof id === "string") {
+  //     const parts = id.split("_");
+  //     return parts.length > 2 ? parts[parts.length - 1] : parts[1];
+  //   }
+  //   return "AI Assistant";
+  // }, [id]);
 
   // const chatid = useMemo(() => {
   //   if (user && id) {
@@ -52,24 +51,24 @@ const AIChat = () => {
   // const initializeChat = async () => {
   //   if (!chatid || !user) return;
 
-    try {
-      const chatHistory = await fetchChatHistory(chatid, user.userid);
-      if (chatHistory.length === 0) {
-        await createChat({ ai_id: id as string, user_address: user.userid });
-        const welcomeMessage: Message = {
-          role: "ai",
-          content: "Hello! How can I assist you?",
-          timestamp: new Date().toISOString(),
-        };
-        setMessages([welcomeMessage]);
-        await sendMessage(chatid, welcomeMessage.content, aiName);
-      } else {
-        setMessages(chatHistory);
-      }
-    } catch (error) {
-      console.error("Error initializing chat:", error);
-    }
-  };
+  //   try {
+  //     const chatHistory = await fetchChatHistory(chatid, user.userid);
+  //     if (chatHistory.length === 0) {
+  //       await createChat({ aiid: id as string, userid: user.userid });
+  //       const welcomeMessage: Message = {
+  //         role: "ai",
+  //         content: "Hello! How can I assist you?",
+  //         timestamp: new Date().toISOString(),
+  //       };
+  //       setMessages([welcomeMessage]);
+  //       await sendMessage(chatid, welcomeMessage.content, aiName);
+  //     } else {
+  //       setMessages(chatHistory);
+  //     }
+  //   } catch (error) {
+  //     console.error("Error initializing chat:", error);
+  //   }
+  // };
 
   const handleSendMessage = async () => {
     // if (!input.trim() || !user || !chatid) return;
@@ -84,14 +83,14 @@ const AIChat = () => {
     setIsLoading(true);
 
     try {
-      const response = await sendMessage(chatid, input, creator);
-      const aiMessage: Message = {
-        role: "ai",
-        content: response.message,
-        timestamp: response.created_at,
-      };
-      setMessages((prevMessages) => [...prevMessages, aiMessage]);
-
+      // const response = await sendMessage(chatid, input, user.userid);
+      // const aiMessage: Message = {
+      //   role: "ai",
+      //   content: response.message,
+      //   timestamp: response.createdat,
+      // };
+      // setMessages((prevMessages) => [...prevMessages, aiMessage]);
+      console.log(messages);
     } catch (error) {
       console.error("Error sending message:", error);
     } finally {
@@ -107,7 +106,17 @@ const AIChat = () => {
   };
 
   return (
-    <div className="flex flex-col h-full -mx-4">
+    <div className="flex flex-col h-full">
+      <Button
+        variant="ghost"
+        className="fixed top-4 left-4 z-50"
+        onClick={() => setIsSidebarOpen(true)}
+      >
+        <Menu size={24} />
+      </Button>
+
+      <Sidebar isOpen={isSidebarOpen} onClose={() => setIsSidebarOpen(false)} />
+
       <div className="flex-grow overflow-y-auto p-4 space-y-4">
         {messages.map((message, index) => (
           <div
@@ -147,7 +156,11 @@ const AIChat = () => {
               type="text"
               value={input}
               onChange={(e) => setInput(e.target.value)}
-              onKeyDown={(e) => e.key === "Enter" && handleSendMessage()}
+              onKeyDown={(e) =>
+                e.key === "Enter" &&
+                !e.nativeEvent.isComposing &&
+                handleSendMessage()
+              }
               placeholder="Type your message..."
               className="w-full bg-transparent outline-none"
             />

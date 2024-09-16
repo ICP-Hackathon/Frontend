@@ -8,6 +8,7 @@ export interface LayoutProps {
 export interface HeaderBarProps {
   title: string;
   userProfileUrl?: string;
+  onMenuClick?: () => void;
 }
 
 // AI related inteface
