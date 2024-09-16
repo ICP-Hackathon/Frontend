@@ -16,6 +16,9 @@ const AIChat = () => {
   const { user } = useUserStore();
   const messagesEndRef = useRef<HTMLDivElement>(null);
 
+  const creator =
+    "0xf5532566bc1021868c009fd142a6a9d868248c4eb9cdf17018e848dfa4956c31";
+
   const aiName = useMemo(() => {
     if (typeof id === "string") {
       const parts = id.split("_");
@@ -51,7 +54,7 @@ const AIChat = () => {
     try {
       const chatHistory = await fetchChatHistory(chatid, user.userid);
       if (chatHistory.length === 0) {
-        await createChat({ aiid: id as string, userid: user.userid });
+        await createChat({ ai_id: id as string, user_address: user.userid });
         const welcomeMessage: Message = {
           role: "ai",
           content: "Hello! How can I assist you?",
@@ -80,11 +83,11 @@ const AIChat = () => {
     setIsLoading(true);
 
     try {
-      const response = await sendMessage(chatid, input, user.userid);
+      const response = await sendMessage(chatid, input, creator);
       const aiMessage: Message = {
         role: "ai",
         content: response.message,
-        timestamp: response.createdat,
+        timestamp: response.created_at,
       };
       setMessages((prevMessages) => [...prevMessages, aiMessage]);
     } catch (error) {

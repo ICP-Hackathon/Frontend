@@ -4,7 +4,7 @@ import { AICardProps } from "@/utils/interface";
 import CreateCustomAISheet from "@/components/MakeAI";
 import { useEffect, useState } from "react";
 import { CardData } from "@/utils/interface";
-import { fetchTodayAIs } from "@/utils/api/ai";
+import { fetchAIs } from "@/utils/api/ai";
 
 export default function SearchPage() {
   const [todayCards, setTodayCards] = useState<CardData[] | null>(null);
@@ -13,7 +13,7 @@ export default function SearchPage() {
   useEffect(() => {
     const loadAIModels = async () => {
       try {
-        const Todaydata = await fetchTodayAIs();
+        const Todaydata = await fetchAIs(0, 10);
         setTodayCards(Todaydata.ais);
         setIsLoading(false);
       } catch (error) {

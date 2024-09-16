@@ -95,7 +95,7 @@ export interface Message {
 export interface ChatResponse {
   chatcontentsid: string;
   chatid: string;
-  createdat: string;
+  created_at: string;
   senderid: string;
   message: string;
 }

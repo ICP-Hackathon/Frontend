@@ -17,7 +17,7 @@ export const AICard = ({
   const router = useRouter();
 
   const handleChatClick = () => {
-    router.push(`/chat/${id}`);
+    router.push(`/ai/${id}/chat`);
   };
 
   const [aiDetail, setAIDetail] = useState<any>();
