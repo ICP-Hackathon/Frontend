@@ -5,7 +5,9 @@ import Image from "next/image";
 import avatarImage from "@/assets/avatar.png";
 import { Message, ChatResponse } from "@/utils/interface";
 import { createChat, fetchChatHistory, sendMessage } from "@/utils/api/chat";
-import { Send } from "lucide-react";
+import { Menu, Send } from "lucide-react";
+import Sidebar from "@/components/chat/Sidebar";
+import { Button } from "@/components/ui/button";
 
 const AIChat = () => {
   const router = useRouter();
@@ -15,6 +17,7 @@ const AIChat = () => {
   const [isLoading, setIsLoading] = useState(false);
   const { user } = useUserStore();
   const messagesEndRef = useRef<HTMLDivElement>(null);
+  const [isSidebarOpen, setIsSidebarOpen] = useState(false);
 
   // const aiName = useMemo(() => {
   //   if (typeof id === "string") {
@@ -103,7 +106,17 @@ const AIChat = () => {
   };
 
   return (
-    <div className="flex flex-col h-full -mx-4">
+    <div className="flex flex-col h-full">
+      <Button
+        variant="ghost"
+        className="fixed top-4 left-4 z-50"
+        onClick={() => setIsSidebarOpen(true)}
+      >
+        <Menu size={24} />
+      </Button>
+
+      <Sidebar isOpen={isSidebarOpen} onClose={() => setIsSidebarOpen(false)} />
+
       <div className="flex-grow overflow-y-auto p-4 space-y-4">
         {messages.map((message, index) => (
           <div
@@ -143,7 +156,11 @@ const AIChat = () => {
               type="text"
               value={input}
               onChange={(e) => setInput(e.target.value)}
-              onKeyDown={(e) => e.key === "Enter" && handleSendMessage()}
+              onKeyDown={(e) =>
+                e.key === "Enter" &&
+                !e.nativeEvent.isComposing &&
+                handleSendMessage()
+              }
               placeholder="Type your message..."
               className="w-full bg-transparent outline-none"
             />

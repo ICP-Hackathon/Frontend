@@ -1,15 +1,29 @@
 import Image from "next/image";
 import Link from "next/link";
-import { User } from "lucide-react";
+import { User, Menu } from "lucide-react";
 import { HeaderBarProps } from "@/utils/interface";
 import { useUserStore } from "@/store/userStore";
+import { useRouter } from "next/router";
 
-const Header: React.FC<HeaderBarProps> = ({ title }) => {
+const Header: React.FC<HeaderBarProps> = ({ title, onMenuClick }) => {
   const user = useUserStore((state) => state.user);
+  const router = useRouter();
+
+  // /ai/[id]/chat
+  const isAIChat = /^\/ai\/[^/]+\/chat/.test(router.asPath) || router.asPath === "/test";
 
   return (
     <header className="bg-white py-4 px-6 flex items-center justify-between">
-      <div className="w-10" />
+      <div className="w-10">
+        {/* {isAIChat && (
+          <button
+            onClick={onMenuClick}
+            className="text-gray-600 hover:text-gray-900"
+          >
+            <Menu size={24} />
+          </button>
+        )} */}
+      </div>
       <h1 className="text-xl font-semibold text-gray-900">{title}</h1>
       <Link href="/mypage" passHref>
         <div className="w-10 h-10 rounded-full overflow-hidden bg-gray-200 flex items-center justify-center cursor-pointer">
