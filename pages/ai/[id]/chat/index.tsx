@@ -28,22 +28,22 @@ const AIChat = () => {
   }, [id]);
 
 
-  // const chatid = useMemo(() => {
-  //   if (user && id) {
-  //     return `${user.userid}_${id}`;
-  //   }
-  //   return null;
-  // }, [id, user]);
+  const chatid = useMemo(() => {
+    if (user && id) {
+      return `${user.userid}_${id}`;
+    }
+    return null;
+  }, [id, user]);
 
-  // useEffect(() => {
-  //   scrollToBottom();
-  // }, [messages]);
+  useEffect(() => {
+    scrollToBottom();
+  }, [messages]);
 
-  // useEffect(() => {
-  //   if (chatid && user) {
-  //     initializeChat();
-  //   }
-  // }, [chatid, user]);
+  useEffect(() => {
+    if (chatid && user) {
+      initializeChat();
+    }
+  }, [chatid, user]);
 
   const scrollToBottom = () => {
     messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });

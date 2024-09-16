@@ -1,3 +1,5 @@
+const API_BASE_URL = process.env.NEXT_PUBLIC_API_BASE_URL;
+
 export async function addUser(userData: {
   user_address: string;
   nickname: string;
@@ -7,7 +9,7 @@ export async function addUser(userData: {
   phone?: string;
 }) {
   const response = await fetch(
-    `${process.env.NEXT_PUBLIC_API_BASE_URL}/add_user/`,
+    `${process.env.NEXT_PUBLIC_API_BASE_URL}/users`,
     {
       method: "POST",
       headers: {
@@ -21,7 +23,7 @@ export async function addUser(userData: {
         country: userData.country || "",
         phone: userData.phone || "",
       }),
-    },
+    }
   );
 
   if (!response.ok) {
@@ -31,16 +33,24 @@ export async function addUser(userData: {
   return await response.json();
 }
 
+export async function fetchUser(user_address: string) {
+  const response = await fetch(`${API_BASE_URL}/users/exists/${user_address}`);
+  if (!response.ok) {
+    throw new Error("Network response was not ok");
+  }
+  return await response.json();
+}
+
 export async function fetchChatList(user_address: string) {
   const response = await fetch(
-    `${process.env.NEXT_PUBLIC_API_BASE_URL}/chats/${user_address}`,
+    `${process.env.NEXT_PUBLIC_API_BASE_URL}/chats/${user_address}`
   );
 
   if (!response.ok) {
     const errorText = await response.text();
     console.error("Error response body:", errorText);
     throw new Error(
-      `Failed to fetch chat list: ${response.status} ${response.statusText}`,
+      `Failed to fetch chat list: ${response.status} ${response.statusText}`
     );
   }
 
