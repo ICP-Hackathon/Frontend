@@ -1,26 +1,20 @@
-import { useState } from "react";
-import {
-  ChevronDown,
-  ChevronUp,
-  Heart,
-  Clock,
-  LucideIcon,
-  ArrowRight,
-} from "lucide-react";
+import { useEffect, useState } from "react";
+import { ChevronDown, ChevronUp, Heart, Clock, ArrowRight } from "lucide-react"; // named import 확인
 import Link from "next/link";
 import Image from "next/image";
 import { useRouter } from "next/router";
+import { fetchUserChats } from "@/utils/api/chat"; // 올바른 경로와 내보내기 확인
 
 interface AICardProps {
   name: string;
   creator: string;
   imageSrc?: string;
-  icon: LucideIcon;
+  icon: React.FC<any>;
 }
 
 interface DropdownMenuProps {
   title: string;
-  icon: LucideIcon;
+  icon: React.FC<any>;
   items: AICardProps[];
   isOpen: boolean;
   setOpenDropdown: (title: string) => void;
@@ -111,6 +105,24 @@ const DropdownMenu: React.FC<DropdownMenuProps> = ({
 
 const ChatPage: React.FC = () => {
   const [openDropdown, setOpenDropdown] = useState<string>("");
+  const [chats, setChats] = useState<AICardProps[] | null>(null);
+  const [isLoading, setIsLoading] = useState(true);
+
+  const creator =
+    "0xf5532566bc1021868c009fd142a6a9d868248c4eb9cdf17018e848dfa4956c31";
+
+  useEffect(() => {
+    const loadAIModels = async () => {
+      try {
+        const Todaydata = await fetchUserChats(creator); // API 호출 경로와 내보내기 확인
+        setChats(Todaydata.chats);
+        setIsLoading(false);
+      } catch (error) {
+        console.error(error);
+      }
+    };
+    loadAIModels();
+  }, []);
 
   return (
     <div className="min-h-[calc(100vh-140px)] bg-white flex flex-col justify-center items-center">

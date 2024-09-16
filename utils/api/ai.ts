@@ -6,7 +6,7 @@ export async function fetchTrendingAIs(
   limit: number
 ) {
   const response = await fetch(
-    `${API_BASE_URL}/get_trend_ais/${category}/${offset}/${limit}`
+    `${API_BASE_URL}/ais/trend/${category}/${offset}/${limit}`
   );
   if (!response.ok) {
     throw new Error("Network response was not ok");
@@ -14,8 +14,16 @@ export async function fetchTrendingAIs(
   return await response.json();
 }
 
+export async function fetchAIs(offset: number, limit: number) {
+  const response = await fetch(`${API_BASE_URL}/ais/base/${offset}/${limit}`);
+  if (!response.ok) {
+    throw new Error("Network response was not ok");
+  }
+  return await response.json();
+}
+
 export async function fetchTodayAIs() {
-  const response = await fetch(`${API_BASE_URL}/today_ais`);
+  const response = await fetch(`${API_BASE_URL}/ais/today_ais`);
   if (!response.ok) {
     throw new Error("Network response was not ok");
   }
@@ -23,7 +31,7 @@ export async function fetchTodayAIs() {
 }
 
 export async function fetchAIDetails(id: string) {
-  const response = await fetch(`${API_BASE_URL}/get_ai_detail/${id}`);
+  const response = await fetch(`${API_BASE_URL}/ais/ai_id/${id}`);
   if (!response.ok) {
     throw new Error("Network response was not ok");
   }
@@ -31,7 +39,7 @@ export async function fetchAIDetails(id: string) {
 }
 
 export async function fetchSearchAIs(name: string) {
-  const response = await fetch(`${API_BASE_URL}/search_ais/${name}`);
+  const response = await fetch(`${API_BASE_URL}/ais/search/${name}`);
   if (!response.ok) {
     if (response.status === 404) {
       throw new Error("No results found");
@@ -58,7 +66,7 @@ export async function createAI(aiData: {
   contents: string;
   comments: string;
 }) {
-  const response = await fetch(`${API_BASE_URL}/create_ai`, {
+  const response = await fetch(`${API_BASE_URL}/ais`, {
     method: "POST",
     headers: {
       "Content-Type": "application/json",
@@ -78,7 +86,7 @@ export async function createAI(aiData: {
 }
 
 export async function fetchMyAIs(userid: string) {
-  const response = await fetch(`${API_BASE_URL}/ai/myais/${userid}`);
+  const response = await fetch(`${API_BASE_URL}/ais/user/${userid}`);
   if (!response.ok) {
     throw new Error("Network response was not ok");
   }

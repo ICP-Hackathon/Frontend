@@ -1,5 +1,6 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import Image from "next/image";
+import { fetchMyAIs } from "@/utils/api/ai";
 
 interface AIBalanceCardProps {
   name: string;
@@ -64,6 +65,26 @@ export const AIBalanceCard: React.FC<AIBalanceCardProps> = ({
 };
 
 const MyBalancePage = () => {
+  const [myAIs, setMyAIs] = useState<AIBalanceCardProps[] | null>(null);
+  const [isLoading, setIsLoading] = useState(true);
+
+  const creator =
+    "0xf5532566bc1021868c009fd142a6a9d868248c4eb9cdf17018e848dfa4956c31";
+
+  useEffect(() => {
+    const loadAIModels = async () => {
+      try {
+        const Todaydata = await fetchMyAIs(creator); // API 호출 경로와 내보내기 확인
+        setMyAIs(Todaydata.ais);
+        setIsLoading(false);
+      } catch (error) {
+        console.error(error);
+      }
+    };
+    loadAIModels();
+  }, []);
+  console.log(myAIs);
+
   return (
     <div className="p-4 max-w-md mx-auto">
       <div className="bg-primary-900 text-white p-4 rounded-xl mb-6">
@@ -71,7 +92,7 @@ const MyBalancePage = () => {
           <div className="flex flex-col items-start border-r pr-2">
             <h2 className="text-xl font-semibold mr-2 mb-1">My Balance</h2>
             <span className="bg-white text-primary-900 px-4 rounded-full text-sm">
-              2 AIs
+              {myAIs?.length} AIs
             </span>
           </div>
           <div className="items-center mx-auto">
@@ -82,20 +103,16 @@ const MyBalancePage = () => {
       </div>
 
       <h2 className="text-xl font-semibold mb-4">Overview of AIs</h2>
-      <AIBalanceCard
-        name="Dating Advice AI"
-        category="relationship"
-        imageSrc="/api/placeholder/40/40"
-        usage="150 tokens"
-        earnings="$ 100,000"
-      />
-
-      <AIBalanceCard
-        name="NearGuide"
-        category="relationship"
-        usage="2210 tokens"
-        earnings="$ 120,132"
-      />
+      {myAIs?.map((ai) => (
+        <AIBalanceCard
+          key={ai.ai_id}
+          name={ai.name}
+          creator={ai.creator_address}
+          category={ai.category}
+          imageSrc="/api/placeholder/40/40"
+          earnings="$ 100,000"
+        />
+      ))}
     </div>
   );
 };

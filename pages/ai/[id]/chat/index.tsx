@@ -16,13 +16,17 @@ const AIChat = () => {
   const { user } = useUserStore();
   const messagesEndRef = useRef<HTMLDivElement>(null);
 
-  // const aiName = useMemo(() => {
-  //   if (typeof id === "string") {
-  //     const parts = id.split("_");
-  //     return parts.length > 2 ? parts[parts.length - 1] : parts[1];
-  //   }
-  //   return "AI Assistant";
-  // }, [id]);
+  const creator =
+    "0xf5532566bc1021868c009fd142a6a9d868248c4eb9cdf17018e848dfa4956c31";
+
+  const aiName = useMemo(() => {
+    if (typeof id === "string") {
+      const parts = id.split("_");
+      return parts.length > 2 ? parts[parts.length - 1] : parts[1];
+    }
+    return "AI Assistant";
+  }, [id]);
+
 
   // const chatid = useMemo(() => {
   //   if (user && id) {
@@ -48,24 +52,24 @@ const AIChat = () => {
   // const initializeChat = async () => {
   //   if (!chatid || !user) return;
 
-  //   try {
-  //     const chatHistory = await fetchChatHistory(chatid, user.userid);
-  //     if (chatHistory.length === 0) {
-  //       await createChat({ aiid: id as string, userid: user.userid });
-  //       const welcomeMessage: Message = {
-  //         role: "ai",
-  //         content: "Hello! How can I assist you?",
-  //         timestamp: new Date().toISOString(),
-  //       };
-  //       setMessages([welcomeMessage]);
-  //       await sendMessage(chatid, welcomeMessage.content, aiName);
-  //     } else {
-  //       setMessages(chatHistory);
-  //     }
-  //   } catch (error) {
-  //     console.error("Error initializing chat:", error);
-  //   }
-  // };
+    try {
+      const chatHistory = await fetchChatHistory(chatid, user.userid);
+      if (chatHistory.length === 0) {
+        await createChat({ ai_id: id as string, user_address: user.userid });
+        const welcomeMessage: Message = {
+          role: "ai",
+          content: "Hello! How can I assist you?",
+          timestamp: new Date().toISOString(),
+        };
+        setMessages([welcomeMessage]);
+        await sendMessage(chatid, welcomeMessage.content, aiName);
+      } else {
+        setMessages(chatHistory);
+      }
+    } catch (error) {
+      console.error("Error initializing chat:", error);
+    }
+  };
 
   const handleSendMessage = async () => {
     // if (!input.trim() || !user || !chatid) return;
@@ -80,14 +84,14 @@ const AIChat = () => {
     setIsLoading(true);
 
     try {
-      // const response = await sendMessage(chatid, input, user.userid);
-      // const aiMessage: Message = {
-      //   role: "ai",
-      //   content: response.message,
-      //   timestamp: response.createdat,
-      // };
-      // setMessages((prevMessages) => [...prevMessages, aiMessage]);
-      console.log(messages);
+      const response = await sendMessage(chatid, input, creator);
+      const aiMessage: Message = {
+        role: "ai",
+        content: response.message,
+        timestamp: response.created_at,
+      };
+      setMessages((prevMessages) => [...prevMessages, aiMessage]);
+
     } catch (error) {
       console.error("Error sending message:", error);
     } finally {
