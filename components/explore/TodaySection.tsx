@@ -16,11 +16,7 @@ const TodaySection: React.FC<TodaySectionProps> = ({
   todayCards,
   setSelectedAI,
 }) => {
-<<<<<<<<< Temporary merge branch 1
   const [isOpen, setIsOpen] = useState(false);
-=========
-  const [openDialogId, setOpenDialogId] = useState<number | null>(null); // Track open dialog by card ID
->>>>>>>>> Temporary merge branch 2
 
   return (
     <section className="mb-6 scrollbar-hide">
@@ -33,11 +29,7 @@ const TodaySection: React.FC<TodaySectionProps> = ({
             <Dialog
               key={item.id}
               onOpenChange={(open) => {
-<<<<<<<<< Temporary merge branch 1
                 setIsOpen(open);
-=========
-                setOpenDialogId(open ? item.id : null); // Ensure we store item.id as a number
->>>>>>>>> Temporary merge branch 2
                 setSelectedAI(open ? item : null);
               }}
             >
@@ -51,13 +43,7 @@ const TodaySection: React.FC<TodaySectionProps> = ({
                   />
                 </div>
               </DialogTrigger>
-
-<<<<<<<<< Temporary merge branch 1
               {isOpen && (
-=========
-              {/* Ensure both openDialogId and item.id are numbers for comparison */}
-              {openDialogId === item.id && (
->>>>>>>>> Temporary merge branch 2
                 <DialogContent>
                   <AIDetailsPopup
                     id={item.ai_id}
