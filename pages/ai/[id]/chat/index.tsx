@@ -20,7 +20,7 @@ const AIChat = () => {
       return `${wallet.address}_${id}`;
     }
     return null;
-  }, [id, user, wallet.address]);
+  }, [id, wallet.address]);
 
   useEffect(() => {
     scrollToBottom();
@@ -31,7 +31,7 @@ const AIChat = () => {
       initializeChat();
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [chatid, user]);
+  }, [chatId]);
 
   const scrollToBottom = () => {
     messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
