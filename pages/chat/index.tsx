@@ -5,6 +5,8 @@ import Image from "next/image";
 import { useRouter } from "next/router";
 import { fetchUserChats } from "@/utils/api/chat"; // 올바른 경로와 내보내기 확인
 import { useWallet } from "@suiet/wallet-kit";
+import { fetchLikeList } from "@/utils/api/user";
+import { sliceAddress } from "@/utils/lib/address";
 
 interface AICardProps {
   aiId: string;
@@ -62,7 +64,7 @@ const AICard: React.FC<AICardProps> = ({
       )}
       <div className="flex-1 text-left">
         <h3 className="text-sm font-semibold">{name}</h3>
-        <p className="text-xs text-gray-500">{creator}</p>
+        <p className="text-xs text-gray-500">{sliceAddress(creator)}</p>
       </div>
       <Icon className="text-primary-900" size={20} />
     </div>
@@ -105,6 +107,8 @@ const DropdownMenu: React.FC<DropdownMenuProps> = ({
 const ChatPage: React.FC = () => {
   const [openDropdown, setOpenDropdown] = useState<string>("");
   const [chats, setChats] = useState<AICardProps[]>([]);
+  const [likes, setLikes] = useState<AICardProps[]>([]);
+
   const [isLoading, setIsLoading] = useState(true);
   const wallet = useWallet();
 
@@ -112,15 +116,26 @@ const ChatPage: React.FC = () => {
     const loadAIModels = async () => {
       if (wallet.address) {
         try {
-          const Todaydata = await fetchUserChats(wallet?.address); // API 호출 경로와 내보내기 확인
-          const formattedChats = Todaydata?.chats?.map((chat: any) => ({
+          const ChatData = await fetchUserChats(wallet?.address); // API 호출 경로와 내보내기 확인
+          const formattedChats = ChatData?.chats?.map((chat: any) => ({
             aiId: chat.ai_id,
             name: chat.name,
-            creator: chat.creator,
+            creator: chat.creator_address,
             imageSrc: chat.imageSrc || "", // optional 속성 처리
             icon: Clock, // 적절한 기본 아이콘 설정
           }));
           setChats(formattedChats || []); // 데이터가 없을 때 빈 배열
+
+          const LikeData = await fetchLikeList(wallet?.address);
+          const formattedLikes = LikeData?.ais?.map((like: any) => ({
+            aiId: like.ai_id,
+            name: like.name,
+            creator: like.creator_address,
+            imageSrc: like.imageSrc || "", // optional 속성 처리
+            icon: Clock, // 적절한 기본 아이콘 설정
+          }));
+          setLikes(formattedLikes || []); // 데이터가 없을 때 빈 배열
+
           setIsLoading(false);
         } catch (error) {
           console.error(error);
@@ -136,7 +151,7 @@ const ChatPage: React.FC = () => {
         <DropdownMenu
           title="Choose from Saved AI"
           icon={Heart}
-          items={mockData.saved}
+          items={likes}
           isOpen={openDropdown === "Choose from Saved AI"}
           setOpenDropdown={setOpenDropdown}
         />

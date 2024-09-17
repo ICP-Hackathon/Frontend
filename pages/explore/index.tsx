@@ -1,7 +1,9 @@
 import { useEffect, useState } from "react";
 import { fetchTodayAIs, fetchTrendingAIs } from "@/utils/api/ai";
 import { CardData } from "@/utils/interface";
-import CategorySelector, { CategoryKey } from "@/components/explore/CategorySelector";
+import CategorySelector, {
+  CategoryKey,
+} from "@/components/explore/CategorySelector";
 import TodaySection from "@/components/explore/TodaySection";
 import RecentSection from "@/components/explore/RecentSection";
 
@@ -28,8 +30,6 @@ export default function ExplorePage() {
       try {
         const Todaydata = await fetchTodayAIs();
         setTodayCards(Todaydata.ais);
-        const Trenddata = await fetchTrendingAIs(selectedCategory, 0, 10);
-        setTrendCards(Trenddata.ais);
         setIsLoading(false);
       } catch (error) {
         console.error(error);
@@ -66,13 +66,17 @@ export default function ExplorePage() {
             setSelectedAI={setSelectedAI}
           />
           <RecentSection
-            title = {"Recent"}
+            title={"Recent"}
             trendCards={trendCards}
             setSelectedAI={setSelectedAI}
           />
         </>
       ) : (
-        <RecentSection title={selectedCategory} trendCards={trendCards} setSelectedAI={setSelectedAI} />
+        <RecentSection
+          title={selectedCategory}
+          trendCards={trendCards}
+          setSelectedAI={setSelectedAI}
+        />
       )}
     </div>
   );
