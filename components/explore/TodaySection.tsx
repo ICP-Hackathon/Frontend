@@ -43,7 +43,6 @@ const TodaySection: React.FC<TodaySectionProps> = ({
                   />
                 </div>
               </DialogTrigger>
-
               {isOpen && (
                 <DialogContent>
                   <AIDetailsPopup

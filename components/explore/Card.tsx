@@ -23,6 +23,7 @@ const Card: React.FC<CardProps> = ({ name, creator, ai_id, like }) => {
           ai_id: ai_id,
         };
         await addLike(userData);
+        window.location.reload();
       }
     } catch (error) {
       window.alert("Fail to Like AI");

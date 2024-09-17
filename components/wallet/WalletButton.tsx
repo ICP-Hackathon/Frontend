@@ -4,7 +4,7 @@ import { ConnectButton, ErrorCode } from "@suiet/wallet-kit";
 import "@suiet/wallet-kit/style.css";
 import { walletAtom } from "@/lib/states";
 import { useSetAtom } from "jotai";
-import { fetchUser } from "@/utils/api/user";
+import { fetchUserExists } from "@/utils/api/user";
 import { useRouter } from "next/router";
 import { useUserStore } from "@/store/userStore";
 
@@ -25,7 +25,7 @@ function WalletButton() {
         const checkUser = async (address: string) => {
           console.log(address);
           try {
-            const checkUser = await fetchUser(address);
+            const checkUser = await fetchUserExists(address);
             if (checkUser) {
               setUser(checkUser);
               router.push("/explore");
@@ -49,7 +49,7 @@ function WalletButton() {
       onConnectError={(error: BaseError) => {
         if (error.code === ErrorCode.WALLET__CONNECT_ERROR__USER_REJECTED) {
           console.warn(
-            "user rejected the connection to " + error.details?.wallet,
+            "user rejected the connection to " + error.details?.wallet
           );
         } else {
           console.warn("unknown connect error: ", error);

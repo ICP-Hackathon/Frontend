@@ -4,9 +4,10 @@ export async function fetchTrendingAIs(
   category: string,
   offset: number,
   limit: number,
+  address: string
 ) {
   const response = await fetch(
-    `${API_BASE_URL}/ais/trend/${category}/${offset}/${limit}`,
+    `${API_BASE_URL}/ais/trend/${address}/${category}/${offset}/${limit}`
   );
   if (!response.ok) {
     throw new Error("Network response was not ok");
@@ -78,7 +79,7 @@ export async function createAI(aiData: {
     const errorData = await response.text();
     console.error("Error response:", errorData);
     throw new Error(
-      `Failed to create AI: ${response.status} ${response.statusText}\n${errorData}`,
+      `Failed to create AI: ${response.status} ${response.statusText}\n${errorData}`
     );
   }
 
@@ -87,7 +88,6 @@ export async function createAI(aiData: {
 
 export async function fetchMyAIs(userid: string) {
   const response = await fetch(`${API_BASE_URL}/ais/user/${userid}`);
-  console.log("response", response);
   if (!response.ok) {
     throw new Error("Network response was not ok");
   }
@@ -126,7 +126,7 @@ export async function updateAI(aiData: {
     const errorData = await response.text();
     console.error("Error response:", errorData);
     throw new Error(
-      `Failed to update AI: ${response.status} ${response.statusText}\n${errorData}`,
+      `Failed to update AI: ${response.status} ${response.statusText}\n${errorData}`
     );
   }
 
