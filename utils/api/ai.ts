@@ -3,10 +3,10 @@ const API_BASE_URL = process.env.NEXT_PUBLIC_API_BASE_URL;
 export async function fetchTrendingAIs(
   category: string,
   offset: number,
-  limit: number
+  limit: number,
 ) {
   const response = await fetch(
-    `${API_BASE_URL}/ais/trend/${category}/${offset}/${limit}`
+    `${API_BASE_URL}/ais/trend/${category}/${offset}/${limit}`,
   );
   if (!response.ok) {
     throw new Error("Network response was not ok");
@@ -78,7 +78,7 @@ export async function createAI(aiData: {
     const errorData = await response.text();
     console.error("Error response:", errorData);
     throw new Error(
-      `Failed to create AI: ${response.status} ${response.statusText}\n${errorData}`
+      `Failed to create AI: ${response.status} ${response.statusText}\n${errorData}`,
     );
   }
 
@@ -87,6 +87,7 @@ export async function createAI(aiData: {
 
 export async function fetchMyAIs(userid: string) {
   const response = await fetch(`${API_BASE_URL}/ais/user/${userid}`);
+  console.log("response", response);
   if (!response.ok) {
     throw new Error("Network response was not ok");
   }
@@ -100,5 +101,34 @@ export async function deleteAI(id: string) {
   if (!response.ok) {
     throw new Error("Failed to delete AI");
   }
+  return await response.json();
+}
+
+export async function updateAI(aiData: {
+  ai_id: string;
+  user_address: string;
+  name: string;
+  image_url: string;
+  category: string;
+  introductions: string;
+  contents: string;
+  comments: string;
+}) {
+  const response = await fetch(`${API_BASE_URL}/ais`, {
+    method: "PUT",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify(aiData),
+  });
+
+  if (!response.ok) {
+    const errorData = await response.text();
+    console.error("Error response:", errorData);
+    throw new Error(
+      `Failed to update AI: ${response.status} ${response.statusText}\n${errorData}`,
+    );
+  }
+
   return await response.json();
 }

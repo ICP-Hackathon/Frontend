@@ -1,9 +1,9 @@
+import React, { useState } from "react";
 import { Dialog, DialogTrigger, DialogContent } from "@/components/ui/dialog";
 import Card from "./Card";
 import AIDetailsPopup from "./AIDetailsPopup";
 import { CardData } from "@/utils/interface";
 import { sliceAddress } from "@/utils/lib/address";
-import { useState } from "react";
 
 interface RecentSectionProps {
   title: string;
@@ -16,7 +16,7 @@ const RecentSection: React.FC<RecentSectionProps> = ({
   trendCards,
   setSelectedAI,
 }) => {
-  const [isOpen, setIsOpen] = useState(false); // Manage Dialog open state
+  const [isOpen, setIsOpen] = useState(false);
 
   return (
     <section className="mb-6">
@@ -26,13 +26,14 @@ const RecentSection: React.FC<RecentSectionProps> = ({
           <Dialog
             key={item.id}
             onOpenChange={(open) => {
-              setIsOpen(open); // Track whether the Dialog is open or not
-              setSelectedAI(open ? item : null); // Only set selected AI if open
+              setIsOpen(open);
+              setSelectedAI(open ? item : null);
             }}
           >
             <DialogTrigger asChild>
               <div>
                 <Card
+                  ai_id={item.ai_id}
                   name={item.name}
                   creator={sliceAddress(item.creator_address)}
                 />
@@ -41,7 +42,6 @@ const RecentSection: React.FC<RecentSectionProps> = ({
 
             {isOpen && (
               <DialogContent>
-                {/* AIDetailsPopup will only render when Dialog is open */}
                 <AIDetailsPopup
                   id={item.ai_id}
                   name={sliceAddress(item.creator_address)}

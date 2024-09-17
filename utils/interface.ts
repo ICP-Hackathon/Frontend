@@ -112,3 +112,12 @@ export interface CardData {
   image_url: string;
   introductions: string;
 }
+
+export interface User {
+  user_address: string;
+  nickname: string;
+  image_url?: string;
+  gender?: string;
+  country?: string;
+  phone?: string;
+}

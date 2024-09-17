@@ -1,33 +1,37 @@
 /* eslint-disable @next/next/no-img-element */
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useRouter } from "next/router";
 import CountrySelect from "@/components/setprofile/CountrySelect";
 import { UserRound } from "lucide-react";
-import { addUser } from "@/utils/api/user";
+import { updateUser } from "@/utils/api/user";
 import GenderSelect from "@/components/setprofile/GenderSelect";
 import { useUserStore } from "@/store/userStore";
 import { useWallet } from "@suiet/wallet-kit";
-import { User } from "@/utils/interface";
 import Image from "next/image";
 
-const SetProfilePage = () => {
+const EditProfilePage = () => {
   const [selectedProfile, setSelectedProfile] = useState(0);
-  const [nickname, setNickname] = useState("");
   const [gender, setGender] = useState("");
   const [country, setCountry] = useState("");
-  const [phoneCode, setPhoneCode] = useState("+86");
-  const [phoneNumber, setPhoneNumber] = useState("");
+  const [phone, setPhone] = useState("");
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState("");
   const wallet = useWallet();
   const router = useRouter();
 
-  const setUser = useUserStore((state) => state.setUser);
+  const { user, setUser } = useUserStore();
 
-  const handleNameChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const newName = e.target.value.replace(/\s+/g, "_");
-    setNickname(newName);
-  };
+  useEffect(() => {
+    if (user) {
+      setGender(user.gender || "");
+      setCountry(user.country || "");
+      setPhone(user.phone || "");
+      if (user.image_url) {
+        const index = profileImages.findIndex((img) => img === user.image_url);
+        setSelectedProfile(index !== -1 ? index + 1 : 0);
+      }
+    }
+  }, [user]);
 
   const profileImages = [
     "https://suietail.s3.ap-southeast-2.amazonaws.com/1.png",
@@ -47,25 +51,23 @@ const SetProfilePage = () => {
     }
 
     try {
-      const userData: User = {
-        //zklogin에서 user_address 받아오기Ï
+      const userData = {
         user_address: wallet.address,
-        nickname,
-        image_url:
-          selectedProfile > 0 ? profileImages[selectedProfile - 1] : "",
-        gender,
-        country,
-        phone: phoneNumber ? `${phoneCode}${phoneNumber}` : undefined,
+        ...(selectedProfile > 0 && {
+          image_url: profileImages[selectedProfile - 1],
+        }),
+        ...(gender && { gender }),
+        ...(country && { country }),
+        ...(phone && { phone }),
       };
 
-      const result = await addUser(userData);
-      console.log("User profile created:", result);
-      //store에 저장
+      const result = await updateUser(userData);
+      console.log("User profile updated:", result);
       setUser(result);
-      router.push("/explore");
+      router.push("/mypage");
     } catch (error) {
-      setError("Failed to create profile. Please try again.");
-      console.error("Error creating profile:", error);
+      setError("Failed to update profile. Please try again.");
+      console.error("Error updating profile:", error);
     } finally {
       setIsLoading(false);
     }
@@ -75,9 +77,11 @@ const SetProfilePage = () => {
     <div className="max-w-[600px] min-h-screen bg-white flex flex-col px-6">
       <div className="py-4 flex-shrink-0">
         <div className="text-3xl text-gray-900 font-bold mb-4">
-          Complete your profile
+          Edit your profile
         </div>
-        <p className="text-lg text-gray-600 mb-8">Select a profile picture!</p>
+        <p className="text-lg text-gray-600 mb-8">
+          Update your profile information
+        </p>
       </div>
 
       <div className="flex-grow overflow-y-auto pb-4">
@@ -118,24 +122,6 @@ const SetProfilePage = () => {
         </div>
 
         <form onSubmit={handleSubmit} className="space-y-6">
-          <div>
-            <label
-              htmlFor="nickname"
-              className="block text-sm font-medium text-gray-700 mb-1"
-            >
-              Nickname
-            </label>
-            <input
-              type="text"
-              id="nickname"
-              value={nickname}
-              onChange={handleNameChange}
-              className="w-full p-2 border-b border-gray-300 focus:border-primary-900 focus:outline-none"
-              placeholder="Name"
-              required
-            />
-          </div>
-
           <GenderSelect value={gender} onChange={setGender} />
           <CountrySelect value={country} onChange={setCountry} />
 
@@ -146,23 +132,14 @@ const SetProfilePage = () => {
             >
               Phone Number
             </label>
-            <div className="flex">
-              <input
-                type="text"
-                id="country-code"
-                value={phoneCode}
-                onChange={(e) => setPhoneCode(e.target.value)}
-                className="w-20 p-2 border-b border-gray-300 focus:border-primary-900 focus:outline-none"
-              />
-              <input
-                type="tel"
-                id="phone"
-                value={phoneNumber}
-                onChange={(e) => setPhoneNumber(e.target.value)}
-                className="flex-1 p-2 border-b border-gray-300 focus:border-primary-900 focus:outline-none"
-                placeholder="000-0000-0000"
-              />
-            </div>
+            <input
+              type="tel"
+              id="phone"
+              value={phone}
+              onChange={(e) => setPhone(e.target.value)}
+              className="w-full p-2 border-b border-gray-300 focus:border-primary-900 focus:outline-none"
+              placeholder="+1 123-456-7890"
+            />
           </div>
 
           {error && <p className="text-red-500">{error}</p>}
@@ -173,7 +150,7 @@ const SetProfilePage = () => {
               disabled={isLoading}
               className="w-full bg-primary-900 text-white py-4 rounded-full font-medium disabled:bg-gray-400"
             >
-              {isLoading ? "Creating Account..." : "Create Account"}
+              {isLoading ? "Updating Profile..." : "Update Profile"}
             </button>
           </div>
         </form>
@@ -182,4 +159,4 @@ const SetProfilePage = () => {
   );
 };
 
-export default SetProfilePage;
+export default EditProfilePage;

@@ -63,7 +63,7 @@ const AIDetailsPopup: React.FC<AIDetailsPropWithName> = ({ id, name }) => {
         <p className="text-gray-500 text-center">Created by {name}</p>
         <p className="text-gray-500 text-center">
           Avarage Token Usage :
-          <span className="text-black font-bold">
+          <span className="text-black font-bold ml-1">
             {Math.round(
               (aiDetail.prompt_tokens + aiDetail.completion_tokens) /
                 (aiDetail.chat_counts || 1)
