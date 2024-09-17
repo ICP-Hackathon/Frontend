@@ -7,7 +7,6 @@ import { useRouter } from "next/router";
 
 const Header: React.FC<HeaderBarProps> = ({ title, onMenuClick }) => {
   const user = useUserStore((state) => state.user);
-  console.log(user);
   const router = useRouter();
 
   // /ai/[id]/chat
