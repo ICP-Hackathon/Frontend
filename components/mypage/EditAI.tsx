@@ -1,13 +1,8 @@
 import { useState, useEffect } from "react";
-import {
-  Sheet,
-  SheetContent,
-  SheetTrigger,
-  SheetClose,
-} from "@/components/ui/sheet";
-import { Input } from "@/components/ui/input";
-import { Textarea } from "@/components/ui/textarea";
-import { Pencil, Camera } from "lucide-react";
+import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet";
+import { Pencil, Plus } from "lucide-react";
+import { useWallet } from "@suiet/wallet-kit";
+import { updateAI } from "@/utils/api/ai";
 
 type CategoryKey =
   | "education"
@@ -20,14 +15,14 @@ type CategoryKey =
   | "others";
 
 interface AIData {
-  ai_id: "string",
-  user_address: "string",
-  name: "string",
-  image_url: "string",
-  category: "string",
-  introductions: "string",
-  contents: "string",
-  comments: "string"
+  ai_id: string;
+  user_address: string;
+  name: string;
+  image_url: string;
+  category: string;
+  introductions: string;
+  contents: string;
+  comments: string;
 }
 
 interface EditAISheetProps {
@@ -40,14 +35,16 @@ const EditAISheet: React.FC<EditAISheetProps> = ({ ai, onUpdate }) => {
   const [selectedCategory, setSelectedCategory] = useState<string>(ai.category);
   const [name, setName] = useState(ai.name);
   const [introductions, setIntroductions] = useState(ai.introductions);
-  const [data, setData] = useState("");
+  const [data, setData] = useState(ai.contents);
   const [loading, setLoading] = useState(false);
+  const wallet = useWallet();
 
   useEffect(() => {
     if (open) {
       setSelectedCategory(ai.category);
       setName(ai.name);
       setIntroductions(ai.introductions);
+      setData(ai.contents);
     }
   }, [open, ai]);
 
@@ -60,10 +57,10 @@ const EditAISheet: React.FC<EditAISheetProps> = ({ ai, onUpdate }) => {
     setLoading(true);
 
     const updatedAIData = {
-      ai_id: ai.id,
-      user_address: user,
+      ai_id: ai.ai_id,
+      user_address: wallet.address ?? "",
       name: name,
-      image_url: "",
+      image_url: ai.image_url,
       category: selectedCategory,
       introductions: introductions,
       contents: data,
@@ -73,13 +70,7 @@ const EditAISheet: React.FC<EditAISheetProps> = ({ ai, onUpdate }) => {
     try {
       const res = await updateAI(updatedAIData);
       console.log("AI Updated successfully", res);
-      onUpdate({
-        ...ai,
-        name: name,
-        category: selectedCategory,
-        introductions: introductions,
-        contents: data,
-      });
+      onUpdate(updatedAIData);
     } catch (error) {
       console.error("Error updating AI:", error);
     } finally {
@@ -136,7 +127,7 @@ const EditAISheet: React.FC<EditAISheetProps> = ({ ai, onUpdate }) => {
                   htmlFor="ai-image"
                   className="absolute inset-0 flex items-center justify-center cursor-pointer"
                 >
-                  <Camera size={32} className="text-white" />
+                  <Plus size={32} className="text-white" />
                 </label>
               </div>
             </div>

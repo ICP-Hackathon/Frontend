@@ -1,12 +1,10 @@
-import React, { useState } from "react";
+import { useState } from "react";
 import {
   Sheet,
   SheetContent,
   SheetTrigger,
   SheetClose,
 } from "@/components/ui/sheet";
-import { Input } from "@/components/ui/input";
-import { Textarea } from "@/components/ui/textarea";
 import { Plus, Camera } from "lucide-react";
 import { createAI } from "@/utils/api/ai";
 import { useWallet } from "@suiet/wallet-kit";
@@ -41,7 +39,7 @@ const CreateCustomAISheet = () => {
 
     const aiData = {
       name: name,
-      creator_address: wallet.address,
+      creator_address: wallet.address ?? "",
       category: selectedCategory,
       introductions: introductions,
       contents: data,

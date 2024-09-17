@@ -28,6 +28,7 @@ export default function EditAIPage() {
     if (id) {
       fetchAIData();
     }
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [id]);
 
   const fetchAIData = async () => {

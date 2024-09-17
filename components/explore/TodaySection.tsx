@@ -29,7 +29,7 @@ const TodaySection: React.FC<TodaySectionProps> = ({
             <Dialog
               key={item.id}
               onOpenChange={(open) => {
-                setOpenDialogId(open ? item.id : null); // Track open state by card ID
+                setOpenDialogId(open ? String(item.id) : null);
                 setSelectedAI(open ? item : null);
               }}
             >
