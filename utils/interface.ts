@@ -106,6 +106,8 @@ export interface CardData {
   ai_id: string;
   name: string;
   creator_address: string;
+  creator: string;
+  like: boolean;
   category: string;
   image_url: string;
   introductions: string;

@@ -1,14 +1,15 @@
 import { addLike } from "@/utils/api/user";
 import { useWallet } from "@suiet/wallet-kit";
-import { Heart } from "lucide-react";
+import { Heart, Hexagon } from "lucide-react";
 
 interface CardProps {
   ai_id: string;
   name: string;
   creator: string;
+  like: boolean;
 }
 
-const Card: React.FC<CardProps> = ({ name, creator, ai_id }) => {
+const Card: React.FC<CardProps> = ({ name, creator, ai_id, like }) => {
   const wallet = useWallet();
 
   const handleSubmit = async (e: React.FormEvent) => {
@@ -36,7 +37,11 @@ const Card: React.FC<CardProps> = ({ name, creator, ai_id }) => {
         <p className="text-xs text-gray-500 min-h-[16px]">{creator}</p>
       </div>
       <button className="absolute top-2 right-2 text-gray-700">
-        <Heart size={16} onClick={handleSubmit} />
+        {like ? (
+          <Hexagon size={16} />
+        ) : (
+          <Heart size={16} onClick={handleSubmit} />
+        )}
       </button>
     </div>
   );

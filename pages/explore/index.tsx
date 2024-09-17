@@ -6,6 +6,7 @@ import CategorySelector, {
 } from "@/components/explore/CategorySelector";
 import TodaySection from "@/components/explore/TodaySection";
 import RecentSection from "@/components/explore/RecentSection";
+import { useWallet } from "@suiet/wallet-kit";
 
 const categories: string[] = [
   "All",
@@ -24,11 +25,13 @@ export default function ExplorePage() {
   const [todayCards, setTodayCards] = useState<CardData[] | null>(null);
   const [trendCards, setTrendCards] = useState<CardData[] | null>(null);
   const [isLoading, setIsLoading] = useState(true);
+  const wallet = useWallet();
 
   useEffect(() => {
     const loadAIModels = async () => {
       try {
-        const Todaydata = await fetchTodayAIs();
+        const Todaydata = await fetchTodayAIs(wallet?.address);
+        console.log(Todaydata);
         setTodayCards(Todaydata.ais);
         setIsLoading(false);
       } catch (error) {

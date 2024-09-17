@@ -39,6 +39,7 @@ const TodaySection: React.FC<TodaySectionProps> = ({
                     ai_id={item.ai_id}
                     name={item.name}
                     creator={sliceAddress(item.creator_address)}
+                    like={item.like}
                   />
                 </div>
               </DialogTrigger>
