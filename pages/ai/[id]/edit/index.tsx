@@ -123,9 +123,7 @@ const EditAIPage = () => {
   }
 
   return (
-    <div className="p-4 max-w-md mx-auto">
-      <h1 className="text-2xl font-semibold mb-6">Edit AI</h1>
-
+    <div className="p-2 max-w-md mx-auto">
       <div className="space-y-6">
         <div className="flex justify-center">
           <div className="relative size-20 bg-primary-900 rounded-full overflow-hidden">
