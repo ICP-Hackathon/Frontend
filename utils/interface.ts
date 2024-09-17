@@ -94,10 +94,10 @@ export interface Message {
 }
 
 export interface ChatResponse {
-  chatcontentsid: string;
-  chatid: string;
+  chat_contents_id: string;
+  chat_id: string;
   created_at: string;
-  senderid: string;
+  sender_id: string;
   message: string;
 }
 

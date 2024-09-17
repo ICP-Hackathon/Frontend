@@ -22,13 +22,13 @@ export async function createChat(chatData: {
         "Content-Type": "application/json",
       },
       body: JSON.stringify(chatData),
-    }
+    },
   );
   if (!response.ok) {
     const errorData = await response.text();
     console.error("Error response:", errorData);
     throw new Error(
-      `Failed to create AI: ${response.status} ${response.statusText}\n${errorData}`
+      `Failed to create AI: ${response.status} ${response.statusText}\n${errorData}`,
     );
   }
 
@@ -37,11 +37,11 @@ export async function createChat(chatData: {
 
 export async function fetchChatHistory(
   chatid: string,
-  userid: string
+  userid: string,
 ): Promise<Message[]> {
   try {
     const response = await fetch(
-      `${process.env.NEXT_PUBLIC_API_BASE_URL}/chats/contents/${chatid}`
+      `${process.env.NEXT_PUBLIC_API_BASE_URL}/chats/contents/${chatid}`,
     );
     if (!response.ok) {
       if (response.status === 404) {
@@ -50,11 +50,18 @@ export async function fetchChatHistory(
       throw new Error("Failed to fetch chat history");
     }
     const data = await response.json();
-    return data.chats.map((chat: ChatResponse) => ({
-      role: chat.senderid === userid ? "user" : "ai",
-      content: chat.message,
-      timestamp: chat.created_at,
-    }));
+
+    return data.chats.map((chat: ChatResponse) => {
+      const chatContentsId = chat.chat_contents_id || "";
+      const isAI = chatContentsId.startsWith("AI_");
+      const role = isAI ? "ai" : "user";
+
+      return {
+        role: role,
+        content: chat.message || "",
+        timestamp: chat.created_at || new Date().toISOString(),
+      };
+    });
   } catch (error) {
     console.error("Error fetching chat history:", error);
     throw error;
@@ -64,7 +71,7 @@ export async function fetchChatHistory(
 export async function sendMessage(
   chat_id: string,
   content: string,
-  sender: string
+  sender: string,
 ): Promise<ChatResponse> {
   const response = await fetch(
     `${process.env.NEXT_PUBLIC_API_BASE_URL}/chats/create_contents/${chat_id}`,
@@ -77,7 +84,7 @@ export async function sendMessage(
         sender_id: sender,
         message: content,
       }),
-    }
+    },
   );
 
   if (!response.ok) {

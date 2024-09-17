@@ -1,9 +1,9 @@
 import { useEffect, useState } from "react";
-import { ChevronDown, ChevronUp, Heart, Clock, ArrowRight } from "lucide-react"; // named import 확인
+import { ChevronDown, ChevronUp, Heart, Clock, ArrowRight } from "lucide-react";
 import Link from "next/link";
 import Image from "next/image";
 import { useRouter } from "next/router";
-import { fetchUserChats } from "@/utils/api/chat"; // 올바른 경로와 내보내기 확인
+import { fetchUserChats } from "@/utils/api/chat";
 import { useWallet } from "@suiet/wallet-kit";
 import { fetchLikeList } from "@/utils/api/user";
 import { sliceAddress } from "@/utils/lib/address";
@@ -24,15 +24,6 @@ interface DropdownMenuProps {
   setOpenDropdown: (title: string) => void;
 }
 
-const mockData = {
-  saved: [
-    { name: "GPT-4", creator: "OpenAI", icon: Heart },
-    { name: "Claude", creator: "Anthropic", icon: Heart },
-    { name: "DALL-E", creator: "OpenAI", icon: Heart },
-    { name: "Midjourney", creator: "Midjourney", icon: Heart },
-  ],
-};
-
 const AICard: React.FC<AICardProps> = ({
   aiId,
   name,
@@ -45,7 +36,7 @@ const AICard: React.FC<AICardProps> = ({
   return (
     <div
       className="p-4 bg-white rounded-lg flex items-center border hover:bg-gray-100 cursor-pointer transition-all duration-200"
-      onClick={() => router.push(`/ai/${aiId}/chat`)} // Navigate on click
+      onClick={() => router.push(`/ai/${aiId}/chat`)}
     >
       {imageSrc ? (
         <Image
@@ -132,7 +123,7 @@ const ChatPage: React.FC = () => {
             name: like.name,
             creator: like.creator_address,
             imageSrc: like.imageSrc || "", // optional 속성 처리
-            icon: Clock, // 적절한 기본 아이콘 설정
+            icon: Heart, // 적절한 기본 아이콘 설정
           }));
           setLikes(formattedLikes || []); // 데이터가 없을 때 빈 배열
 

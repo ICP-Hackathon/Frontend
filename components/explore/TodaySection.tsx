@@ -47,7 +47,6 @@ const TodaySection: React.FC<TodaySectionProps> = ({
               {/* Ensure both openDialogId and item.id are numbers for comparison */}
               {openDialogId === item.id && (
                 <DialogContent>
-                  {/* AIDetailsPopup will only render when the corresponding Dialog is open */}
                   <AIDetailsPopup
                     id={item.ai_id}
                     name={sliceAddress(item.creator_address)}

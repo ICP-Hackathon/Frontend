@@ -1,12 +1,10 @@
 import { useState, useEffect, useRef, useMemo } from "react";
 import { useRouter } from "next/router";
-import { useUserStore } from "@/store/userStore";
-import Image from "next/image";
-import avatarImage from "@/assets/avatar.png";
 import { Message, ChatResponse } from "@/utils/interface";
 import { createChat, fetchChatHistory, sendMessage } from "@/utils/api/chat";
 import { Send } from "lucide-react";
 import { useWallet } from "@suiet/wallet-kit";
+import Logo from "@/assets/logo_suietail.svg";
 
 const AIChat = () => {
   const router = useRouter();
@@ -14,56 +12,37 @@ const AIChat = () => {
   const [messages, setMessages] = useState<Message[]>([]);
   const [input, setInput] = useState("");
   const [isLoading, setIsLoading] = useState(false);
-  const { user } = useUserStore();
   const messagesEndRef = useRef<HTMLDivElement>(null);
   const wallet = useWallet();
-  const creator =
-    "0xf5532566bc1021868c009fd142a6a9d868248c4eb9cdf17018e848dfa4956c31";
 
-  const aiName = useMemo(() => {
-    if (typeof id === "string") {
-      const parts = id.split("_");
-      return parts.length > 2 ? parts[parts.length - 1] : parts[1];
-    }
-    return "AI Assistant";
-  }, [id]);
-
-  const chatid = useMemo(() => {
-    if (user && id) {
+  const chatId = useMemo(() => {
+    if (wallet.address && id) {
       return `${wallet.address}_${id}`;
     }
     return null;
-  }, [id, user, wallet.address]);
+  }, [id, wallet.address]);
 
   useEffect(() => {
     scrollToBottom();
   }, [messages]);
 
   useEffect(() => {
-    if (chatid && user) {
+    if (chatId && wallet.address) {
       initializeChat();
     }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [chatid, user]);
+  }, [chatId, wallet.address]);
 
   const scrollToBottom = () => {
     messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
   };
 
   const initializeChat = async () => {
-    if (!chatid || !user || !wallet.address) return;
+    if (!chatId || !wallet.address) return;
 
     try {
-      const chatHistory = await fetchChatHistory(chatid, wallet.address);
+      const chatHistory = await fetchChatHistory(chatId, wallet.address);
       if (chatHistory.length === 0) {
         await createChat({ ai_id: id as string, user_address: wallet.address });
-        const welcomeMessage: Message = {
-          role: "ai",
-          content: "Hello! How can I assist you?",
-          timestamp: new Date().toISOString(),
-        };
-        setMessages([welcomeMessage]);
-        // await sendMessage(chatid, welcomeMessage.content, aiName);
       } else {
         setMessages(chatHistory);
       }
@@ -73,7 +52,7 @@ const AIChat = () => {
   };
 
   const handleSendMessage = async () => {
-    if (!input.trim() || !user || !chatid) return;
+    if (!input.trim() || !wallet.address || !chatId) return;
 
     const userMessage: Message = {
       role: "user",
@@ -85,7 +64,7 @@ const AIChat = () => {
     setIsLoading(true);
 
     try {
-      const response = await sendMessage(chatid, input, creator);
+      const response = await sendMessage(chatId, input, wallet.address);
       const aiMessage: Message = {
         role: "ai",
         content: response.message,
@@ -108,7 +87,7 @@ const AIChat = () => {
 
   return (
     <div className="flex flex-col h-full -mx-4">
-      <div className="flex-grow overflow-y-auto p-4 space-y-4">
+      <div className="flex-grow overflow-y-auto p-4 space-y-4 pb-32">
         {messages.map((message, index) => (
           <div
             key={index}
@@ -116,6 +95,13 @@ const AIChat = () => {
               message.role === "user" ? "justify-end" : "justify-start"
             }`}
           >
+            {message.role === "ai" && (
+              <div className="mr-2 mb-2 flex-shrink-0">
+                <div className="w-10 h-10 rounded-full overflow-hidden bg-gray-100 flex items-center justify-center">
+                  <Logo className="" />
+                </div>
+              </div>
+            )}
             <div
               className={`max-w-[70%] p-3 rounded-lg ${
                 message.role === "user"
@@ -140,25 +126,27 @@ const AIChat = () => {
         )}
         <div ref={messagesEndRef} />
       </div>
-      <div className="fixed bottom-16 left-0 right-0 px-4 mb-4 max-w-[600px] mx-auto">
-        <div className="flex items-center space-x-2">
-          <div className="flex-grow bg-gray-100 rounded-lg px-5 py-4">
-            <input
-              type="text"
-              value={input}
-              onChange={(e) => setInput(e.target.value)}
-              onKeyDown={(e) => e.key === "Enter" && handleSendMessage()}
-              placeholder="Type your message..."
-              className="w-full bg-transparent outline-none"
-            />
+      <div className="fixed bottom-16 left-0 right-0 bg-white">
+        <div className="max-w-[600px] mx-auto px-4 py-4">
+          <div className="flex items-center space-x-2">
+            <div className="flex-grow bg-gray-100 rounded-lg px-5 py-4">
+              <input
+                type="text"
+                value={input}
+                onChange={(e) => setInput(e.target.value)}
+                onKeyDown={handleKeyDown}
+                placeholder="Type your message..."
+                className="w-full bg-transparent outline-none"
+              />
+            </div>
+            <button
+              onClick={handleSendMessage}
+              className="bg-primary-900 text-white rounded-full p-4 shadow shadow-green-200"
+              disabled={isLoading}
+            >
+              <Send size={20} />
+            </button>
           </div>
-          <button
-            onClick={handleSendMessage}
-            className="bg-primary-900 text-white rounded-full p-4 shadow shadow-green-200"
-            disabled={isLoading}
-          >
-            <Send size={20} />
-          </button>
         </div>
       </div>
     </div>
@@ -173,7 +161,4 @@ export async function getServerSideProps() {
       title: "AI Chat",
     },
   };
-}
-function initializeChat() {
-  throw new Error("Function not implemented.");
 }
