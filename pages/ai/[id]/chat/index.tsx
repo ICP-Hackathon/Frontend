@@ -44,6 +44,13 @@ const AIChat = () => {
       const chatHistory = await fetchChatHistory(chatId, wallet.address);
       if (chatHistory.length === 0) {
         await createChat({ ai_id: id as string, user_address: wallet.address });
+        // Add initial AI message
+        const initialMessage: Message = {
+          role: "ai",
+          content: "Hello! How can I assist you?",
+          timestamp: new Date().toISOString(),
+        };
+        setMessages([initialMessage]);
       } else {
         setMessages(chatHistory);
       }
