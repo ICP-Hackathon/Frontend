@@ -59,7 +59,6 @@ const CreateCustomAISheet = () => {
   };
 
   const categories: string[] = [
-    "All",
     "Education",
     "Health & Fitness",
     "Entertainment",
@@ -67,6 +66,7 @@ const CreateCustomAISheet = () => {
     "Business",
     "Developer tools",
     "Graphics & Design",
+    "Others",
   ];
 
   return (

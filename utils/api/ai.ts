@@ -87,6 +87,7 @@ export async function createAI(aiData: {
 
 export async function fetchMyAIs(userid: string) {
   const response = await fetch(`${API_BASE_URL}/ais/user/${userid}`);
+  console.log("response", response);
   if (!response.ok) {
     throw new Error("Network response was not ok");
   }

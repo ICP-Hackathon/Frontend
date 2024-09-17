@@ -61,6 +61,7 @@ const AICard: React.FC<AICardProps> = ({
 const MyPage = () => {
   const [myAIs, setMyAIs] = useState<AICardProps[]>([]);
   const [isLoading, setIsLoading] = useState(true);
+  const [error, setError] = useState<string | null>(null);
   const { user: storedUser, setUser } = useUserStore();
   const wallet = useWallet();
 
@@ -70,24 +71,55 @@ const MyPage = () => {
         const userData = await fetchUser(wallet.address);
         console.log("Fetched User Data:", userData);
         setUser(userData);
+        return userData;
       } catch (error) {
         console.error("Error fetching user data:", error);
-      } finally {
-        setIsLoading(false);
+        setError("Error fetching user data.");
+      }
+    }
+  };
+
+  const loadMyAIs = async () => {
+    if (wallet.address) {
+      try {
+        const aisData = await fetchMyAIs(wallet.address);
+        setMyAIs(aisData.ais);
+      } catch (error) {
+        console.error("Error fetching AI data:", error);
+        setError("Error fetching AI data.");
       }
     }
   };
 
   useEffect(() => {
-    if (!storedUser && wallet.address) {
-      loadUserData(); // storedUser가 없을 때만 데이터를 불러옴
-    } else {
-      setIsLoading(false); // storedUser가 이미 있으면 바로 로딩 해제
+    const initializeData = async () => {
+      setIsLoading(true);
+      let user = storedUser;
+      if (!user && wallet.address) {
+        user = await loadUserData();
+      }
+      if (user) {
+        await loadMyAIs();
+      }
+      setIsLoading(false);
+    };
+
+    initializeData();
+  }, [wallet.address]);
+
+  useEffect(() => {
+    if (storedUser) {
+      loadMyAIs();
+      setIsLoading(false);
     }
-  }, [wallet.address, storedUser, setUser]);
+  }, [storedUser]);
 
   if (isLoading) {
     return <div>Loading...</div>;
+  }
+
+  if (error) {
+    return <div className="text-red-500">{error}</div>;
   }
 
   if (!storedUser) {
@@ -104,7 +136,7 @@ const MyPage = () => {
                 src={storedUser.image_url}
                 alt="Selected profile"
                 className="w-full h-full object-cover transform scale-150 translate-y-[-10%]"
-                />
+              />
             ) : (
               <UserRound className="text-gray-400 size-16" />
             )}
@@ -125,9 +157,11 @@ const MyPage = () => {
 
       <h3 className="text-xl font-semibold py-2">My AI</h3>
       <div>
-        {myAIs.map((ai) => (
-          <AICard key={ai.ai_id} {...ai} />
-        ))}
+        {myAIs.length > 0 ? (
+          myAIs.map((ai) => <AICard key={ai.ai_id} {...ai} />)
+        ) : (
+          <p>You haven&apos;t created any AIs yet.</p>
+        )}
       </div>
     </div>
   );

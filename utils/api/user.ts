@@ -1,3 +1,5 @@
+import { AICardProps } from "../interface";
+
 const API_BASE_URL = process.env.NEXT_PUBLIC_API_BASE_URL;
 
 export async function addUser(userData: {
@@ -56,6 +58,15 @@ export async function fetchChatList(user_address: string) {
 
   const data = await response.json();
   return data;
+}
+
+export async function fetchMyAIs(user_address: string): Promise<AICardProps[]> {
+  const response = await fetch(`${API_BASE_URL}/ais/user/${user_address}`);
+  console.log("response", response);
+  if (!response.ok) {
+    throw new Error("Failed to fetch user's AIs");
+  }
+  return await response.json();
 }
 
 export async function updateUser(userData: {
