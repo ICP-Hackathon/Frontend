@@ -4,6 +4,7 @@ import { Message, ChatResponse } from "@/utils/interface";
 import { createChat, fetchChatHistory, sendMessage } from "@/utils/api/chat";
 import { Send } from "lucide-react";
 import { useWallet } from "@suiet/wallet-kit";
+import Logo from "@/assets/logo_suietail.svg";
 
 const AIChat = () => {
   const router = useRouter();
@@ -94,6 +95,13 @@ const AIChat = () => {
               message.role === "user" ? "justify-end" : "justify-start"
             }`}
           >
+            {message.role === "ai" && (
+              <div className="mr-2 mb-2 flex-shrink-0">
+                <div className="w-10 h-10 rounded-full overflow-hidden bg-gray-100 flex items-center justify-center">
+                  <Logo className="" />
+                </div>
+              </div>
+            )}
             <div
               className={`max-w-[70%] p-3 rounded-lg ${
                 message.role === "user"
@@ -118,25 +126,27 @@ const AIChat = () => {
         )}
         <div ref={messagesEndRef} />
       </div>
-      <div className="fixed bottom-16 left-0 right-0 px-4 mb-4 max-w-[600px] mx-auto">
-        <div className="flex items-center space-x-2">
-          <div className="flex-grow bg-gray-100 rounded-lg px-5 py-4">
-            <input
-              type="text"
-              value={input}
-              onChange={(e) => setInput(e.target.value)}
-              onKeyDown={handleKeyDown}
-              placeholder="Type your message..."
-              className="w-full bg-transparent outline-none"
-            />
+      <div className="fixed bottom-16 left-0 right-0 bg-white">
+        <div className="max-w-[600px] mx-auto px-4 py-4">
+          <div className="flex items-center space-x-2">
+            <div className="flex-grow bg-gray-100 rounded-lg px-5 py-4">
+              <input
+                type="text"
+                value={input}
+                onChange={(e) => setInput(e.target.value)}
+                onKeyDown={handleKeyDown}
+                placeholder="Type your message..."
+                className="w-full bg-transparent outline-none"
+              />
+            </div>
+            <button
+              onClick={handleSendMessage}
+              className="bg-primary-900 text-white rounded-full p-4 shadow shadow-green-200"
+              disabled={isLoading}
+            >
+              <Send size={20} />
+            </button>
           </div>
-          <button
-            onClick={handleSendMessage}
-            className="bg-primary-900 text-white rounded-full p-4 shadow shadow-green-200"
-            disabled={isLoading}
-          >
-            <Send size={20} />
-          </button>
         </div>
       </div>
     </div>
