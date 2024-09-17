@@ -20,7 +20,7 @@ const AIChat = () => {
       return `${wallet.address}_${id}`;
     }
     return null;
-  }, [id, user, wallet.address]);
+  }, [id, wallet.address]);
 
   useEffect(() => {
     scrollToBottom();
@@ -31,7 +31,7 @@ const AIChat = () => {
       initializeChat();
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [chatid, user]);
+  }, [chatId]);
 
   const scrollToBottom = () => {
     messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
@@ -128,7 +128,7 @@ const AIChat = () => {
         <div ref={messagesEndRef} />
       </div>
       <div className="fixed bottom-16 left-0 right-0 bg-white">
-        <div className="max-w-[600px] mx-auto px-4 py-4">
+        <div className="max-w-[600px] mx-auto px-3 py-3">
           <div className="flex items-center space-x-2">
             <div className="flex-grow bg-gray-100 rounded-lg px-5 py-4">
               <input

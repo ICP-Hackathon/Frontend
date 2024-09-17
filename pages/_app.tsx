@@ -20,7 +20,7 @@ function MyApp({ Component, pageProps }: AppProps) {
 	};
 
   // Check if the current route is the landing page
-  const isLandingPage = router.pathname === "/landing";
+  const isLandingPage = router.pathname === "/";
   const isSetProfilePage = router.pathname === "/setprofile";
 
   if (isLandingPage || isSetProfilePage) {
