@@ -7,6 +7,7 @@ import { updateUser } from "@/utils/api/user";
 import GenderSelect from "@/components/setprofile/GenderSelect";
 import { useUserStore } from "@/store/userStore";
 import { useWallet } from "@suiet/wallet-kit";
+import Image from "next/image";
 
 const EditProfilePage = () => {
   const [selectedProfile, setSelectedProfile] = useState(0);
@@ -88,10 +89,12 @@ const EditProfilePage = () => {
           {selectedProfile === 0 ? (
             <UserRound className="text-gray-400 size-24" />
           ) : (
-            <img
+            <Image
               src={profileImages[selectedProfile - 1]}
               alt="Selected profile"
-              className="w-full h-full object-cover transform scale-150 translate-y-[-10%]"
+              width={128}
+              height={128}
+              className="object-cover transform scale-150 translate-y-[-10%]"
             />
           )}
         </div>
@@ -107,10 +110,12 @@ const EditProfilePage = () => {
                   : "border-transparent"
               }`}
             >
-              <img
+              <Image
                 src={img}
                 alt={`Profile ${index + 1}`}
-                className="w-full h-full object-cover transform scale-150 translate-y-[-10%]"
+                width={64}
+                height={64}
+                className="object-cover transform scale-150 translate-y-[-10%]"
               />
             </button>
           ))}
