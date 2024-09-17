@@ -4,9 +4,10 @@ import { ConnectButton, ErrorCode } from "@suiet/wallet-kit";
 import "@suiet/wallet-kit/style.css";
 import { walletAtom } from "@/lib/states";
 import { useSetAtom } from "jotai";
-import { fetchUserExists } from "@/utils/api/user";
+import { fetchUserExists, fetchUser } from "@/utils/api/user";
 import { useRouter } from "next/router";
 import { useUserStore } from "@/store/userStore";
+import { User } from "@/utils/interface";
 
 function WalletButton() {
   const wallet = useWallet();
@@ -16,32 +17,51 @@ function WalletButton() {
 
   useEffect(() => {
     if (wallet.connected) {
-      console.log("wallet connected");
-      console.log("current wallet: ", wallet);
+      console.log("Wallet connected");
+      console.log("Current wallet: ", wallet);
       setWallet(wallet);
       setUserWallet(wallet);
 
       if (wallet.address) {
-        const checkUser = async (address: string) => {
-          console.log(address);
+        const checkAndSetUser = async (address: string) => {
           try {
-            const checkUser = await fetchUserExists(address);
-            if (checkUser) {
-              setUser(checkUser);
+            const userExists = await fetchUserExists(address);
+
+            if (userExists) {
+              const userInfo = await fetchUser(address);
+              const requiredProps: (keyof User)[] = [
+                "user_address",
+                "nickname",
+                "image_url",
+                "gender",
+                "country",
+                "phone",
+              ];
+              const missingProps = requiredProps.filter(
+                (prop) => !(prop in userInfo),
+              );
+
+              if (missingProps.length > 0) {
+                console.warn(
+                  `Missing user properties: ${missingProps.join(", ")}`,
+                );
+              }
+
+              setUser(userInfo as User);
               router.push("/explore");
             } else {
               router.push("/setprofile");
             }
           } catch (error) {
-            console.error(error);
+            console.error("Error checking user or fetching user info:", error);
           }
         };
-        checkUser(wallet.address);
+        checkAndSetUser(wallet.address);
       }
     } else {
-      console.log("wallet disconnected");
+      console.log("Wallet disconnected");
     }
-  }, [wallet]);
+  }, [wallet, setWallet, setUserWallet, setUser, router]);
 
   return (
     <ConnectButton
@@ -49,10 +69,10 @@ function WalletButton() {
       onConnectError={(error: BaseError) => {
         if (error.code === ErrorCode.WALLET__CONNECT_ERROR__USER_REJECTED) {
           console.warn(
-            "user rejected the connection to " + error.details?.wallet
+            "User rejected the connection to " + error.details?.wallet,
           );
         } else {
-          console.warn("unknown connect error: ", error);
+          console.warn("Unknown connect error: ", error);
         }
       }}
       onConnectSuccess={(walletName: string) => {
