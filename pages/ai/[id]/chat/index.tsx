@@ -6,6 +6,7 @@ import avatarImage from "@/assets/avatar.png";
 import { Message, ChatResponse } from "@/utils/interface";
 import { createChat, fetchChatHistory, sendMessage } from "@/utils/api/chat";
 import { Send } from "lucide-react";
+import { useWallet } from "@suiet/wallet-kit";
 
 const AIChat = () => {
   const router = useRouter();
@@ -15,7 +16,7 @@ const AIChat = () => {
   const [isLoading, setIsLoading] = useState(false);
   const { user } = useUserStore();
   const messagesEndRef = useRef<HTMLDivElement>(null);
-
+  const wallet = useWallet();
   const creator =
     "0xf5532566bc1021868c009fd142a6a9d868248c4eb9cdf17018e848dfa4956c31";
 
@@ -27,35 +28,34 @@ const AIChat = () => {
     return "AI Assistant";
   }, [id]);
 
+  const chatid = useMemo(() => {
+    if (user && id) {
+      return `${wallet.address}_${id}`;
+    }
+    return null;
+  }, [id, user]);
 
-  // const chatid = useMemo(() => {
-  //   if (user && id) {
-  //     return `${user.userid}_${id}`;
-  //   }
-  //   return null;
-  // }, [id, user]);
+  useEffect(() => {
+    scrollToBottom();
+  }, [messages]);
 
-  // useEffect(() => {
-  //   scrollToBottom();
-  // }, [messages]);
-
-  // useEffect(() => {
-  //   if (chatid && user) {
-  //     initializeChat();
-  //   }
-  // }, [chatid, user]);
+  useEffect(() => {
+    if (chatid && user) {
+      initializeChat();
+    }
+  }, [chatid, user]);
 
   const scrollToBottom = () => {
     messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
   };
 
-  // const initializeChat = async () => {
-  //   if (!chatid || !user) return;
+  const initializeChat = async () => {
+    if (!chatid || !user) return;
 
     try {
-      const chatHistory = await fetchChatHistory(chatid, user.userid);
+      const chatHistory = await fetchChatHistory(chatid, wallet.address);
       if (chatHistory.length === 0) {
-        await createChat({ ai_id: id as string, user_address: user.userid });
+        await createChat({ ai_id: id as string, user_address: wallet.address });
         const welcomeMessage: Message = {
           role: "ai",
           content: "Hello! How can I assist you?",
@@ -72,7 +72,7 @@ const AIChat = () => {
   };
 
   const handleSendMessage = async () => {
-    // if (!input.trim() || !user || !chatid) return;
+    if (!input.trim() || !user || !chatid) return;
 
     const userMessage: Message = {
       role: "user",
@@ -91,7 +91,6 @@ const AIChat = () => {
         timestamp: response.created_at,
       };
       setMessages((prevMessages) => [...prevMessages, aiMessage]);
-
     } catch (error) {
       console.error("Error sending message:", error);
     } finally {
@@ -173,4 +172,7 @@ export async function getServerSideProps() {
       title: "AI Chat",
     },
   };
+}
+function initializeChat() {
+  throw new Error("Function not implemented.");
 }

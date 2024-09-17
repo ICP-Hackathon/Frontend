@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import Image from "next/image";
 import { fetchMyAIs } from "@/utils/api/ai";
+import { useWallet } from "@suiet/wallet-kit";
 
 interface AIBalanceCardProps {
   name: string;
@@ -67,22 +68,23 @@ export const AIBalanceCard: React.FC<AIBalanceCardProps> = ({
 const MyBalancePage = () => {
   const [myAIs, setMyAIs] = useState<AIBalanceCardProps[] | null>(null);
   const [isLoading, setIsLoading] = useState(true);
-
-  const creator =
-    "0xf5532566bc1021868c009fd142a6a9d868248c4eb9cdf17018e848dfa4956c31";
+  const wallet = useWallet();
 
   useEffect(() => {
     const loadAIModels = async () => {
-      try {
-        const Todaydata = await fetchMyAIs(creator); // API 호출 경로와 내보내기 확인
-        setMyAIs(Todaydata.ais);
-        setIsLoading(false);
-      } catch (error) {
-        console.error(error);
+      if (wallet.address) {
+        try {
+          const Todaydata = await fetchMyAIs(wallet.address); // API 호출 경로와 내보내기 확인
+          setMyAIs(Todaydata.ais);
+          setIsLoading(false);
+        } catch (error) {
+          console.error(error);
+        }
       }
     };
     loadAIModels();
-  }, []);
+  }, [wallet]);
+
   console.log(myAIs);
 
   return (
@@ -108,6 +110,7 @@ const MyBalancePage = () => {
           key={ai.ai_id}
           name={ai.name}
           creator={ai.creator_address}
+          usage={ai.prompt_tokens + ai.completion_tokens}
           category={ai.category}
           imageSrc="/api/placeholder/40/40"
           earnings="$ 100,000"

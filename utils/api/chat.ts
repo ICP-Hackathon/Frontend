@@ -3,7 +3,7 @@ import { Message, ChatResponse } from "@/utils/interface";
 const API_BASE_URL = process.env.NEXT_PUBLIC_API_BASE_URL;
 
 export async function fetchUserChats(user_address: string) {
-  const response = await fetch(`${API_BASE_URL}/chats/${user_address}`);
+  const response = await fetch(`${API_BASE_URL}/chats/user/${user_address}`);
   if (!response.ok) {
     throw new Error("Network response was not ok");
   }

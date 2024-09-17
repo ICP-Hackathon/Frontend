@@ -9,6 +9,7 @@ import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { Plus, Camera } from "lucide-react";
 import { createAI } from "@/utils/api/ai";
+import { useWallet } from "@suiet/wallet-kit";
 
 type CategoryKey =
   | "education"
@@ -27,10 +28,7 @@ const CreateCustomAISheet = () => {
   const [introductions, setIntroductions] = useState("");
   const [data, setData] = useState("");
   const [loading, setLoading] = useState(false);
-
-  // creator는 나중에 store로 관리할 예정
-  const creator =
-    "0xf5532566bc1021868c009fd142a6a9d868248c4eb9cdf17018e838dfa4956c31";
+  const wallet = useWallet();
 
   //ai 이름 띄어쓰기 변경
   const handleNameChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -43,7 +41,7 @@ const CreateCustomAISheet = () => {
 
     const aiData = {
       name: name,
-      creator_address: creator,
+      creator_address: wallet.address,
       category: selectedCategory,
       introductions: introductions,
       contents: data,

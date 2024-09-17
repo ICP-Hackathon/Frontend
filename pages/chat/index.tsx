@@ -4,8 +4,10 @@ import Link from "next/link";
 import Image from "next/image";
 import { useRouter } from "next/router";
 import { fetchUserChats } from "@/utils/api/chat"; // 올바른 경로와 내보내기 확인
+import { useWallet } from "@suiet/wallet-kit";
 
 interface AICardProps {
+  aiId: string;
   name: string;
   creator: string;
   imageSrc?: string;
@@ -27,13 +29,10 @@ const mockData = {
     { name: "DALL-E", creator: "OpenAI", icon: Heart },
     { name: "Midjourney", creator: "Midjourney", icon: Heart },
   ],
-  history: [
-    { name: "DALL-E", creator: "OpenAI", icon: Clock },
-    { name: "Midjourney", creator: "Midjourney", icon: Clock },
-  ],
 };
 
 const AICard: React.FC<AICardProps> = ({
+  aiId,
   name,
   creator,
   imageSrc,
@@ -44,7 +43,7 @@ const AICard: React.FC<AICardProps> = ({
   return (
     <div
       className="p-4 bg-white rounded-lg flex items-center border hover:bg-gray-100 cursor-pointer transition-all duration-200"
-      onClick={() => router.push(`/chat/${encodeURIComponent(name)}`)} // Navigate on click
+      onClick={() => router.push(`/ai/${aiId}/chat`)} // Navigate on click
     >
       {imageSrc ? (
         <Image
@@ -105,25 +104,31 @@ const DropdownMenu: React.FC<DropdownMenuProps> = ({
 
 const ChatPage: React.FC = () => {
   const [openDropdown, setOpenDropdown] = useState<string>("");
-  const [chats, setChats] = useState<AICardProps[] | null>(null);
+  const [chats, setChats] = useState<AICardProps[]>([]);
   const [isLoading, setIsLoading] = useState(true);
-
-  const creator =
-    "0xf5532566bc1021868c009fd142a6a9d868248c4eb9cdf17018e848dfa4956c31";
+  const wallet = useWallet();
 
   useEffect(() => {
     const loadAIModels = async () => {
-      try {
-        const Todaydata = await fetchUserChats(creator); // API 호출 경로와 내보내기 확인
-        setChats(Todaydata.chats);
-        setIsLoading(false);
-      } catch (error) {
-        console.error(error);
+      if (wallet.address) {
+        try {
+          const Todaydata = await fetchUserChats(wallet?.address); // API 호출 경로와 내보내기 확인
+          const formattedChats = Todaydata?.chats?.map((chat: any) => ({
+            aiId: chat.ai_id,
+            name: chat.name,
+            creator: chat.creator,
+            imageSrc: chat.imageSrc || "", // optional 속성 처리
+            icon: Clock, // 적절한 기본 아이콘 설정
+          }));
+          setChats(formattedChats || []); // 데이터가 없을 때 빈 배열
+          setIsLoading(false);
+        } catch (error) {
+          console.error(error);
+        }
       }
     };
     loadAIModels();
-  }, []);
-
+  }, [wallet]);
   return (
     <div className="min-h-[calc(100vh-140px)] bg-white flex flex-col justify-center items-center">
       <div className="w-full max-w-md p-6 text-center">
@@ -138,7 +143,7 @@ const ChatPage: React.FC = () => {
         <DropdownMenu
           title="See AI History"
           icon={Clock}
-          items={mockData.history}
+          items={chats}
           isOpen={openDropdown === "See AI History"}
           setOpenDropdown={setOpenDropdown}
         />

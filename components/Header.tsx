@@ -10,7 +10,8 @@ const Header: React.FC<HeaderBarProps> = ({ title, onMenuClick }) => {
   const router = useRouter();
 
   // /ai/[id]/chat
-  const isAIChat = /^\/ai\/[^/]+\/chat/.test(router.asPath) || router.asPath === "/test";
+  const isAIChat =
+    /^\/ai\/[^/]+\/chat/.test(router.asPath) || router.asPath === "/test";
 
   return (
     <header className="bg-white py-4 px-6 flex items-center justify-between">

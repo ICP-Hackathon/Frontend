@@ -6,9 +6,9 @@ import { UserRound } from "lucide-react";
 import { addUser } from "@/utils/api/user";
 import GenderSelect from "@/components/setprofile/GenderSelect";
 import { useUserStore } from "@/store/userStore";
+import { useWallet } from "@suiet/wallet-kit";
 
 const SetProfilePage = () => {
-  const router = useRouter();
   const [selectedProfile, setSelectedProfile] = useState(0);
   const [nickname, setNickname] = useState("");
   const [gender, setGender] = useState("");
@@ -17,6 +17,8 @@ const SetProfilePage = () => {
   const [phoneNumber, setPhoneNumber] = useState("");
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState("");
+  const wallet = useWallet();
+  const router = useRouter();
 
   const setUser = useUserStore((state) => state.setUser);
 
@@ -31,13 +33,10 @@ const SetProfilePage = () => {
     setIsLoading(true);
     setError("");
 
-    //임시 랜덤 address
-    const randomNumber = Math.floor(Math.random() * 1000000);
-
     try {
       const userData = {
         //zklogin에서 user_address 받아오기Ï
-        user_address: randomNumber.toString().padStart(6, "0"),
+        user_address: wallet.address,
         nickname,
         image_url:
           selectedProfile > 0 ? profileImages[selectedProfile - 1] : "",
