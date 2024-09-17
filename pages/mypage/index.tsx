@@ -49,9 +49,12 @@ const AICard: React.FC<AICardProps> = ({
             </span>
           </div>
         </div>
-        <button className="text-primary-900 font-medium text-lg flex items-center">
+        <Link
+          href={`/ai/${ai_id}/edit`}
+          className="text-primary-900 font-medium text-lg flex items-center"
+        >
           Edit AI
-        </button>
+        </Link>
       </div>
     </div>
   );
