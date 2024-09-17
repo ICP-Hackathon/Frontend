@@ -1,106 +1,106 @@
-import React, { useState, useEffect, useRef, useCallback } from "react";
-import AICard from "@/components/home/AICard";
-import { fetchTopAIs } from "@/utils/api/ai";
-import { AIModel } from "@/utils/interface";
-import Search from "@/components/Search";
-const ITEMS_PER_LOAD = 3;
+// import React, { useState, useEffect, useRef, useCallback } from "react";
+// import AICard from "@/components/home/AICard";
+// import { fetchTopAIs } from "@/utils/api/ai";
+// import { AIModel } from "@/utils/interface";
+// import Search from "@/components/Search";
+// const ITEMS_PER_LOAD = 3;
 
-const ListPage = () => {
-  const [displayedCards, setDisplayedCards] = useState<AIModel[]>([]);
-  const [hasMore, setHasMore] = useState(true);
-  const [loading, setLoading] = useState(false);
-  const [aiList, setAiList] = useState<AIModel[]>([]);
-  const observer = useRef<IntersectionObserver | null>(null);
+// const ListPage = () => {
+//   const [displayedCards, setDisplayedCards] = useState<AIModel[]>([]);
+//   const [hasMore, setHasMore] = useState(true);
+//   const [loading, setLoading] = useState(false);
+//   const [aiList, setAiList] = useState<AIModel[]>([]);
+//   const observer = useRef<IntersectionObserver | null>(null);
 
-  useEffect(() => {
-    const loadAIModels = async () => {
-      try {
-        const data = await fetchTopAIs();
-        setAiList(data.ais);
-      } catch (error) {
-        console.error(error);
-      }
-    };
-    loadAIModels();
-  }, []);
+//   useEffect(() => {
+//     const loadAIModels = async () => {
+//       try {
+//         const data = await fetchTopAIs();
+//         setAiList(data.ais);
+//       } catch (error) {
+//         console.error(error);
+//       }
+//     };
+//     loadAIModels();
+//   }, []);
 
-  const lastCardElementRef = useCallback(
-    (node: HTMLDivElement | null) => {
-      if (loading) return;
-      if (observer.current) observer.current.disconnect();
-      observer.current = new IntersectionObserver((entries) => {
-        if (entries[0].isIntersecting && hasMore) {
-          loadMoreCards();
-        }
-      });
-      if (node) observer.current.observe(node);
-    },
-    [loading, hasMore],
-  );
+//   const lastCardElementRef = useCallback(
+//     (node: HTMLDivElement | null) => {
+//       if (loading) return;
+//       if (observer.current) observer.current.disconnect();
+//       observer.current = new IntersectionObserver((entries) => {
+//         if (entries[0].isIntersecting && hasMore) {
+//           loadMoreCards();
+//         }
+//       });
+//       if (node) observer.current.observe(node);
+//     },
+//     [loading, hasMore],
+//   );
 
-  const loadMoreCards = () => {
-    setLoading(true);
-    setTimeout(() => {
-      setDisplayedCards((prevCards) => {
-        const newCards = aiList.slice(
-          prevCards.length,
-          prevCards.length + ITEMS_PER_LOAD,
-        );
-        if (prevCards.length + newCards.length >= aiList.length) {
-          setHasMore(false);
-        }
-        return [...prevCards, ...newCards];
-      });
-      setLoading(false);
-    }, 500);
-  };
+//   const loadMoreCards = () => {
+//     setLoading(true);
+//     setTimeout(() => {
+//       setDisplayedCards((prevCards) => {
+//         const newCards = aiList.slice(
+//           prevCards.length,
+//           prevCards.length + ITEMS_PER_LOAD,
+//         );
+//         if (prevCards.length + newCards.length >= aiList.length) {
+//           setHasMore(false);
+//         }
+//         return [...prevCards, ...newCards];
+//       });
+//       setLoading(false);
+//     }, 500);
+//   };
 
-  useEffect(() => {
-    loadMoreCards();
-  }, []);
+//   useEffect(() => {
+//     loadMoreCards();
+//   }, []);
 
-  return (
-    <div className="flex-grow overflow-y-auto">
-      <div className="py-6">
-        <div className="mb-6">
-          <Search />
-        </div>
+//   return (
+//     <div className="flex-grow overflow-y-auto">
+//       <div className="py-6">
+//         <div className="mb-6">
+//           <Search />
+//         </div>
 
-        <div className="grid gap-4">
-          {aiList.map((model, index) => (
-            <div
-              key={model.id}
-              ref={
-                index === displayedCards.length - 1 ? lastCardElementRef : null
-              }
-            >
-              <AICard
-                name={model.name}
-                introductions={model.introductions}
-                category={model.category}
-                id={model.id}
-                creator={model.creator}
-              />
-            </div>
-          ))}
-        </div>
-        {loading && (
-          <p className="text-center mt-4">Loading more AI models...</p>
-        )}
-        {!hasMore && (
-          <p className="text-center mt-4">No more AI models to load</p>
-        )}
-      </div>
-    </div>
-  );
-};
+//         <div className="grid gap-4">
+//           {aiList.map((model, index) => (
+//             <div
+//               key={model.id}
+//               ref={
+//                 index === displayedCards.length - 1 ? lastCardElementRef : null
+//               }
+//             >
+//               <AICard
+//                 name={model.name}
+//                 introductions={model.introductions}
+//                 category={model.category}
+//                 id={model.id}
+//                 creator={model.creator}
+//               />
+//             </div>
+//           ))}
+//         </div>
+//         {loading && (
+//           <p className="text-center mt-4">Loading more AI models...</p>
+//         )}
+//         {!hasMore && (
+//           <p className="text-center mt-4">No more AI models to load</p>
+//         )}
+//       </div>
+//     </div>
+//   );
+// };
 
-export default ListPage;
+// export default ListPage;
 
-export async function getStaticProps() {
-  return {
-    props: {
-      title: "AI Models",
-    },
-  };
-}
+// export async function getStaticProps() {
+//   return {
+//     props: {
+//       title: "AI Models",
+//     },
+//   };
+// }

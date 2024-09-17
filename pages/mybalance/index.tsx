@@ -2,13 +2,14 @@ import React, { useEffect, useState } from "react";
 import Image from "next/image";
 import { fetchMyAIs } from "@/utils/api/ai";
 import { useWallet } from "@suiet/wallet-kit";
+import { AIModel, AIDetailProps } from "@/utils/interface";
 
 interface AIBalanceCardProps {
   name: string;
   category: string;
   imageSrc?: string;
-  usage: string;
-  earnings: string;
+  usage: number;
+  earnings: number;
 }
 
 export const AIBalanceCard: React.FC<AIBalanceCardProps> = ({
@@ -53,11 +54,11 @@ export const AIBalanceCard: React.FC<AIBalanceCardProps> = ({
         <div className="flex mt-4 divide-x divide-gray-300">
           <div className="flex-1 flex flex-col items-center justify-center">
             <p className="text-sm text-gray-500">Usage</p>
-            <p className="text-lg font-semibold">{usage}</p>
+            <p className="text-lg font-semibold">{usage} tokens</p>
           </div>
           <div className="flex-1 flex flex-col items-center justify-center">
             <p className="text-sm text-gray-500">Earnings</p>
-            <p className="text-lg font-semibold">{earnings}</p>
+            <p className="text-lg font-semibold">$ {earnings.toFixed(2)}</p>
           </div>
         </div>
       </div>
@@ -66,7 +67,7 @@ export const AIBalanceCard: React.FC<AIBalanceCardProps> = ({
 };
 
 const MyBalancePage = () => {
-  const [myAIs, setMyAIs] = useState<AIBalanceCardProps[] | null>(null);
+  const [myAIs, setMyAIs] = useState<AIDetailProps[] | null>(null);
   const [isLoading, setIsLoading] = useState(true);
   const wallet = useWallet();
 
@@ -74,18 +75,33 @@ const MyBalancePage = () => {
     const loadAIModels = async () => {
       if (wallet.address) {
         try {
-          const Todaydata = await fetchMyAIs(wallet.address); // API 호출 경로와 내보내기 확인
-          setMyAIs(Todaydata.ais);
+          const todayData = await fetchMyAIs(wallet.address);
+          setMyAIs(todayData.ais);
           setIsLoading(false);
         } catch (error) {
           console.error(error);
+          setIsLoading(false);
         }
       }
     };
     loadAIModels();
-  }, [wallet]);
+  }, [wallet.address]);
 
   console.log(myAIs);
+
+  if (isLoading) {
+    return <div>Loading...</div>;
+  }
+
+  if (!wallet.address) {
+    return <div>Please connect your wallet to view your balance.</div>;
+  }
+
+  const totalEarnings =
+    myAIs?.reduce(
+      (sum, ai) => sum + (ai.prompt_tokens + ai.completion_tokens) * 0.01,
+      0,
+    ) || 0;
 
   return (
     <div className="p-4 max-w-md mx-auto">
@@ -94,12 +110,14 @@ const MyBalancePage = () => {
           <div className="flex flex-col items-start border-r pr-2">
             <h2 className="text-xl font-semibold mr-2 mb-1">My Balance</h2>
             <span className="bg-white text-primary-900 px-4 rounded-full text-sm">
-              {myAIs?.length} AIs
+              {myAIs?.length || 0} AIs
             </span>
           </div>
           <div className="items-center mx-auto">
             <p className="text-sm text-center">Earnings</p>
-            <p className="text-2xl font-semibold">$ 100,000</p>
+            <p className="text-2xl font-semibold">
+              $ {totalEarnings.toFixed(2)}
+            </p>
           </div>
         </div>
       </div>
@@ -109,11 +127,10 @@ const MyBalancePage = () => {
         <AIBalanceCard
           key={ai.ai_id}
           name={ai.name}
-          creator={ai.creator_address}
-          usage={ai.prompt_tokens + ai.completion_tokens}
           category={ai.category}
-          imageSrc="/api/placeholder/40/40"
-          earnings="$ 100,000"
+          imageSrc={ai.image_url}
+          usage={ai.prompt_tokens + ai.completion_tokens}
+          earnings={(ai.prompt_tokens + ai.completion_tokens) * 0.01}
         />
       ))}
     </div>

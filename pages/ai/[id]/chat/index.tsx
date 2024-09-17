@@ -50,7 +50,7 @@ const AIChat = () => {
   };
 
   const initializeChat = async () => {
-    if (!chatid || !user) return;
+    if (!chatid || !user || !wallet.address) return;
 
     try {
       const chatHistory = await fetchChatHistory(chatid, wallet.address);

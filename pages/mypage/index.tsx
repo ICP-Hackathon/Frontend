@@ -2,6 +2,7 @@ import React from "react";
 import Image from "next/image";
 import { Pencil, ChevronRight } from "lucide-react";
 import { AICardProps } from "@/utils/interface";
+import Link from "next/link";
 
 // AICard Component
 const AICard: React.FC<AICardProps> = ({
@@ -128,9 +129,9 @@ const MyPage: React.FC = () => {
             <p className="text-gray-600">Country: {user.country}</p>
           </div>
         </div>
-        <button className="font-medium text-lg text-primary-900">
+        <Link href="/editprofile" className="font-medium text-lg text-primary-900">
           Edit <Pencil className="inline-block ml-1" size={18} />
-        </button>
+        </Link>
       </div>
 
       <h3 className="text-xl font-semibold py-2">My AI</h3>
