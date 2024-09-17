@@ -33,7 +33,7 @@ const AIChat = () => {
       return `${wallet.address}_${id}`;
     }
     return null;
-  }, [id, user,  wallet.address]);
+  }, [id, user, wallet.address]);
 
   useEffect(() => {
     scrollToBottom();
@@ -43,7 +43,7 @@ const AIChat = () => {
     if (chatid && user) {
       initializeChat();
     }
-  // eslint-disable-next-line react-hooks/exhaustive-deps
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [chatid, user]);
 
   const scrollToBottom = () => {
@@ -63,7 +63,7 @@ const AIChat = () => {
           timestamp: new Date().toISOString(),
         };
         setMessages([welcomeMessage]);
-        await sendMessage(chatid, welcomeMessage.content, aiName);
+        // await sendMessage(chatid, welcomeMessage.content, aiName);
       } else {
         setMessages(chatHistory);
       }

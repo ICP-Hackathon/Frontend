@@ -25,7 +25,7 @@ export async function addUser(userData: {
         country: userData.country || "",
         phone: userData.phone || "",
       }),
-    },
+    }
   );
 
   if (!response.ok) {
@@ -35,8 +35,16 @@ export async function addUser(userData: {
   return await response.json();
 }
 
-export async function fetchUser(user_address: string) {
+export async function fetchUserExists(user_address: string) {
   const response = await fetch(`${API_BASE_URL}/users/exists/${user_address}`);
+  if (!response.ok) {
+    throw new Error("Network response was not ok");
+  }
+  return await response.json();
+}
+
+export async function fetchUser(user_address: string) {
+  const response = await fetch(`${API_BASE_URL}/users/${user_address}`);
   if (!response.ok) {
     throw new Error("Network response was not ok");
   }
@@ -45,14 +53,14 @@ export async function fetchUser(user_address: string) {
 
 export async function fetchChatList(user_address: string) {
   const response = await fetch(
-    `${process.env.NEXT_PUBLIC_API_BASE_URL}/chats/${user_address}`,
+    `${process.env.NEXT_PUBLIC_API_BASE_URL}/chats/${user_address}`
   );
 
   if (!response.ok) {
     const errorText = await response.text();
     console.error("Error response body:", errorText);
     throw new Error(
-      `Failed to fetch chat list: ${response.status} ${response.statusText}`,
+      `Failed to fetch chat list: ${response.status} ${response.statusText}`
     );
   }
 
@@ -91,7 +99,7 @@ export async function updateUser(userData: {
           country: userData.country,
           phone: userData.phone,
         }),
-      },
+      }
     );
 
     if (!response.ok) {
@@ -108,14 +116,14 @@ export async function updateUser(userData: {
 
 export async function fetchLikeList(user_address: string) {
   const response = await fetch(
-    `${process.env.NEXT_PUBLIC_API_BASE_URL}/likes/user/${user_address}`,
+    `${process.env.NEXT_PUBLIC_API_BASE_URL}/likes/user/${user_address}`
   );
 
   if (!response.ok) {
     const errorText = await response.text();
     console.error("Error response body:", errorText);
     throw new Error(
-      `Failed to fetch chat list: ${response.status} ${response.statusText}`,
+      `Failed to fetch chat list: ${response.status} ${response.statusText}`
     );
   }
 
@@ -138,7 +146,7 @@ export async function addLike(userData: {
         user_address: userData.user_address,
         ai_id: userData.ai_id,
       }),
-    },
+    }
   );
 
   if (!response.ok) {

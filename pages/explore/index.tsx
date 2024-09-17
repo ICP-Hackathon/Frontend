@@ -30,30 +30,38 @@ export default function ExplorePage() {
 
   useEffect(() => {
     const loadAIModels = async () => {
-      try {
-        const Todaydata = await fetchTodayAIs(wallet?.address);
-        console.log(Todaydata);
-        setTodayCards(Todaydata.ais);
-        setIsLoading(false);
-      } catch (error) {
-        console.error(error);
-        setIsLoading(false);
+      if (wallet.address) {
+        try {
+          const Todaydata = await fetchTodayAIs(wallet?.address);
+          setTodayCards(Todaydata.ais);
+          setIsLoading(false);
+        } catch (error) {
+          console.error(error);
+          setIsLoading(false);
+        }
       }
     };
     loadAIModels();
-  }, []);
+  }, [wallet]);
 
   useEffect(() => {
     const loadAIModels = async () => {
-      try {
-        const Trenddata = await fetchTrendingAIs(selectedCategory, 0, 10);
-        setTrendCards(Trenddata.ais);
-      } catch (error) {
-        console.error(error);
+      if (wallet.address) {
+        try {
+          const Trenddata = await fetchTrendingAIs(
+            selectedCategory,
+            0,
+            10,
+            wallet?.address
+          );
+          setTrendCards(Trenddata.ais);
+        } catch (error) {
+          console.error(error);
+        }
       }
     };
     loadAIModels();
-  }, [selectedCategory]);
+  }, [selectedCategory, wallet]);
 
   return (
     <div className="p-4 pb-16">

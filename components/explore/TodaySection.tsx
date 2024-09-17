@@ -16,7 +16,7 @@ const TodaySection: React.FC<TodaySectionProps> = ({
   todayCards,
   setSelectedAI,
 }) => {
-  const [openDialogId, setOpenDialogId] = useState<string | null>(null); // Track open dialog by card ID
+  const [openDialogId, setOpenDialogId] = useState<number | null>(null); // Track open dialog by card ID
 
   return (
     <section className="mb-6 scrollbar-hide">
@@ -29,7 +29,7 @@ const TodaySection: React.FC<TodaySectionProps> = ({
             <Dialog
               key={item.id}
               onOpenChange={(open) => {
-                setOpenDialogId(open ? String(item.id) : null);
+                setOpenDialogId(open ? item.id : null); // Ensure we store item.id as a number
                 setSelectedAI(open ? item : null);
               }}
             >
@@ -44,6 +44,7 @@ const TodaySection: React.FC<TodaySectionProps> = ({
                 </div>
               </DialogTrigger>
 
+              {/* Ensure both openDialogId and item.id are numbers for comparison */}
               {openDialogId === item.id && (
                 <DialogContent>
                   {/* AIDetailsPopup will only render when the corresponding Dialog is open */}
