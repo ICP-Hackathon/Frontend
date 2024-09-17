@@ -22,6 +22,11 @@ const SetProfilePage = () => {
 
   const setUser = useUserStore((state) => state.setUser);
 
+  const handleNameChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const newName = e.target.value.replace(/\s+/g, "_");
+    setNickname(newName);
+  };
+
   const profileImages = [
     "https://suietail.s3.ap-southeast-2.amazonaws.com/1.png",
     "https://suietail.s3.ap-southeast-2.amazonaws.com/2.png",
@@ -112,7 +117,7 @@ const SetProfilePage = () => {
               type="text"
               id="nickname"
               value={nickname}
-              onChange={(e) => setNickname(e.target.value)}
+              onChange={handleNameChange}
               className="w-full p-2 border-b border-gray-300 focus:border-primary-900 focus:outline-none"
               placeholder="Name"
               required

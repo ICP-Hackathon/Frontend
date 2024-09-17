@@ -17,6 +17,7 @@ const categories: string[] = [
   "Business",
   "Developer tools",
   "Graphics & Design",
+  "Others",
 ];
 
 export default function ExplorePage() {
