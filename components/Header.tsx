@@ -34,7 +34,7 @@ const Header: React.FC<HeaderBarProps> = ({ title, onMenuClick }) => {
               alt="User profile"
               width={40}
               height={40}
-              className="object-cover"
+              className="w-full h-full object-cover transform scale-150 translate-y-[-10%]"
             />
           ) : (
             <User className="w-6 h-6 text-gray-400" />

@@ -5,8 +5,8 @@ import { persist } from "zustand/middleware";
 interface UserState {
   user: User | null;
   wallet: any | null;
-  setUser: (user: User | null) => void;
-  setUserWallet: (wallet: any | null) => void;
+  setUser: (user: User) => void;
+  setUserWallet: (wallet: any) => void;
   clearUser: () => void;
 }
 
@@ -15,8 +15,11 @@ export const useUserStore = create<UserState>()(
     (set) => ({
       user: null,
       wallet: null,
-      setUser: (user) => set({ user }),
-      setUserWallet: (wallet) => set({ wallet }),
+      setUser: (user) => {
+        console.log("Setting user in store:", user);
+        set((state) => ({ ...state, user }));
+      },
+      setUserWallet: (wallet) => set((state) => ({ ...state, wallet })),
       clearUser: () => set({ user: null, wallet: null }),
     }),
     {
