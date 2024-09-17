@@ -57,3 +57,45 @@ export async function fetchChatList(user_address: string) {
   const data = await response.json();
   return data;
 }
+
+export async function fetchLikeList(user_address: string) {
+  const response = await fetch(
+    `${process.env.NEXT_PUBLIC_API_BASE_URL}/likes/user/${user_address}`
+  );
+
+  if (!response.ok) {
+    const errorText = await response.text();
+    console.error("Error response body:", errorText);
+    throw new Error(
+      `Failed to fetch chat list: ${response.status} ${response.statusText}`
+    );
+  }
+
+  const data = await response.json();
+  return data;
+}
+
+export async function addLike(userData: {
+  user_address: string;
+  ai_id: string;
+}) {
+  const response = await fetch(
+    `${process.env.NEXT_PUBLIC_API_BASE_URL}/likes`,
+    {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        user_address: userData.user_address,
+        ai_id: userData.ai_id,
+      }),
+    }
+  );
+
+  if (!response.ok) {
+    throw new Error("Failed to like AI");
+  }
+
+  return await response.json();
+}
