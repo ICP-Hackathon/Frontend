@@ -1,21 +1,37 @@
-import { useEffect, useState } from "react";
 import Image from "next/image";
-import { User } from "lucide-react";
 import Link from "next/link";
+import { User, Menu } from "lucide-react";
+import { HeaderBarProps } from "@/utils/interface";
 import { useUserStore } from "@/store/userStore";
+import { useRouter } from "next/router";
+import { useEffect, useState } from "react";
 
-const Header: React.FC = () => {
-  const [isMounted, setIsMounted] = useState(false); // 클라이언트에서만 렌더링되도록
-
+const Header: React.FC<HeaderBarProps> = ({ title }) => {
   const user = useUserStore((state) => state.user);
+  const router = useRouter();
+  const [isMounted, setIsMounted] = useState(false); // 클라이언트에서만 렌더링되도록
 
   useEffect(() => {
     setIsMounted(true); // 클라이언트 사이드에서만 동작
   }, []);
 
+  // /ai/[id]/chat
+  const isAIChat =
+    /^\/ai\/[^/]+\/chat/.test(router.asPath) || router.asPath === "/test";
+
   return (
     <header className="bg-white py-4 px-6 flex items-center justify-between">
-      <h1 className="text-xl font-semibold text-gray-900">Title</h1>
+      <div className="w-10">
+        {/* {isAIChat && (
+          <button
+            onClick={onMenuClick}
+            className="text-gray-600 hover:text-gray-900"
+          >
+            <Menu size={24} />
+          </button>
+        )} */}
+      </div>
+      <h1 className="text-xl font-semibold text-gray-900">{title}</h1>
       <Link href="/mypage" passHref>
         <div className="w-10 h-10 rounded-full overflow-hidden bg-gray-200 flex items-center justify-center cursor-pointer">
           {isMounted && user && user.image_url ? (
