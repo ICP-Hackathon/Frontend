@@ -113,7 +113,7 @@ const AIChat = () => {
             <div
               className={`max-w-[70%] p-3 rounded-lg ${
                 message.role === "user"
-                  ? "bg-blue-500 text-white"
+                  ? "bg-primary-900 text-white"
                   : "bg-gray-100 text-gray-800"
               }`}
             >
