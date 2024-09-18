@@ -67,13 +67,7 @@ export const AICard = ({
 
         {/* Conditionally render AIDetailsPopup when the dialog is opened */}
         <DialogContent className="sm:max-w-[425px] rounded-3xl p-6 max-h-[80vh] overflow-y-auto">
-          {detailLoading ? (
-            <div>Loading...</div>
-          ) : aiDetail ? (
-            <AIDetailsPopup id={id} name={creator} />
-          ) : (
-            <div>No details available</div>
-          )}
+          <AIDetailsPopup id={id} name={creator} />
         </DialogContent>
       </Dialog>
 

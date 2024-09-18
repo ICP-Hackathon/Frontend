@@ -31,10 +31,7 @@ export default function SearchPage() {
         <Search />
       </div>
       <div className="flex-grow overflow-y-auto mb-16">
-        {isLoading ? (
-          <div>Loading...</div>
-        ) : (
-          todayCards &&
+        {todayCards &&
           todayCards.map((item) => (
             <AICard
               key={item.ai_id}
@@ -44,8 +41,7 @@ export default function SearchPage() {
               category={item.category}
               introductions={item.introductions}
             />
-          ))
-        )}
+          ))}
       </div>
       <div className="fixed bottom-16 left-0 right-0 px-4 mb-4 max-w-[600px] mx-auto">
         <CreateCustomAISheet />
