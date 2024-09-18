@@ -1501,3 +1501,13 @@ Warning: A title element received an array with more than 1 element as children.
     at Html (webpack-internal:///./node_modules/next/dist/pages/_document.js:782:132)
     at Document
  GET / 200 in 51ms
+
+> test@0.1.0 start
+> next start --port=5000
+
+  ▲ Next.js 14.2.7
+  - Local:        http://localhost:5000
+
+ ✓ Starting...
+ ✓ Ready in 551ms
+[DEPRECATED] `getStorage`, `serialize` and `deserialize` options are deprecated. Use `storage` option instead.
