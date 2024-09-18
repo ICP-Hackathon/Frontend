@@ -35,9 +35,13 @@ export default function Landing() {
           </div>
         </button>
         <WalletButton></WalletButton>
-        <button className="w-full bg-primary-900 text-white font-semibold py-4 rounded-full shadow-md hover:bg-primary-100 transition duration-300 ease-in-out flex items-center justify-center">
+        <Link
+          href="https://ragcoon-protocol.gitbook.io/suietail"
+          target="_blank"
+          className="w-full bg-primary-900 text-white font-semibold py-4 rounded-full shadow-md hover:bg-primary-100 transition duration-300 ease-in-out flex items-center justify-center"
+        >
           About Us
-        </button>
+        </Link>
       </div>
     </div>
   );
