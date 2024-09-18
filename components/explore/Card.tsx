@@ -39,9 +39,11 @@ const Card: React.FC<CardProps> = ({ name, creator, ai_id, like }) => {
       </div>
       <button className="absolute top-2 right-2 text-gray-700">
         {like ? (
-          <Heart fill="black" size={16} />
+          <>
+            <Heart color="#F75555" fill="#F75555" size={16} />
+          </>
         ) : (
-          <Heart size={16} onClick={handleSubmit} />
+          <Heart color="#9E9E9E" size={16} onClick={handleSubmit} />
         )}
       </button>
     </div>

@@ -18,7 +18,7 @@ interface AICardProps {
 
 interface DropdownMenuProps {
   title: string;
-  icon: React.FC<any>;
+  icon: string;
   items: AICardProps[];
   isOpen: boolean;
   setOpenDropdown: (title: string) => void;
@@ -29,7 +29,7 @@ const AICard: React.FC<AICardProps> = ({
   name,
   creator,
   imageSrc,
-  icon: Icon,
+  icon,
 }) => {
   const router = useRouter();
 
@@ -57,7 +57,11 @@ const AICard: React.FC<AICardProps> = ({
         <h3 className="text-sm font-semibold">{name}</h3>
         <p className="text-xs text-gray-500">{sliceAddress(creator)}</p>
       </div>
-      <Icon className="text-primary-900" size={20} />
+      {icon === Heart ? (
+        <Heart className="text-primary-900" fill="#17CE92" size={20} />
+      ) : (
+        <Clock className="text-primary-900" size={20} />
+      )}
     </div>
   );
 };
@@ -141,14 +145,14 @@ const ChatPage: React.FC = () => {
         <h2 className="text-xl text-gray-500 mb-6">Select one from below:</h2>
         <DropdownMenu
           title="Choose from Saved AI"
-          icon={Heart}
+          icon={"Heart"}
           items={likes}
           isOpen={openDropdown === "Choose from Saved AI"}
           setOpenDropdown={setOpenDropdown}
         />
         <DropdownMenu
           title="See AI History"
-          icon={Clock}
+          icon={"Clock"}
           items={chats}
           isOpen={openDropdown === "See AI History"}
           setOpenDropdown={setOpenDropdown}
