@@ -13,7 +13,7 @@ const EditProfilePage = () => {
   const [selectedProfile, setSelectedProfile] = useState(0);
   const [gender, setGender] = useState("");
   const [country, setCountry] = useState("");
-  const [phone, setPhone] = useState("");
+  const [interest, setInterest] = useState("");
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState("");
   const wallet = useWallet();
@@ -25,7 +25,7 @@ const EditProfilePage = () => {
     if (user) {
       setGender(user.gender || "");
       setCountry(user.country || "");
-      setPhone(user.phone || "");
+      setInterest(user.interest || "");
       if (user.image_url) {
         const index = profileImages.findIndex((img) => img === user.image_url);
         setSelectedProfile(index !== -1 ? index + 1 : 0);
@@ -58,7 +58,7 @@ const EditProfilePage = () => {
         }),
         ...(gender && { gender }),
         ...(country && { country }),
-        ...(phone && { phone }),
+        ...(interest && { interest }),
       };
 
       const result = await updateUser(userData);
@@ -130,16 +130,18 @@ const EditProfilePage = () => {
               htmlFor="phone"
               className="block text-sm font-medium text-gray-700 mb-1"
             >
-              Phone Number
+              Field of Intrest
             </label>
-            <input
-              type="tel"
-              id="phone"
-              value={phone}
-              onChange={(e) => setPhone(e.target.value)}
-              className="w-full p-2 border-b border-gray-300 focus:border-primary-900 focus:outline-none"
-              placeholder="+1 123-456-7890"
-            />
+            <div className="flex">
+              <input
+                type="tel"
+                id="phone"
+                value={interest}
+                onChange={(e) => setInterest(e.target.value)}
+                className="flex-1 p-2 border-b border-gray-300 focus:border-primary-900 focus:outline-none"
+                placeholder="Education, Fitness, Blockchain etc..."
+              />
+            </div>
           </div>
 
           {error && <p className="text-red-500">{error}</p>}

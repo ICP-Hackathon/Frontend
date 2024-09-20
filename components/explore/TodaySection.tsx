@@ -37,18 +37,15 @@ const TodaySection: React.FC<TodaySectionProps> = ({
                 <div>
                   <Card
                     ai_id={item.ai_id}
-                    name={item.name}
-                    creator={sliceAddress(item.creator_address)}
+                    name={item.ai_name}
+                    creator={item.creator}
                     like={item.like}
                   />
                 </div>
               </DialogTrigger>
               {isOpen && (
                 <DialogContent>
-                  <AIDetailsPopup
-                    id={item.ai_id}
-                    name={sliceAddress(item.creator_address)}
-                  />
+                  <AIDetailsPopup id={item.ai_id} name={item.creator} />
                 </DialogContent>
               )}
             </Dialog>

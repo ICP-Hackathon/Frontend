@@ -20,7 +20,7 @@ const EditAIPage = () => {
   const wallet = useWallet();
 
   const [aiData, setAIData] = useState({
-    name: "",
+    ai_name: "",
     category: "others" as CategoryKey,
     introductions: "",
     contents: "",
@@ -38,7 +38,7 @@ const EditAIPage = () => {
           setLoading(true);
           const fetchedAIData = await fetchAIDetails(id);
           setAIData({
-            name: fetchedAIData.name,
+            ai_name: fetchedAIData.ai_name,
             category: fetchedAIData.category as CategoryKey,
             introductions: fetchedAIData.introductions,
             contents: fetchedAIData.contents,
@@ -61,7 +61,7 @@ const EditAIPage = () => {
 
   // 입력값 처리 함수
   const handleInputChange = (
-    e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>,
+    e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
   ) => {
     const { name, value } = e.target;
     setAIData((prevData) => ({
@@ -166,7 +166,7 @@ const EditAIPage = () => {
             type="text"
             id="name"
             name="name"
-            value={aiData.name}
+            value={aiData.ai_name}
             className="w-full p-2 border-b border-gray-300 focus:border-primary-900 focus:outline-none"
             placeholder="Name your AI"
             onChange={handleInputChange}

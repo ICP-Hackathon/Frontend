@@ -50,9 +50,8 @@ export default function ExplorePage() {
         try {
           const Trenddata = await fetchTrendingAIs(
             selectedCategory,
-            0,
-            10,
-            wallet?.address
+            wallet.address,
+            { offset: 0, limit: 10 }
           );
           setTrendCards(Trenddata.ais);
         } catch (error) {

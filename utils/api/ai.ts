@@ -2,12 +2,13 @@ const API_BASE_URL = process.env.NEXT_PUBLIC_API_BASE_URL;
 
 export async function fetchTrendingAIs(
   category: string,
-  offset: number,
-  limit: number,
-  address: string
+  address: string,
+  query: { offset?: number; limit?: number } // offset과 limit을 쿼리로 받음
 ) {
+  const { offset = 0, limit = 10 } = query; // 기본값 설정
+
   const response = await fetch(
-    `${API_BASE_URL}/ais/trend/${address}/${category}/${offset}/${limit}`
+    `${API_BASE_URL}/ais/trend/${address}/${category}?offset=${offset}&limit=${limit}`
   );
   if (!response.ok) {
     throw new Error("Network response was not ok");
@@ -16,7 +17,9 @@ export async function fetchTrendingAIs(
 }
 
 export async function fetchAIs(offset: number, limit: number) {
-  const response = await fetch(`${API_BASE_URL}/ais/base/${offset}/${limit}`);
+  const response = await fetch(
+    `${API_BASE_URL}/ais?offset=${offset}&limit=${limit}`
+  );
   if (!response.ok) {
     throw new Error("Network response was not ok");
   }
@@ -24,7 +27,7 @@ export async function fetchAIs(offset: number, limit: number) {
 }
 
 export async function fetchTodayAIs(address: string) {
-  const response = await fetch(`${API_BASE_URL}/ais/today_ais/${address}`);
+  const response = await fetch(`${API_BASE_URL}/ais/today/${address}`);
   if (!response.ok) {
     throw new Error("Network response was not ok");
   }
@@ -39,8 +42,8 @@ export async function fetchAIDetails(id: string) {
   return await response.json();
 }
 
-export async function fetchSearchAIs(name: string) {
-  const response = await fetch(`${API_BASE_URL}/ais/search/${name}`);
+export async function fetchSearchAIs(name: string, address: string) {
+  const response = await fetch(`${API_BASE_URL}/ais/search/${name}/${address}`);
   if (!response.ok) {
     if (response.status === 404) {
       throw new Error("No results found");
@@ -59,7 +62,7 @@ export async function fetchAILogs(id: string) {
 }
 
 export async function createAI(aiData: {
-  name: string;
+  ai_name: string;
   creator_address: string;
   category: string;
   introductions: string;
@@ -107,7 +110,7 @@ export async function deleteAI(id: string) {
 export async function updateAI(aiData: {
   ai_id: string;
   user_address: string;
-  name: string;
+  ai_name: string;
   image_url: string;
   category: string;
   introductions: string;

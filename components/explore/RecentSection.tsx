@@ -34,8 +34,8 @@ const RecentSection: React.FC<RecentSectionProps> = ({
               <div>
                 <Card
                   ai_id={item.ai_id}
-                  name={item.name}
-                  creator={sliceAddress(item.creator_address)}
+                  name={item.ai_name}
+                  creator={item.creator}
                   like={item.like}
                 />
               </div>
@@ -43,10 +43,7 @@ const RecentSection: React.FC<RecentSectionProps> = ({
 
             {isOpen && (
               <DialogContent>
-                <AIDetailsPopup
-                  id={item.ai_id}
-                  name={sliceAddress(item.creator_address)}
-                />
+                <AIDetailsPopup id={item.ai_id} name={item.creator} />
               </DialogContent>
             )}
           </Dialog>

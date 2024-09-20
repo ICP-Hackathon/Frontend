@@ -10,7 +10,7 @@ import { fetchMyAIs } from "@/utils/api/ai";
 
 interface AICardProps {
   ai_id: string;
-  name: string;
+  ai_name: string;
   category: string;
   image_url?: string;
   introductions: string;
@@ -18,7 +18,7 @@ interface AICardProps {
 // AICard Component
 const AICard: React.FC<AICardProps> = ({
   ai_id,
-  name,
+  ai_name,
   category,
   image_url,
   introductions,
@@ -30,7 +30,7 @@ const AICard: React.FC<AICardProps> = ({
           {image_url ? (
             <Image
               src={image_url}
-              alt={name}
+              alt={ai_name}
               width={60}
               height={60}
               className="rounded-full mr-4"
@@ -38,12 +38,12 @@ const AICard: React.FC<AICardProps> = ({
           ) : (
             <div className="size-[60px] rounded-full bg-emerald-100 mr-4 flex items-center justify-center">
               <span className="text-emerald-500 font-bold text-lg">
-                {name.charAt(0).toUpperCase()}
+                {ai_name.charAt(0).toUpperCase()}
               </span>
             </div>
           )}
           <div className="flex flex-col items-start">
-            <h3 className="font-semibold text-lg mb-1">{name}</h3>
+            <h3 className="font-semibold text-lg mb-1">{ai_name}</h3>
             <span className="text-sm rounded-full bg-primary-50 text-primary-900 px-3 py-1">
               {category}
             </span>
