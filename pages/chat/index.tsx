@@ -5,12 +5,12 @@ import Image from "next/image";
 import { useRouter } from "next/router";
 import { fetchUserChats } from "@/utils/api/chat";
 import { useWallet } from "@suiet/wallet-kit";
-import { fetchLikeList } from "@/utils/api/user";
+import { addLike, delLike, fetchLikeList } from "@/utils/api/user";
 import { sliceAddress } from "@/utils/lib/address";
 
 interface AICardProps {
   aiId: string;
-  name: string;
+  ai_name: string;
   creator: string;
   imageSrc?: string;
   icon: React.FC<any>;
@@ -26,22 +26,61 @@ interface DropdownMenuProps {
 
 const AICard: React.FC<AICardProps> = ({
   aiId,
-  name,
+  ai_name,
   creator,
   imageSrc,
   icon,
 }) => {
   const router = useRouter();
 
+  const wallet = useWallet();
+  const [likes, setLikes] = useState(true);
+
+  const addLikes = async (e: React.FormEvent) => {
+    e.preventDefault();
+
+    try {
+      if (wallet.address) {
+        const userData = {
+          //zklogin에서 user_address 받아오기Ï
+          user_address: wallet.address,
+          ai_id: aiId,
+        };
+        await addLike(userData);
+        setLikes(true);
+      }
+    } catch (error) {
+      window.alert("Fail to Like AI");
+    }
+  };
+
+  const delLikes = async (e: React.FormEvent) => {
+    e.preventDefault();
+
+    try {
+      if (wallet.address) {
+        const userData = {
+          //zklogin에서 user_address 받아오기Ï
+          user_address: wallet.address,
+          ai_id: aiId,
+        };
+        await delLike(userData);
+        setLikes(false);
+      }
+    } catch (error) {
+      window.alert("Fail to Like AI");
+    }
+  };
+
   return (
     <div
       className="p-4 bg-white rounded-lg flex items-center border hover:bg-gray-100 cursor-pointer transition-all duration-200"
-      onClick={() => router.push(`/ai/${aiId}/chat`)}
+      onClick={() => router.push(`/ai/${aiId}/chat`)} // 전체 div 클릭 시 라우팅
     >
       {imageSrc ? (
         <Image
           src={imageSrc}
-          alt={name}
+          alt={ai_name}
           width={50}
           height={50}
           className="rounded-full mr-4"
@@ -49,16 +88,36 @@ const AICard: React.FC<AICardProps> = ({
       ) : (
         <div className="w-[50px] h-[50px] rounded-full bg-primary-900 mr-4 flex items-center justify-center">
           <span className="text-white font-bold text-lg">
-            {name.charAt(0).toUpperCase()}
+            {ai_name.charAt(0).toUpperCase()}
           </span>
         </div>
       )}
       <div className="flex-1 text-left">
-        <h3 className="text-sm font-semibold">{name}</h3>
+        <h3 className="text-sm font-semibold">{ai_name}</h3>
         <p className="text-xs text-gray-500">{sliceAddress(creator)}</p>
       </div>
       {icon === Heart ? (
-        <Heart className="text-primary-900" fill="#17CE92" size={20} />
+        likes ? (
+          <Heart
+            className="text-primary-900"
+            color="#F75555"
+            fill="#F75555"
+            size={20}
+            onClick={(e) => {
+              e.stopPropagation(); // Heart 클릭 시 라우팅 중지
+              delLikes(e); // Likes 함수 실행
+            }}
+          />
+        ) : (
+          <Heart
+            className="text-primary-900"
+            size={20}
+            onClick={(e) => {
+              e.stopPropagation(); // Heart 클릭 시 라우팅 중지
+              addLikes(e);
+            }}
+          />
+        )
       ) : (
         <Clock className="text-primary-900" size={20} />
       )}
@@ -114,7 +173,7 @@ const ChatPage: React.FC = () => {
           const ChatData = await fetchUserChats(wallet?.address); // API 호출 경로와 내보내기 확인
           const formattedChats = ChatData?.chats?.map((chat: any) => ({
             aiId: chat.ai_id,
-            name: chat.name,
+            ai_name: chat.ai_name,
             creator: chat.creator_address,
             imageSrc: chat.imageSrc || "", // optional 속성 처리
             icon: Clock, // 적절한 기본 아이콘 설정
@@ -124,7 +183,7 @@ const ChatPage: React.FC = () => {
           const LikeData = await fetchLikeList(wallet?.address);
           const formattedLikes = LikeData?.ais?.map((like: any) => ({
             aiId: like.ai_id,
-            name: like.name,
+            ai_name: like.ai_name,
             creator: like.creator_address,
             imageSrc: like.imageSrc || "", // optional 속성 처리
             icon: Heart, // 적절한 기본 아이콘 설정

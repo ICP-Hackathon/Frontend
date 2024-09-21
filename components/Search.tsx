@@ -2,8 +2,14 @@
 import { fetchSearchAIs } from "@/utils/api/ai";
 import { SearchIcon } from "lucide-react";
 import { SetStateAction, useEffect, useState, useRef } from "react";
+import { CardData } from "@/utils/interface";
+import { useWallet } from "@suiet/wallet-kit";
 
-const Search = () => {
+interface SearchProps {
+  setSearch: React.Dispatch<React.SetStateAction<CardData[] | null>>;
+}
+
+const Search = ({ setSearch }: SearchProps) => {
   const [searchQuery, setSearchQuery] = useState("");
   const [debouncedQuery, setDebouncedQuery] = useState(searchQuery);
   const [results, setResults] = useState<any>(null); // results 초기값을 null로 설정
@@ -11,6 +17,7 @@ const Search = () => {
   const [showSearch, setShowSearch] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const searchRef = useRef<HTMLDivElement>(null); // Ref for the search input
+  const wallet = useWallet();
 
   // Debouncing: 입력이 멈춘 후 500ms 동안 아무 변화가 없으면 debouncedQuery 업데이트
   useEffect(() => {
@@ -30,20 +37,20 @@ const Search = () => {
         setIsLoading(true); // 로딩 상태 true로 설정
         setError(null); // 오류 메시지 초기화
         try {
-          const data = await fetchSearchAIs(debouncedQuery);
+          const data = await fetchSearchAIs(
+            debouncedQuery,
+            wallet.address ? wallet.address : ""
+          );
           if (data && data.ais) {
-            setResults(data);
+            setSearch(data.ais);
           } else {
             setError("No data found");
-            setResults(null); // 데이터가 없으면 results를 null로 설정
+            setSearch(null); // 데이터가 없으면 results를 null로 설정
           }
         } catch (error) {
           setError(
-            error instanceof Error
-              ? error.message
-              : "An unknown error occurred",
+            error instanceof Error ? error.message : "An unknown error occurred"
           );
-          setResults(null); // 오류 발생 시 results를 null로 설정
         } finally {
           setIsLoading(false); // 로딩 완료 후 로딩 상태 false로 설정
         }
@@ -91,36 +98,6 @@ const Search = () => {
           size={20}
         />
       </div>
-      {showSearch && (
-        <div className="absolute w-full max-h-[350px] p-3 bg-white z-50 shadow-lg overflow-y-auto">
-          {isLoading ? (
-            <p className="m-auto text-center py-5">Loading...</p>
-          ) : error ? (
-            <p className="text-red-500 text-center py-5">{error}</p> // 오류 메시지 출력
-          ) : results && results.ais && results.ais.length > 0 ? (
-            <div>
-              {results.ais.map(
-                (item: any, index: React.Key | null | undefined) => (
-                  <div
-                    className="w-full border-b border-gray-200 pb-3 mb-3"
-                    key={index}
-                  >
-                    <h3>{item.name}</h3>
-                    <p>Creator: {item.creator}</p>
-                    <img
-                      src={item.image}
-                      alt={item.name}
-                      style={{ width: "100px", height: "100px" }}
-                    />
-                  </div>
-                ),
-              )}
-            </div>
-          ) : (
-            <p className="m-auto text-center py-5">No results found</p> // 검색 결과가 없을 때 메시지 출력
-          )}
-        </div>
-      )}
     </div>
   );
 };

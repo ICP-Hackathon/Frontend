@@ -98,10 +98,7 @@ const MyBalancePage = () => {
   }
 
   const totalEarnings =
-    myAIs?.reduce(
-      (sum, ai) => sum + (ai.prompt_tokens + ai.completion_tokens) * 0.01,
-      0,
-    ) || 0;
+    myAIs?.reduce((sum, ai) => sum + ai.usage * 0.01, 0) || 0;
 
   return (
     <div className="p-4 max-w-md mx-auto">
@@ -126,11 +123,11 @@ const MyBalancePage = () => {
       {myAIs?.map((ai) => (
         <AIBalanceCard
           key={ai.ai_id}
-          name={ai.name}
+          name={ai.ai_name}
           category={ai.category}
           imageSrc={ai.image_url}
-          usage={ai.prompt_tokens + ai.completion_tokens}
-          earnings={(ai.prompt_tokens + ai.completion_tokens) * 0.01}
+          usage={ai.usage}
+          earnings={ai.usage * 0.01}
         />
       ))}
     </div>

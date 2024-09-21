@@ -8,7 +8,7 @@ export async function addUser(userData: {
   image_url?: string;
   gender?: string;
   country?: string;
-  phone?: string;
+  interest?: string;
 }) {
   const response = await fetch(
     `${process.env.NEXT_PUBLIC_API_BASE_URL}/users`,
@@ -23,7 +23,7 @@ export async function addUser(userData: {
         image_url: userData.image_url || "",
         gender: userData.gender || "",
         country: userData.country || "",
-        phone: userData.phone || "",
+        interest: userData.interest || "",
       }),
     }
   );
@@ -156,4 +156,27 @@ export async function addLike(userData: {
   return await response.json();
 }
 
+export async function delLike(userData: {
+  user_address: string;
+  ai_id: string;
+}) {
+  const response = await fetch(
+    `${process.env.NEXT_PUBLIC_API_BASE_URL}/likes`,
+    {
+      method: "DELETE",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        user_address: userData.user_address,
+        ai_id: userData.ai_id,
+      }),
+    }
+  );
 
+  if (!response.ok) {
+    throw new Error("Failed to like AI");
+  }
+
+  return await response.json();
+}

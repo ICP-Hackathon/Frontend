@@ -38,7 +38,7 @@ const CreateCustomAISheet = () => {
     setLoading(true);
 
     const aiData = {
-      name: name,
+      ai_name: name,
       creator_address: wallet.address ?? "",
       category: selectedCategory,
       introductions: introductions,

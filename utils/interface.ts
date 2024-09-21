@@ -34,14 +34,13 @@ export interface AIDetailProps {
   ai_id: string;
   creator_address: string;
   created_at: string;
-  name: string;
+  ai_name: string;
   image_url: string;
   category: string;
   introductions: string;
-  chat_counts: number;
-  prompt_tokens: number;
-  completion_tokens: number;
-  weekly_users: number;
+  usage: number;
+  earnings: number;
+  chat_count: number;
   logs: LogProps[];
 }
 
@@ -104,7 +103,7 @@ export interface ChatResponse {
 export interface CardData {
   id: number | null | undefined;
   ai_id: string;
-  name: string;
+  ai_name: string;
   creator_address: string;
   creator: string;
   like: boolean;
@@ -119,5 +118,5 @@ export interface User {
   image_url?: string;
   gender?: string;
   country?: string;
-  phone?: string;
+  interest?: string;
 }

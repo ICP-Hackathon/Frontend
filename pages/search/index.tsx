@@ -8,14 +8,14 @@ import { fetchAIs } from "@/utils/api/ai";
 import { sliceAddress } from "@/utils/lib/address";
 
 export default function SearchPage() {
-  const [todayCards, setTodayCards] = useState<CardData[] | null>(null);
+  const [searchCards, setSearchCards] = useState<CardData[] | null>(null);
   const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
     const loadAIModels = async () => {
       try {
-        const Todaydata = await fetchAIs(0, 10);
-        setTodayCards(Todaydata.ais);
+        const searchData = await fetchAIs(0, 10);
+        setSearchCards(searchData.ais);
         setIsLoading(false);
       } catch (error) {
         console.error(error);
@@ -28,16 +28,16 @@ export default function SearchPage() {
   return (
     <div className="flex flex-col h-full">
       <div className="mt-2 mb-4">
-        <Search />
+        <Search setSearch={setSearchCards} />
       </div>
       <div className="flex-grow overflow-y-auto mb-16">
-        {todayCards &&
-          todayCards.map((item) => (
+        {searchCards &&
+          searchCards.map((item) => (
             <AICard
               key={item.ai_id}
               id={item.ai_id}
-              name={item.name}
-              creator={sliceAddress(item.creator_address)}
+              name={item.ai_name}
+              creator={item.creator}
               category={item.category}
               introductions={item.introductions}
             />

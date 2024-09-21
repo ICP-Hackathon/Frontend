@@ -15,8 +15,7 @@ const SetProfilePage = () => {
   const [nickname, setNickname] = useState("");
   const [gender, setGender] = useState("");
   const [country, setCountry] = useState("");
-  const [phoneCode, setPhoneCode] = useState("+86");
-  const [phoneNumber, setPhoneNumber] = useState("");
+  const [interest, setInterest] = useState("");
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState("");
   const wallet = useWallet();
@@ -55,7 +54,7 @@ const SetProfilePage = () => {
           selectedProfile > 0 ? profileImages[selectedProfile - 1] : "",
         gender,
         country,
-        phone: phoneNumber ? `${phoneCode}${phoneNumber}` : undefined,
+        interest,
       };
 
       const result = await addUser(userData);
@@ -144,23 +143,16 @@ const SetProfilePage = () => {
               htmlFor="phone"
               className="block text-sm font-medium text-gray-700 mb-1"
             >
-              Phone Number
+              Field of Intrest
             </label>
             <div className="flex">
               <input
-                type="text"
-                id="country-code"
-                value={phoneCode}
-                onChange={(e) => setPhoneCode(e.target.value)}
-                className="w-20 p-2 border-b border-gray-300 focus:border-primary-900 focus:outline-none"
-              />
-              <input
                 type="tel"
                 id="phone"
-                value={phoneNumber}
-                onChange={(e) => setPhoneNumber(e.target.value)}
+                value={interest}
+                onChange={(e) => setInterest(e.target.value)}
                 className="flex-1 p-2 border-b border-gray-300 focus:border-primary-900 focus:outline-none"
-                placeholder="000-0000-0000"
+                placeholder="Education, Fitness, Blockchain etc..."
               />
             </div>
           </div>

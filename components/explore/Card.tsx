@@ -1,6 +1,7 @@
-import { addLike } from "@/utils/api/user";
+import { addLike, delLike } from "@/utils/api/user";
 import { useWallet } from "@suiet/wallet-kit";
 import { Heart, Hexagon } from "lucide-react";
+import { useState } from "react";
 
 interface CardProps {
   ai_id: string;
@@ -11,8 +12,9 @@ interface CardProps {
 
 const Card: React.FC<CardProps> = ({ name, creator, ai_id, like }) => {
   const wallet = useWallet();
+  const [likes, setLikes] = useState(like);
 
-  const handleSubmit = async (e: React.FormEvent) => {
+  const addLikes = async (e: React.FormEvent) => {
     e.preventDefault();
 
     try {
@@ -23,7 +25,25 @@ const Card: React.FC<CardProps> = ({ name, creator, ai_id, like }) => {
           ai_id: ai_id,
         };
         await addLike(userData);
-        window.location.reload();
+        setLikes(true);
+      }
+    } catch (error) {
+      window.alert("Fail to Like AI");
+    }
+  };
+
+  const delLikes = async (e: React.FormEvent) => {
+    e.preventDefault();
+
+    try {
+      if (wallet.address) {
+        const userData = {
+          //zklogin에서 user_address 받아오기Ï
+          user_address: wallet.address,
+          ai_id: ai_id,
+        };
+        await delLike(userData);
+        setLikes(false);
       }
     } catch (error) {
       window.alert("Fail to Like AI");
@@ -38,12 +58,17 @@ const Card: React.FC<CardProps> = ({ name, creator, ai_id, like }) => {
         <p className="text-xs text-gray-500 min-h-[16px]">{creator}</p>
       </div>
       <button className="absolute top-2 right-2 text-gray-700">
-        {like ? (
+        {likes ? (
           <>
-            <Heart color="#F75555" fill="#F75555" size={16} />
+            <Heart
+              color="#F75555"
+              fill="#F75555"
+              size={16}
+              onClick={delLikes}
+            />
           </>
         ) : (
-          <Heart color="#9E9E9E" size={16} onClick={handleSubmit} />
+          <Heart color="#9E9E9E" size={16} onClick={addLikes} />
         )}
       </button>
     </div>
