@@ -15,7 +15,7 @@ export async function createChat(chatData: {
   user_address: string;
 }) {
   const response = await fetch(
-    `${process.env.NEXT_PUBLIC_API_BASE_URL}/chats`,
+    `${process.env.NEXT_PUBLIC_API_BASE_URL}/chats/`,
     {
       method: "POST",
       headers: {
@@ -41,7 +41,7 @@ export async function fetchChatHistory(
 ): Promise<Message[]> {
   try {
     const response = await fetch(
-      `${process.env.NEXT_PUBLIC_API_BASE_URL}/chats/contents/${chatid}`,
+      `${process.env.NEXT_PUBLIC_API_BASE_URL}/chats/messages/${chatid}`,
     );
     if (!response.ok) {
       if (response.status === 404) {
@@ -51,8 +51,8 @@ export async function fetchChatHistory(
     }
     const data = await response.json();
 
-    return data.chats.map((chat: ChatResponse) => {
-      const chatContentsId = chat.chat_contents_id || "";
+    return data.messages.map((chat: ChatResponse) => {
+      const chatContentsId = chat.id || "";
       const isAI = chatContentsId.startsWith("AI_");
       const role = isAI ? "ai" : "user";
 
@@ -74,7 +74,7 @@ export async function sendMessage(
   sender: string,
 ): Promise<ChatResponse> {
   const response = await fetch(
-    `${process.env.NEXT_PUBLIC_API_BASE_URL}/chats/create_contents/${chat_id}`,
+    `${process.env.NEXT_PUBLIC_API_BASE_URL}/chats/message/${chat_id}/`,
     {
       method: "POST",
       headers: {

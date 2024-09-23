@@ -20,11 +20,11 @@ const EditAIPage = () => {
   const wallet = useWallet();
 
   const [aiData, setAIData] = useState({
-    ai_name: "",
+    name: "",
     category: "others" as CategoryKey,
     introductions: "",
-    contents: "",
-    image_url: "",
+    rag_contents: "",
+    profile_image_url: "",
   });
   const [loading, setLoading] = useState(true);
   const [updateLoading, setUpdateLoading] = useState(false);
@@ -38,11 +38,11 @@ const EditAIPage = () => {
           setLoading(true);
           const fetchedAIData = await fetchAIDetails(id);
           setAIData({
-            ai_name: fetchedAIData.ai_name,
+            name: fetchedAIData.name,
             category: fetchedAIData.category as CategoryKey,
             introductions: fetchedAIData.introductions,
-            contents: fetchedAIData.contents,
-            image_url: fetchedAIData.image_url,
+            rag_contents: fetchedAIData.rag_contents,
+            profile_image_url: fetchedAIData.profile_image_url,
           });
         } catch (error) {
           console.error("Error fetching AI data:", error);
@@ -69,7 +69,6 @@ const EditAIPage = () => {
       [name]: name === "name" ? value.replace(/\s+/g, "_") : value,
     }));
   };
-
   const handleCategoryChange = (category: CategoryKey) => {
     setAIData((prevData) => ({ ...prevData, category }));
   };
@@ -85,10 +84,10 @@ const EditAIPage = () => {
     }
 
     const updatedAIData = {
-      ai_id: id,
-      user_address: wallet.address,
+      id: id,
+      creator_address: wallet.address,
       ...aiData,
-      comments: "UpdatedAI",
+      rag_comments: "UpdatedAI",
     };
 
     try {
@@ -127,9 +126,9 @@ const EditAIPage = () => {
       <div className="space-y-6">
         <div className="flex justify-center">
           <div className="relative size-20 bg-primary-900 rounded-full overflow-hidden">
-            {aiData.image_url ? (
+            {aiData.profile_image_url ? (
               <img
-                src={aiData.image_url}
+                src={aiData.profile_image_url}
                 alt="AI"
                 className="w-full h-full object-cover"
               />
@@ -166,7 +165,7 @@ const EditAIPage = () => {
             type="text"
             id="name"
             name="name"
-            value={aiData.ai_name}
+            value={aiData.name}
             className="w-full p-2 border-b border-gray-300 focus:border-primary-900 focus:outline-none"
             placeholder="Name your AI"
             onChange={handleInputChange}
@@ -215,8 +214,8 @@ const EditAIPage = () => {
             <h3 className="font-semibold mb-2">Data</h3>
             <div className="space-y-2">
               <textarea
-                name="contents"
-                value={aiData.contents}
+                name="rag_contents"
+                value={aiData.rag_contents}
                 placeholder="Provide things to learn"
                 className="w-full text-gray-600 bg-transparent border-b border-gray-200 focus:outline-none focus:border-primary-900"
                 rows={3}

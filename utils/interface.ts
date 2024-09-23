@@ -88,7 +88,7 @@ export interface Message {
 }
 
 export interface ChatResponse {
-  chat_contents_id: string;
+  id: string;
   chat_id: string;
   created_at: string;
   sender_id: string;

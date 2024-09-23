@@ -38,13 +38,14 @@ const CreateCustomAISheet = () => {
     setLoading(true);
 
     const aiData = {
-      ai_name: name,
+      name: name,
       creator_address: wallet.address ?? "",
       category: selectedCategory,
       introductions: introductions,
-      contents: data,
-      comments: "CreateAI",
-      image_url: "",
+      rag_contents: data,
+      rag_comments: "CreateAI",
+      profile_image_url: "",
+      created_at : new Date().toISOString()
     };
 
     try {

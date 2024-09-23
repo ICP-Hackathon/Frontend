@@ -15,14 +15,14 @@ type CategoryKey =
   | "others";
 
 interface AIData {
-  ai_id: string;
-  user_address: string;
+  id: string;
+  creator_address: string;
   name: string;
-  image_url: string;
+  profile_image_url: string;
   category: string;
   introductions: string;
-  contents: string;
-  comments: string;
+  rag_contents: string;
+  rag_comments: string;
 }
 
 interface EditAISheetProps {
@@ -35,7 +35,7 @@ const EditAISheet: React.FC<EditAISheetProps> = ({ ai, onUpdate }) => {
   const [selectedCategory, setSelectedCategory] = useState<string>(ai.category);
   const [name, setName] = useState(ai.name);
   const [introductions, setIntroductions] = useState(ai.introductions);
-  const [data, setData] = useState(ai.contents);
+  const [data, setData] = useState(ai.rag_contents);
   const [loading, setLoading] = useState(false);
   const wallet = useWallet();
 
@@ -44,7 +44,7 @@ const EditAISheet: React.FC<EditAISheetProps> = ({ ai, onUpdate }) => {
       setSelectedCategory(ai.category);
       setName(ai.name);
       setIntroductions(ai.introductions);
-      setData(ai.contents);
+      setData(ai.rag_contents);
     }
   }, [open, ai]);
 
@@ -57,15 +57,17 @@ const EditAISheet: React.FC<EditAISheetProps> = ({ ai, onUpdate }) => {
     setLoading(true);
 
     const updatedAIData = {
-      ai_id: ai.ai_id,
-      user_address: wallet.address ?? "",
+      id: ai.id,
+      creator_address: wallet.address ?? "",
       name: name,
-      image_url: ai.image_url,
+      profile_image_url: ai.profile_image_url,
       category: selectedCategory,
       introductions: introductions,
-      contents: data,
-      comments: "Updated AI",
+      rag_contents: data,
+      rag_comments: "Updated AI",
     };
+
+    console.log(data)
 
     try {
       const res = await updateAI(updatedAIData);
@@ -109,9 +111,9 @@ const EditAISheet: React.FC<EditAISheetProps> = ({ ai, onUpdate }) => {
           <div className="flex-grow overflow-y-auto p-4 space-y-6">
             <div className="flex justify-center">
               <div className="relative size-20 bg-primary-900 rounded-full overflow-hidden">
-                {ai.image_url ? (
+                {ai.profile_image_url ? (
                   <img
-                    src={ai.image_url}
+                    src={ai.profile_image_url}
                     alt={ai.name}
                     className="w-full h-full object-cover"
                   />
