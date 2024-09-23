@@ -18,7 +18,7 @@ export async function fetchTrendingAIs(
 
 export async function fetchAIs(offset: number, limit: number) {
   const response = await fetch(
-    `${API_BASE_URL}/ais?offset=${offset}&limit=${limit}`
+    `${API_BASE_URL}/ais/?offset=${offset}&limit=${limit}`
   );
   if (!response.ok) {
     throw new Error("Network response was not ok");

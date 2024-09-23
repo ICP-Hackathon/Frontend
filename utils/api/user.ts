@@ -11,7 +11,7 @@ export async function addUser(userData: {
   interest?: string;
 }) {
   const response = await fetch(
-    `${process.env.NEXT_PUBLIC_API_BASE_URL}/users`,
+    `${process.env.NEXT_PUBLIC_API_BASE_URL}/users/`,
     {
       method: "POST",
       headers: {
@@ -20,7 +20,7 @@ export async function addUser(userData: {
       body: JSON.stringify({
         user_address: userData.user_address,
         nickname: userData.nickname,
-        image_url: userData.image_url || "",
+        profile_image_url: userData.image_url || "",
         gender: userData.gender || "",
         country: userData.country || "",
         interest: userData.interest || "",
@@ -82,11 +82,11 @@ export async function updateUser(userData: {
   image_url?: string;
   gender?: string;
   country?: string;
-  phone?: string;
+  interest?: string;
 }) {
   try {
     const response = await fetch(
-      `${process.env.NEXT_PUBLIC_API_BASE_URL}/users`,
+      `${process.env.NEXT_PUBLIC_API_BASE_URL}/users/`,
       {
         method: "PUT",
         headers: {
@@ -94,10 +94,10 @@ export async function updateUser(userData: {
         },
         body: JSON.stringify({
           user_address: userData.user_address,
-          image_url: userData.image_url,
-          gender: userData.gender,
-          country: userData.country,
-          phone: userData.phone,
+          profile_image_url: userData.image_url || "",
+          gender: userData.gender || "",
+          country: userData.country || "",
+          interest: userData.interest || "",
         }),
       }
     );
@@ -116,7 +116,7 @@ export async function updateUser(userData: {
 
 export async function fetchLikeList(user_address: string) {
   const response = await fetch(
-    `${process.env.NEXT_PUBLIC_API_BASE_URL}/likes/user/${user_address}`
+    `${process.env.NEXT_PUBLIC_API_BASE_URL}/ais/likes/${user_address}`
   );
 
   if (!response.ok) {
@@ -136,7 +136,7 @@ export async function addLike(userData: {
   ai_id: string;
 }) {
   const response = await fetch(
-    `${process.env.NEXT_PUBLIC_API_BASE_URL}/likes`,
+    `${process.env.NEXT_PUBLIC_API_BASE_URL}/likes/`,
     {
       method: "POST",
       headers: {
@@ -161,7 +161,7 @@ export async function delLike(userData: {
   ai_id: string;
 }) {
   const response = await fetch(
-    `${process.env.NEXT_PUBLIC_API_BASE_URL}/likes`,
+    `${process.env.NEXT_PUBLIC_API_BASE_URL}/likes/`,
     {
       method: "DELETE",
       headers: {

@@ -25,6 +25,8 @@ export default function ExplorePage() {
   const [selectedAI, setSelectedAI] = useState<CardData | null>(null);
   const [todayCards, setTodayCards] = useState<CardData[] | null>(null);
   const [trendCards, setTrendCards] = useState<CardData[] | null>(null);
+  console.log(todayCards);
+  console.log(trendCards);
   const [isLoading, setIsLoading] = useState(true);
   const wallet = useWallet();
 

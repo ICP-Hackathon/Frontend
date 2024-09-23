@@ -10,7 +10,7 @@ import { sliceAddress } from "@/utils/lib/address";
 export default function SearchPage() {
   const [searchCards, setSearchCards] = useState<CardData[] | null>(null);
   const [isLoading, setIsLoading] = useState(true);
-
+  console.log(searchCards);
   useEffect(() => {
     const loadAIModels = async () => {
       try {
@@ -31,17 +31,7 @@ export default function SearchPage() {
         <Search setSearch={setSearchCards} />
       </div>
       <div className="flex-grow overflow-y-auto mb-16">
-        {searchCards &&
-          searchCards.map((item) => (
-            <AICard
-              key={item.ai_id}
-              id={item.ai_id}
-              name={item.ai_name}
-              creator={item.creator}
-              category={item.category}
-              introductions={item.introductions}
-            />
-          ))}
+        {searchCards && searchCards.map((item) => <AICard item={item} />)}
       </div>
       <div className="fixed bottom-16 left-0 right-0 px-4 mb-4 max-w-[600px] mx-auto">
         <CreateCustomAISheet />
