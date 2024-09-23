@@ -35,15 +35,15 @@ function WalletButton() {
                 "image_url",
                 "gender",
                 "country",
-                "phone",
+                "interest",
               ];
               const missingProps = requiredProps.filter(
-                (prop) => !(prop in userInfo),
+                (prop) => !(prop in userInfo)
               );
 
               if (missingProps.length > 0) {
                 console.warn(
-                  `Missing user properties: ${missingProps.join(", ")}`,
+                  `Missing user properties: ${missingProps.join(", ")}`
                 );
               }
 
@@ -69,7 +69,7 @@ function WalletButton() {
       onConnectError={(error: BaseError) => {
         if (error.code === ErrorCode.WALLET__CONNECT_ERROR__USER_REJECTED) {
           console.warn(
-            "User rejected the connection to " + error.details?.wallet,
+            "User rejected the connection to " + error.details?.wallet
           );
         } else {
           console.warn("Unknown connect error: ", error);

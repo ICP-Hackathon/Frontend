@@ -31,7 +31,8 @@ export default function SearchPage() {
         <Search setSearch={setSearchCards} />
       </div>
       <div className="flex-grow overflow-y-auto mb-16">
-        {searchCards && searchCards.map((item) => <AICard item={item} />)}
+        {searchCards &&
+          searchCards.map((item) => <AICard key={item.id} item={item} />)}
       </div>
       <div className="fixed bottom-16 left-0 right-0 px-4 mb-4 max-w-[600px] mx-auto">
         <CreateCustomAISheet />
