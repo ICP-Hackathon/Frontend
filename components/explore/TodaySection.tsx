@@ -36,8 +36,8 @@ const TodaySection: React.FC<TodaySectionProps> = ({
               <DialogTrigger asChild>
                 <div>
                   <Card
-                    ai_id={item.ai_id}
-                    name={item.ai_name}
+                    ai_id={item.id}
+                    name={item.name}
                     creator={item.creator}
                     like={item.like}
                   />
@@ -45,7 +45,7 @@ const TodaySection: React.FC<TodaySectionProps> = ({
               </DialogTrigger>
               {isOpen && (
                 <DialogContent>
-                  <AIDetailsPopup id={item.ai_id} name={item.creator} />
+                  <AIDetailsPopup ai_detail={item} />
                 </DialogContent>
               )}
             </Dialog>

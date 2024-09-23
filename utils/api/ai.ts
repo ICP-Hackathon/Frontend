@@ -18,7 +18,7 @@ export async function fetchTrendingAIs(
 
 export async function fetchAIs(offset: number, limit: number) {
   const response = await fetch(
-    `${API_BASE_URL}/ais?offset=${offset}&limit=${limit}`
+    `${API_BASE_URL}/ais/?offset=${offset}&limit=${limit}`
   );
   if (!response.ok) {
     throw new Error("Network response was not ok");
@@ -35,7 +35,7 @@ export async function fetchTodayAIs(address: string) {
 }
 
 export async function fetchAIDetails(id: string) {
-  const response = await fetch(`${API_BASE_URL}/ais/ai_id/${id}`);
+  const response = await fetch(`${API_BASE_URL}/ais/id/${id}`);
   if (!response.ok) {
     throw new Error("Network response was not ok");
   }
@@ -62,15 +62,16 @@ export async function fetchAILogs(id: string) {
 }
 
 export async function createAI(aiData: {
-  ai_name: string;
+  name: string;
   creator_address: string;
   category: string;
   introductions: string;
-  image_url: string;
-  contents: string;
-  comments: string;
+  profile_image_url: string;
+  rag_contents: string;
+  rag_comments: string;
+  created_at : string
 }) {
-  const response = await fetch(`${API_BASE_URL}/ais`, {
+  const response = await fetch(`${API_BASE_URL}/ais/`, {
     method: "POST",
     headers: {
       "Content-Type": "application/json",
@@ -108,16 +109,16 @@ export async function deleteAI(id: string) {
 }
 
 export async function updateAI(aiData: {
-  ai_id: string;
-  user_address: string;
-  ai_name: string;
-  image_url: string;
+  id: string;
+  creator_address: string;
+  profile_image_url: string;
   category: string;
   introductions: string;
-  contents: string;
-  comments: string;
+  rag_contents: string;
+  rag_comments: string;
 }) {
-  const response = await fetch(`${API_BASE_URL}/ais`, {
+
+  const response = await fetch(`${API_BASE_URL}/ais/`, {
     method: "PUT",
     headers: {
       "Content-Type": "application/json",

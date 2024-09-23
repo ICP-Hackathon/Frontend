@@ -13,12 +13,7 @@ export interface HeaderBarProps {
 
 // AI related inteface
 export interface AICardProps {
-  id: string;
-  name: string;
-  creator: string;
-  category: string;
-  introductions: string;
-  imageSrc?: string;
+  item: CardData;
 }
 
 export interface LogProps {
@@ -31,14 +26,14 @@ export interface LogProps {
 }
 
 export interface AIDetailProps {
-  ai_id: string;
+  id: string;
   creator_address: string;
   created_at: string;
-  ai_name: string;
-  image_url: string;
+  name: string;
+  profile_img_url: string;
   category: string;
   introductions: string;
-  usage: number;
+  total_token_usage: number;
   earnings: number;
   chat_count: number;
   logs: LogProps[];
@@ -93,7 +88,7 @@ export interface Message {
 }
 
 export interface ChatResponse {
-  chat_contents_id: string;
+  id: string;
   chat_id: string;
   created_at: string;
   sender_id: string;
@@ -101,15 +96,21 @@ export interface ChatResponse {
 }
 
 export interface CardData {
-  id: number | null | undefined;
-  ai_id: string;
-  ai_name: string;
+  id: string;
+  name: string;
   creator_address: string;
   creator: string;
   like: boolean;
   category: string;
-  image_url: string;
+  profile_image_url: string;
   introductions: string;
+  chat_count: number;
+  created_at: string;
+  daily_user_access: number;
+  total_completion_token_usage: number;
+  total_prompt_token_usage: number;
+  total_token_usage: number;
+  rags: any;
 }
 
 export interface User {

@@ -172,20 +172,21 @@ const ChatPage: React.FC = () => {
         try {
           const ChatData = await fetchUserChats(wallet?.address); // API 호출 경로와 내보내기 확인
           const formattedChats = ChatData?.chats?.map((chat: any) => ({
-            aiId: chat.ai_id,
-            ai_name: chat.ai_name,
-            creator: chat.creator_address,
-            imageSrc: chat.imageSrc || "", // optional 속성 처리
+            aiId: chat.ai.id,
+            ai_name: chat.ai.name,
+            creator: chat.creator,
+            imageSrc: chat.ai.profile_img_url || "", // optional 속성 처리
             icon: Clock, // 적절한 기본 아이콘 설정
           }));
+          console.log(formattedChats);
           setChats(formattedChats || []); // 데이터가 없을 때 빈 배열
 
           const LikeData = await fetchLikeList(wallet?.address);
           const formattedLikes = LikeData?.ais?.map((like: any) => ({
-            aiId: like.ai_id,
-            ai_name: like.ai_name,
-            creator: like.creator_address,
-            imageSrc: like.imageSrc || "", // optional 속성 처리
+            aiId: like.id,
+            ai_name: like.name,
+            creator: like.creator,
+            imageSrc: like.profile_img_url || "", // optional 속성 처리
             icon: Heart, // 적절한 기본 아이콘 설정
           }));
           setLikes(formattedLikes || []); // 데이터가 없을 때 빈 배열

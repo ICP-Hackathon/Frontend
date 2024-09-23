@@ -9,28 +9,28 @@ import { fetchUser } from "@/utils/api/user";
 import { fetchMyAIs } from "@/utils/api/ai";
 
 interface AICardProps {
-  ai_id: string;
-  ai_name: string;
+  id: string;
+  name: string;
   category: string;
-  image_url?: string;
+  profile_image_url?: string;
   introductions: string;
 }
 // AICard Component
 const AICard: React.FC<AICardProps> = ({
-  ai_id,
-  ai_name,
+  id,
+  name,
   category,
-  image_url,
+  profile_image_url,
   introductions,
 }) => {
   return (
     <div className="bg-gray-50 border rounded-lg p-4 mb-4">
       <div className="flex items-center justify-between">
         <div className="flex items-center">
-          {image_url ? (
+          {profile_image_url ? (
             <Image
-              src={image_url}
-              alt={ai_name}
+              src={profile_image_url}
+              alt={name}
               width={60}
               height={60}
               className="rounded-full mr-4"
@@ -38,19 +38,19 @@ const AICard: React.FC<AICardProps> = ({
           ) : (
             <div className="size-[60px] rounded-full bg-emerald-100 mr-4 flex items-center justify-center">
               <span className="text-emerald-500 font-bold text-lg">
-                {ai_name.charAt(0).toUpperCase()}
+                {name.charAt(0).toUpperCase()}
               </span>
             </div>
           )}
           <div className="flex flex-col items-start">
-            <h3 className="font-semibold text-lg mb-1">{ai_name}</h3>
+            <h3 className="font-semibold text-lg mb-1">{name}</h3>
             <span className="text-sm rounded-full bg-primary-50 text-primary-900 px-3 py-1">
               {category}
             </span>
           </div>
         </div>
         <Link
-          href={`/ai/${ai_id}/edit`}
+          href={`/ai/${id}/edit`}
           className="text-primary-900 font-medium text-lg flex items-center"
         >
           Edit AI
@@ -129,6 +129,7 @@ const MyPage = () => {
     return <div>User not found. Please connect your wallet.</div>;
   }
 
+  console.log(myAIs)
   return (
     <div className="flex flex-col px-2">
       <div className="flex items-center justify-between pt-2 pb-4">
@@ -161,7 +162,7 @@ const MyPage = () => {
       <h3 className="text-xl font-semibold py-2">My AI</h3>
       <div>
         {myAIs.length > 0 ? (
-          myAIs.map((ai) => <AICard key={ai.ai_id} {...ai} />)
+          myAIs.map((ai) => <AICard key={ai.id} {...ai} />)
         ) : (
           <p>You haven&apos;t created any AIs yet.</p>
         )}

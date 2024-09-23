@@ -2,51 +2,29 @@ import { useRouter } from "next/router";
 import { ChevronRight } from "lucide-react";
 import { Dialog, DialogContent, DialogTrigger } from "@/components/ui/dialog";
 import Image from "next/image";
-import { AICardProps } from "@/utils/interface";
+import { AICardProps, CardData } from "@/utils/interface";
 import { useState } from "react";
 import { fetchAIDetails } from "@/utils/api/ai";
 import AIDetailsPopup from "../explore/AIDetailsPopup";
 
-export const AICard = ({
-  id,
-  name,
-  creator,
-  category,
-  introductions,
-  imageSrc,
-}: AICardProps) => {
+export const AICard = ({ item }: AICardProps) => {
   const router = useRouter();
 
   const handleChatClick = () => {
-    router.push(`/ai/${id}/chat`);
-  };
-
-  const [aiDetail, setAIDetail] = useState<any>(null);
-  const [detailLoading, setDetailLoading] = useState(false);
-
-  const handleOpenChange = async (open: boolean) => {
-    if (open && !aiDetail) {
-      setDetailLoading(true);
-      try {
-        const data = await fetchAIDetails(id);
-        setAIDetail(data);
-        setDetailLoading(false);
-      } catch (error) {
-        console.error("Error fetching AI details:", error);
-        setDetailLoading(false);
-      }
-    }
+    router.push(`/ai/${item.id}/chat`);
   };
 
   return (
     <div className="flex items-center justify-between p-4 border-b border-gray-200">
-      <Dialog onOpenChange={handleOpenChange}>
+      <Dialog>
         <DialogTrigger asChild>
           <div className="flex items-center flex-grow cursor-pointer">
-            {imageSrc ? (
+            {item.profile_image_url ? (
               <Image
-                src={imageSrc}
-                alt={name}
+                // 수정 필요
+                // src={item.profile_image_url}
+                src={""}
+                alt={item.name}
                 width={50}
                 height={50}
                 className="rounded-full mr-4"
@@ -54,20 +32,20 @@ export const AICard = ({
             ) : (
               <div className="w-[50px] h-[50px] rounded-full bg-primary-900 mr-4 flex items-center justify-center">
                 <span className="text-white font-bold text-lg">
-                  {name.charAt(0).toUpperCase()}
+                  {item.name.charAt(0).toUpperCase()}
                 </span>
               </div>
             )}
             <div>
-              <h3 className="font-semibold">{name}</h3>
-              <p className="text-sm text-gray-600">{creator}</p>
+              <h3 className="font-semibold">{item.name}</h3>
+              <p className="text-sm text-gray-600">{item.creator}</p>
             </div>
           </div>
         </DialogTrigger>
 
         {/* Conditionally render AIDetailsPopup when the dialog is opened */}
         <DialogContent className="sm:max-w-[425px] rounded-3xl p-6 max-h-[80vh] overflow-y-auto">
-          <AIDetailsPopup id={id} name={creator} />
+          <AIDetailsPopup ai_detail={item} />
         </DialogContent>
       </Dialog>
 
