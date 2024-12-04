@@ -96,6 +96,8 @@ export interface ChatResponse {
 }
 
 export interface CardData {
+  earnings: number;
+  aiId: any;
   id: string;
   name: string;
   creator_address: string;
@@ -111,13 +113,15 @@ export interface CardData {
   total_prompt_token_usage: number;
   total_token_usage: number;
   rags: any;
+  examples: string;
 }
 
 export interface User {
   user_address: string;
   nickname: string;
-  image_url?: string;
-  gender?: string;
-  country?: string;
-  interest?: string;
+  profile_image_url: string;
+  gender: string;
+  country: string;
+  interest: string;
+  // trial: number;
 }

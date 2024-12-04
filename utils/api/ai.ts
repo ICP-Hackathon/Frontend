@@ -1,64 +1,80 @@
 const API_BASE_URL = process.env.NEXT_PUBLIC_API_BASE_URL;
 
+// 공통 fetch 요청 처리 함수
+async function apiRequest(
+  endpoint: string,
+  options: RequestInit = {}
+): Promise<any> {
+  // const response = await fetch(`${API_BASE_URL}${endpoint}`, options);
+  const response = await fetch(`${endpoint}`, options);
+  if (!response.ok) {
+    const errorData = await response.text();
+    console.error(
+      `Error: ${response.status} ${response.statusText}\n${errorData}`
+    );
+    throw new Error(`Network response was not ok: ${response.statusText}`);
+  }
+  const responseJson = await response.json()
+  console.log('response', responseJson)
+  return responseJson
+  // return await response.json();
+}
+
+// API URL 상수화
+export const AI_API = {
+  GET_AI_LIST: () => `${API_BASE_URL}/ais/`,
+  GET_TREND_AIS: (address: string, category: string) => `${API_BASE_URL}/ais/trend/${address}/${category}`,
+  GET_TODAY_AIS: (address: string) => `${API_BASE_URL}/ais/today/${address}`,
+  GET_SEARCHED_AIS: (name: string, address: string) => `${API_BASE_URL}/ais/search/${name}/${address}`,
+
+  GET_AIS_BY_USER: (userid: string) => `${API_BASE_URL}/ais/user/${userid}`,
+  GET_AI_DETAIL_BY_ID: (id: string) => `${API_BASE_URL}/ais/id/${id}`,
+  GET_AI_LOGS: (id: string) => `${API_BASE_URL}/ailogs/ai/${id}`,
+
+  DELETE_AI: (id: string) => `${API_BASE_URL}/ai/${id}`,
+};
+
+// API 요청 함수들
+
 export async function fetchTrendingAIs(
   category: string,
   address: string,
-  query: { offset?: number; limit?: number } // offset과 limit을 쿼리로 받음
+  query: { offset?: number; limit?: number } = {}
 ) {
-  const { offset = 0, limit = 10 } = query; // 기본값 설정
-
-  const response = await fetch(
-    `${API_BASE_URL}/ais/trend/${address}/${category}?offset=${offset}&limit=${limit}`
-  );
-  if (!response.ok) {
-    throw new Error("Network response was not ok");
-  }
-  return await response.json();
+  const { offset = 0, limit = 10 } = query;
+  const endpoint = `${AI_API.GET_TREND_AIS(
+    address,
+    category
+  )}?offset=${offset}&limit=${limit}`;
+  return await apiRequest(endpoint);
 }
 
 export async function fetchAIs(offset: number, limit: number) {
-  const response = await fetch(
-    `${API_BASE_URL}/ais/?offset=${offset}&limit=${limit}`
-  );
-  if (!response.ok) {
-    throw new Error("Network response was not ok");
-  }
-  return await response.json();
+  console.log("error line",`${AI_API.GET_AI_LIST()}?offset=${offset}&limit=${limit}`);
+  return await apiRequest(`${AI_API.GET_AI_LIST()}?offset=${offset}&limit=${limit}`);
 }
 
 export async function fetchTodayAIs(address: string) {
-  const response = await fetch(`${API_BASE_URL}/ais/today/${address}`);
-  if (!response.ok) {
-    throw new Error("Network response was not ok");
-  }
-  return await response.json();
+  return await apiRequest(`${AI_API.GET_TODAY_AIS(address)}`);
 }
 
 export async function fetchAIDetails(id: string) {
-  const response = await fetch(`${API_BASE_URL}/ais/id/${id}`);
-  if (!response.ok) {
-    throw new Error("Network response was not ok");
-  }
-  return await response.json();
+  return await apiRequest(`${AI_API.GET_AI_DETAIL_BY_ID(id)}`);
 }
 
 export async function fetchSearchAIs(name: string, address: string) {
-  const response = await fetch(`${API_BASE_URL}/ais/search/${name}/${address}`);
-  if (!response.ok) {
-    if (response.status === 404) {
+  try {
+    return await apiRequest(`${AI_API.GET_SEARCHED_AIS(name, address)}`);
+  } catch (error: any) {
+    if (error.message.includes("404")) {
       throw new Error("No results found");
     }
-    throw new Error("Network response was not ok");
+    throw error;
   }
-  return await response.json();
 }
 
 export async function fetchAILogs(id: string) {
-  const response = await fetch(`${API_BASE_URL}/ailogs/ai/${id}`);
-  if (!response.ok) {
-    throw new Error("Network response was not ok");
-  }
-  return await response.json();
+  return await apiRequest(AI_API.GET_AI_LOGS(id));
 }
 
 export async function createAI(aiData: {
@@ -69,43 +85,24 @@ export async function createAI(aiData: {
   profile_image_url: string;
   rag_contents: string;
   rag_comments: string;
-  created_at : string
+  created_at: string;
+  examples: string;
+  tx_hash: string;
 }) {
-  const response = await fetch(`${API_BASE_URL}/ais/`, {
+  console.log(aiData.rag_comments);
+  return await apiRequest(`${AI_API.GET_AI_LIST()}`, {
     method: "POST",
-    headers: {
-      "Content-Type": "application/json",
-    },
+    headers: { "Content-Type": "application/json" },
     body: JSON.stringify(aiData),
   });
-
-  if (!response.ok) {
-    const errorData = await response.text();
-    console.error("Error response:", errorData);
-    throw new Error(
-      `Failed to create AI: ${response.status} ${response.statusText}\n${errorData}`
-    );
-  }
-
-  return await response.json();
 }
 
 export async function fetchMyAIs(userid: string) {
-  const response = await fetch(`${API_BASE_URL}/ais/user/${userid}`);
-  if (!response.ok) {
-    throw new Error("Network response was not ok");
-  }
-  return await response.json();
+  return await apiRequest(`${AI_API.GET_AIS_BY_USER(userid)}`);
 }
 
 export async function deleteAI(id: string) {
-  const response = await fetch(`${API_BASE_URL}/ai/${id}`, {
-    method: "DELETE",
-  });
-  if (!response.ok) {
-    throw new Error("Failed to delete AI");
-  }
-  return await response.json();
+  return await apiRequest(`${AI_API.DELETE_AI(id)}`, { method: "DELETE" });
 }
 
 export async function updateAI(aiData: {
@@ -116,23 +113,13 @@ export async function updateAI(aiData: {
   introductions: string;
   rag_contents: string;
   rag_comments: string;
+  examples: string;
+  created_at: string;
+  tx_hash: string;
 }) {
-
-  const response = await fetch(`${API_BASE_URL}/ais/`, {
+  return await apiRequest(`${AI_API.GET_AI_LIST()}`, {
     method: "PUT",
-    headers: {
-      "Content-Type": "application/json",
-    },
+    headers: { "Content-Type": "application/json" },
     body: JSON.stringify(aiData),
   });
-
-  if (!response.ok) {
-    const errorData = await response.text();
-    console.error("Error response:", errorData);
-    throw new Error(
-      `Failed to update AI: ${response.status} ${response.statusText}\n${errorData}`
-    );
-  }
-
-  return await response.json();
 }

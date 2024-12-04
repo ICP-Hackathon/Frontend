@@ -1,68 +1,40 @@
-import { useEffect, useState } from "react";
-import { fetchTodayAIs, fetchTrendingAIs } from "@/utils/api/ai";
-import { CardData } from "@/utils/interface";
+import { useState } from "react";
 import CategorySelector, {
   CategoryKey,
+  categories,
 } from "@/components/explore/CategorySelector";
 import TodaySection from "@/components/explore/TodaySection";
-import RecentSection from "@/components/explore/RecentSection";
-import { useWallet } from "@suiet/wallet-kit";
-
-const categories: string[] = [
-  "All",
-  "Education",
-  "Health & Fitness",
-  "Entertainment",
-  "Social networking",
-  "Business",
-  "Developer tools",
-  "Graphics & Design",
-  "Others",
-];
+import TrendSection from "@/components/explore/TrendSection";
+import { addLike, delLike } from "@/utils/api/user";
+import { fetcher } from "@/utils/api/fetch";
+import { LIKE_API } from "@/utils/api/like";
 
 export default function ExplorePage() {
   const [selectedCategory, setSelectedCategory] = useState<CategoryKey>("all");
-  const [selectedAI, setSelectedAI] = useState<CardData | null>(null);
-  const [todayCards, setTodayCards] = useState<CardData[] | null>(null);
-  const [trendCards, setTrendCards] = useState<CardData[] | null>(null);
-  console.log(todayCards);
-  console.log(trendCards);
-  const [isLoading, setIsLoading] = useState(true);
-  const wallet = useWallet();
 
-  useEffect(() => {
-    const loadAIModels = async () => {
-      if (wallet.address) {
-        try {
-          const Todaydata = await fetchTodayAIs(wallet?.address);
-          setTodayCards(Todaydata.ais);
-          setIsLoading(false);
-        } catch (error) {
-          console.error(error);
-          setIsLoading(false);
-        }
-      }
-    };
-    loadAIModels();
-  }, [wallet]);
+  const toggleLike = async (user_address: string, ai_id: string, like: boolean, mutate: any) => {
+    const newLike = !like;
 
-  useEffect(() => {
-    const loadAIModels = async () => {
-      if (wallet.address) {
-        try {
-          const Trenddata = await fetchTrendingAIs(
-            selectedCategory,
-            wallet.address,
-            { offset: 0, limit: 10 }
-          );
-          setTrendCards(Trenddata.ais);
-        } catch (error) {
-          console.error(error);
-        }
+    // Optimistically update the like state using SWR's mutate
+    mutate(newLike, false);
+    const userData = {user_address : user_address, ai_id : ai_id}
+
+    try {
+      if (like) {
+        await delLike(userData)
+      } else {
+        await addLike(userData)
       }
-    };
-    loadAIModels();
-  }, [selectedCategory, wallet]);
+
+      // 성공적으로 서버에 반영되면 SWR 데이터 갱신
+      mutate(newLike, false);
+    } catch (error) {
+      console.error('Failed to update like status', error);
+      // 실패하면 서버에서 다시 받아 옴
+      const likeFromServer = await fetcher(LIKE_API.AI_LIKE(user_address, ai_id))
+      mutate(likeFromServer, false);
+    }
+  };
 
   return (
     <div className="p-4 pb-16">
@@ -71,34 +43,17 @@ export default function ExplorePage() {
         selectedCategory={selectedCategory}
         setSelectedCategory={setSelectedCategory}
       />
-      {selectedCategory === "all" ? (
-        <>
-          <TodaySection
-            isLoading={isLoading}
-            todayCards={todayCards}
-            setSelectedAI={setSelectedAI}
-          />
-          <RecentSection
-            title={"Recent"}
-            trendCards={trendCards}
-            setSelectedAI={setSelectedAI}
-          />
-        </>
-      ) : (
-        <RecentSection
-          title={selectedCategory}
-          trendCards={trendCards}
-          setSelectedAI={setSelectedAI}
-        />
-      )}
+
+      {selectedCategory === "all" && 
+      <TodaySection 
+      toggleLike={toggleLike}
+      />}
+
+      <TrendSection
+        title={selectedCategory === "all" ? "Weekly Trends" : selectedCategory}
+        selectedCategory={selectedCategory}
+        toggleLike={toggleLike}
+      />
     </div>
   );
-}
-
-export async function getStaticProps() {
-  return {
-    props: {
-      title: "Explore",
-    },
-  };
 }

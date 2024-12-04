@@ -1,4 +1,4 @@
 export function txScanURL(txHash: string) {
-  const baseUrl = "https://suiscan.xyz/testnet/tx/";
-  return baseUrl + txHash;
+  const baseUrl = "https://aptoscan.com/transaction/";
+  return baseUrl + txHash + "?network=testnet";
 }
